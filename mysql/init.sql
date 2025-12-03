@@ -1,3 +1,4 @@
+-- Taula d'usuaris
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -8,3 +9,513 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT INTO users (name, email) VALUES 
     ('Test User', 'test@example.com'),
     ('Admin', 'admin@example.com');
+
+-- Taula de categories de testing
+CREATE TABLE IF NOT EXISTS categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Taula de checklist items
+CREATE TABLE IF NOT EXISTS checklist_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT,
+    is_checked BOOLEAN DEFAULT FALSE,
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+);
+
+-- Inserir categories
+INSERT INTO categories (name, description) VALUES
+('Recon Phase', 'Reconnaissance and information gathering'),
+('Registration Feature Testing', 'Testing user registration functionality'),
+('Session Management Testing', 'Testing session handling and cookies'),
+('Authentication Testing', 'Testing login and authentication mechanisms'),
+('My Account (Post Login) Testing', 'Testing post-authentication features'),
+('Forgot Password Testing', 'Testing password recovery functionality'),
+('Contact Us Form Testing', 'Testing contact forms'),
+('Product Purchase Testing', 'Testing e-commerce functionality'),
+('Banking Application Testing', 'Testing banking-specific features'),
+('Open Redirection Testing', 'Testing for open redirect vulnerabilities'),
+('Host Header Injection', 'Testing Host header manipulation'),
+('SQL Injection Testing', 'Testing for SQL injection vulnerabilities'),
+('Cross-Site Scripting Testing', 'Testing for XSS vulnerabilities'),
+('CSRF Testing', 'Testing for Cross-Site Request Forgery'),
+('SSO Vulnerabilities', 'Testing Single Sign-On implementations'),
+('XML Injection Testing', 'Testing for XXE vulnerabilities'),
+('CORS', 'Cross-Origin Resource Sharing testing'),
+('SSRF', 'Server-Side Request Forgery testing'),
+('File Upload Testing', 'Testing file upload functionality'),
+('CAPTCHA Testing', 'Testing CAPTCHA implementations'),
+('JWT Token Testing', 'Testing JSON Web Tokens'),
+('Websockets Testing', 'Testing WebSocket connections'),
+('GraphQL Vulnerabilities Testing', 'Testing GraphQL implementations'),
+('WordPress Common Vulnerabilities', 'Testing WordPress-specific issues'),
+('XPath Injection', 'Testing XPath injection vulnerabilities'),
+('LDAP Injection', 'Testing LDAP injection vulnerabilities'),
+('Denial of Service', 'Testing DoS vulnerabilities'),
+('403 Bypass', 'Testing access control bypasses'),
+('Other Test Cases', 'Miscellaneous security tests'),
+('Burp Suite Extensions', 'Useful Burp Suite extensions');
+
+-- Inserir items de Recon Phase
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(1, 'Identify web server, technologies and database', 1),
+(1, 'Subsidiary and Acquisition Enumeration', 2),
+(1, 'Reverse Lookup', 3),
+(1, 'ASN & IP Space Enumeration and Service Enumeration', 4),
+(1, 'Google Dorking', 5),
+(1, 'Github Recon', 6),
+(1, 'Directory Enumeration', 7),
+(1, 'IP Range Enumeration', 8),
+(1, 'JS Files Analysis', 9),
+(1, 'Subdomain Enumeration and Bruteforcing', 10),
+(1, 'Subdomain Takeover', 11),
+(1, 'Parameter Fuzzing', 12),
+(1, 'Port Scanning', 13),
+(1, 'Template-Based Scanning(Nuclei)', 14),
+(1, 'Wayback History', 15),
+(1, 'Broken Link Hijacking', 16),
+(1, 'Internet Search Engine Discovery', 17),
+(1, 'Misconfigured Cloud Storage', 18);
+
+-- Inserir items de Registration Feature Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(2, 'Check for duplicate registration/Overwrite existing user', 1),
+(2, 'Check for weak password policy', 2),
+(2, 'Check for reuse existing usernames', 3),
+(2, 'Check for insufficient email verification process', 4),
+(2, 'Weak registration implementation-Allows disposable email addresses', 5),
+(2, 'Weak registration implementation-Over HTTP', 6),
+(2, 'Overwrite default web application pages by specially crafted username registrations', 7);
+
+-- Inserir items de Session Management Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(3, 'Identify actual session cookie out of bulk cookies in the application', 1),
+(3, 'Decode cookies using some standard decoding algorithms such as Base64, hex, URL, etc', 2),
+(3, 'Modify cookie.session token value by 1 bit/byte', 3),
+(3, 'If self-registration is available and you can choose your username, log in with a series of similar usernames', 4),
+(3, 'Check for session cookies and cookie expiration date/time', 5),
+(3, 'Identify cookie domain scope', 6),
+(3, 'Check for HttpOnly flag in cookie', 7),
+(3, 'Check for Secure flag in cookie if the application is over SSL', 8),
+(3, 'Check for session fixation i.e. value of session cookie before and after authentication', 9),
+(3, 'Replay the session cookie from a different effective IP address or system', 10),
+(3, 'Check for concurrent login through different machine/IP', 11),
+(3, 'Check if any user pertaining information is stored in cookie value or not', 12),
+(3, 'Failure to Invalidate Session on (Email Change,2FA Activation)', 13);
+
+-- Inserir items de Authentication Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(4, 'Username enumeration', 1),
+(4, 'Bypass authentication using various SQL Injections on username and password field', 2),
+(4, 'Lack of password confirmation on Change email address', 3),
+(4, 'Lack of password confirmation on Change password', 4),
+(4, 'Lack of password confirmation on Manage 2FA', 5),
+(4, 'Is it possible to use resources without authentication? Access violation', 6),
+(4, 'Check if user credentials are transmitted over SSL or not', 7),
+(4, 'Weak login function HTTP and HTTPS both are available', 8),
+(4, 'Test user account lockout mechanism on brute force attack', 9),
+(4, 'Bypass rate limiting by tampering user agent to Mobile User agent', 10),
+(4, 'Bypass rate limiting by tampering user agent to Anonymous user agent', 11),
+(4, 'Bypass rate liniting by using null byte', 12),
+(4, 'Create a password wordlist using cewl command', 13),
+(4, 'Test Oauth login functionality', 14),
+(4, 'OAuth: Resource Owner → User', 15),
+(4, 'OAuth: Resource Server → Twitter', 16),
+(4, 'OAuth: Client Application → Twitterdeck.com', 17),
+(4, 'OAuth: Authorization Server → Twitter', 18),
+(4, 'OAuth: client_id → Twitterdeck ID', 19),
+(4, 'OAuth: client_secret → Secret Token', 20),
+(4, 'OAuth: response_type → Defines the token type', 21),
+(4, 'OAuth: scope → The requested level of access', 22),
+(4, 'OAuth: redirect_uri → The URL user is redirected to', 23),
+(4, 'OAuth: state → Main CSRF protection', 24),
+(4, 'OAuth: grant_type → Defines the grant_type', 25),
+(4, 'OAuth: code → The authorization code', 26),
+(4, 'OAuth: access_token → The token to make API requests', 27),
+(4, 'OAuth: refresh_token → Allows new access_token', 28),
+(4, 'OAuth Code Flaws: Re-Using the code', 29),
+(4, 'OAuth Code Flaws: Code Predict/Bruteforce and Rate-limit', 30),
+(4, 'OAuth Code Flaws: Is the code for application X valid for application Y?', 31),
+(4, 'OAuth Redirect_uri Flaws: URL isn''t validated at all', 32),
+(4, 'OAuth Redirect_uri Flaws: Subdomains allowed (Subdomain Takeover)', 33),
+(4, 'OAuth Redirect_uri Flaws: Host is validated, path isn''t (Chain open redirect)', 34),
+(4, 'OAuth Redirect_uri Flaws: Host is validated, path isn''t (Referer leakages)', 35),
+(4, 'OAuth Redirect_uri Flaws: Weak Regexes', 36),
+(4, 'OAuth Redirect_uri Flaws: Bruteforcing the URL encoded chars after host', 37),
+(4, 'OAuth Redirect_uri Flaws: Bruteforcing the keywords whitelist after host', 38),
+(4, 'OAuth Redirect_uri Flaws: URI validation in place: use typical open redirect payloads', 39),
+(4, 'OAuth State Flaws: Missing State parameter? (CSRF)', 40),
+(4, 'OAuth State Flaws: Predictable State parameter?', 41),
+(4, 'OAuth State Flaws: Is State parameter being verified?', 42),
+(4, 'OAuth Misc: Is client_secret validated?', 43),
+(4, 'OAuth Misc: Pre ATO using facebook phone-number signup', 44),
+(4, 'OAuth Misc: No email validation Pre ATO', 45),
+(4, 'Test 2FA Misconfiguration: Response Manipulation', 46),
+(4, 'Test 2FA Misconfiguration: Status Code Manipulation', 47),
+(4, 'Test 2FA Misconfiguration: 2FA Code Leakage in Response', 48),
+(4, 'Test 2FA Misconfiguration: 2FA Code Reusability', 49),
+(4, 'Test 2FA Misconfiguration: Lack of Brute-Force Protection', 50),
+(4, 'Test 2FA Misconfiguration: Missing 2FA Code Integrity Validation', 51),
+(4, 'Test 2FA Misconfiguration: With null or 000000', 52);
+
+-- Inserir items de My Account (Post Login) Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(5, 'Find parameter which uses active account user id. Try to tamper it', 1),
+(5, 'Create a list of features that are pertaining to a user account only', 2),
+(5, 'Post login change email id and update with any existing email id', 3),
+(5, 'Open profile picture in a new tab and check the URL', 4),
+(5, 'Check account deletion option if application provides it', 5),
+(5, 'Change email id, account id, user id parameter and try to brute force other user''s password', 6),
+(5, 'Check whether application re authenticates for performing sensitive operation', 7);
+
+-- Inserir items de Forgot Password Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(6, 'Failure to invalidate session on Logout and Password reset', 1),
+(6, 'Check if forget password reset link/code uniqueness', 2),
+(6, 'Check if reset link does get expire or not', 3),
+(6, 'Find user account identification parameter and tamper Id', 4),
+(6, 'Check for weak password policy', 5),
+(6, 'Weak password reset implementation Token is not invalidated after use', 6),
+(6, 'If reset link has another param such as date and time, then change it', 7),
+(6, 'Check if security questions are asked? How many guesses allowed?', 8),
+(6, 'Add only spaces in new password and confirmed password', 9),
+(6, 'Does it display old password on the same page', 10),
+(6, 'Ask for two password reset link and use the older one', 11),
+(6, 'Check if active session gets destroyed upon changing the password or not?', 12),
+(6, 'Weak password reset implementation Password reset token sent over HTTP', 13),
+(6, 'Send continuous forget password requests so that it may send sequential tokens', 14);
+
+-- Inserir items de Contact Us Form Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(7, 'Is CAPTCHA implemented on contact us form', 1),
+(7, 'Does it allow to upload file on the server?', 2),
+(7, 'Blind XSS', 3);
+
+-- Inserir items de Product Purchase Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(8, 'Buy Now: Tamper product ID to purchase other high valued product with low prize', 1),
+(8, 'Buy Now: Tamper product data to increase the number of product with the same prize', 2),
+(8, 'Gift/Voucher: Tamper gift/voucher count in the request', 3),
+(8, 'Gift/Voucher: Tamper gift/voucher value to increase/decrease the value', 4),
+(8, 'Gift/Voucher: Reuse gift/voucher by using old gift values', 5),
+(8, 'Gift/Voucher: Check the uniqueness of gift/voucher parameter', 6),
+(8, 'Gift/Voucher: Use parameter pollution technique to add the same voucher twice', 7),
+(8, 'Add/Delete Product from Cart: Tamper user id to delete products', 8),
+(8, 'Add/Delete Product from Cart: Tamper cart id to add/delete products', 9),
+(8, 'Add/Delete Product from Cart: Identify cart id/user id to view added items', 10),
+(8, 'Address: Tamper BurpSuite request to change other user''s shipping address', 11),
+(8, 'Address: Try stored XSS by adding XSS vector on shipping address', 12),
+(8, 'Address: Use parameter pollution technique to add two shipping address', 13),
+(8, 'Place Order: Tamper payment options parameter to change the payment method', 14),
+(8, 'Place Order: Tamper the amount value for payment manipulation', 15),
+(8, 'Place Order: Check if CVV is going in cleartext or not', 16),
+(8, 'Place Order: Check if the application itself processes your card details', 17),
+(8, 'Track Order: Track other user''s order by guessing order tracking number', 18),
+(8, 'Track Order: Brute force tracking number prefix or suffix', 19),
+(8, 'Wish list: Check if a user A can add/remote products in Wishlist of user B', 20),
+(8, 'Wish list: Check if a user A can add products into user B''s cart from Wishlist', 21),
+(8, 'Post product purchase: Check if user A can cancel orders for user B', 22),
+(8, 'Post product purchase: Check if user A can view/check orders by user B', 23),
+(8, 'Post product purchase: Check if user A can modify the shipping address of user B', 24),
+(8, 'Out of band: Can user order product which is out of stock?', 25);
+
+-- Inserir items de Banking Application Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(9, 'Billing Activity: Check if user A can view the account statement for user B', 1),
+(9, 'Billing Activity: Check if user A can view the transaction report for user B', 2),
+(9, 'Billing Activity: Check if user A can view the summary report for user B', 3),
+(9, 'Billing Activity: Check if user A can register for monthly/weekly statement via email', 4),
+(9, 'Billing Activity: Check if user A can update the existing email id of user B', 5),
+(9, 'Deposit/Loan/Linked: Check if user A can view the deposit account summary of user B', 6),
+(9, 'Deposit/Loan/Linked: Check for account balance tampering for Deposit accounts', 7),
+(9, 'Tax Deduction: Check if user A can see the tax deduction details of user B', 8),
+(9, 'Tax Deduction: Check parameter tampering for increasing and decreasing interest rate', 9),
+(9, 'Tax Deduction: Check if user A can download the TDS details of user B', 10),
+(9, 'Tax Deduction: Check if user A can request for the cheque book behalf of user B', 11),
+(9, 'Fixed Deposit: Check if is it possible for user A to open FD account behalf of user B', 12),
+(9, 'Fixed Deposit: Check if Can user open FD account with more amount than balance', 13),
+(9, 'Stopping Payment: Can user A stop the payment of user B via cheque number', 14),
+(9, 'Stopping Payment: Can user A stop the payment on basis of date range for user B', 15),
+(9, 'Status Enquiry: Can user A view the status enquiry of user B', 16),
+(9, 'Status Enquiry: Can user A modify the status enquiry of user B', 17),
+(9, 'Status Enquiry: Can user A post and enquiry behalf of user B', 18),
+(9, 'Fund transfer: Is it possible to transfer funds to user C instead of user B', 19),
+(9, 'Fund transfer: Can fund transfer amount be manipulated?', 20),
+(9, 'Fund transfer: Can user A modify the payee list of user B', 21),
+(9, 'Fund transfer: Is it possible to add payee without any proper validation', 22),
+(9, 'Schedule transfer: Can user A view the schedule transfer of user B', 23),
+(9, 'Schedule transfer: Can user A change the details of schedule transfer for user B', 24),
+(9, 'NEFT: Amount manipulation via NEFT transfer', 25),
+(9, 'NEFT: Check if user A can view the NEFT transfer details of user B', 26),
+(9, 'Bill Payment: Check if user can register payee without any checker approval', 27),
+(9, 'Bill Payment: Check if user A can view the pending payments of user B', 28),
+(9, 'Bill Payment: Check if user A can view the payment made details of user B', 29);
+
+-- Inserir items de Open Redirection Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(10, 'Use burp find option to find parameters such as URL, red, redirect, redir, origin', 1),
+(10, 'Check the value of these parameter which may contain a URL', 2),
+(10, 'Change the URL value and check if gets redirected', 3),
+(10, 'Try Single Slash and url encoding', 4),
+(10, 'Using a whitelisted domain or keyword', 5),
+(10, 'Using // to bypass http blacklisted keyword', 6),
+(10, 'Using https: to bypass // blacklisted keyword', 7),
+(10, 'Using \\\\ to bypass // blacklisted keyword', 8),
+(10, 'Using \\/\\/ to bypass // blacklisted keyword', 9),
+(10, 'Using null byte %00 to bypass blacklist filter', 10),
+(10, 'Using ° symbol to bypass', 11);
+
+-- Inserir items de Host Header Injection
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(11, 'Supply an arbitrary Host header', 1),
+(11, 'Check for flawed validation', 2),
+(11, 'Send ambiguous requests: Inject duplicate Host headers', 3),
+(11, 'Send ambiguous requests: Supply an absolute URL', 4),
+(11, 'Send ambiguous requests: Add line wrapping', 5),
+(11, 'Inject host override headers', 6);
+
+-- Inserir items de SQL Injection Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(12, 'Entry point detection: Simple characters', 1),
+(12, 'Entry point detection: Multiple encoding', 2),
+(12, 'Entry point detection: Merging characters', 3),
+(12, 'Entry point detection: Logic Testing', 4),
+(12, 'Entry point detection: Weird characters', 5),
+(12, 'Run SQL injection scanner on all requests', 6),
+(12, 'Bypassing WAF: Using Null byte before SQL query', 7),
+(12, 'Bypassing WAF: Using SQL inline comment sequence', 8),
+(12, 'Bypassing WAF: URL encoding', 9),
+(12, 'Bypassing WAF: Changing Cases (uppercase/lowercase)', 10),
+(12, 'Bypassing WAF: Use SQLMAP tamper scripts', 11),
+(12, 'Time Delays: Oracle dbms_pipe.receive_message', 12),
+(12, 'Time Delays: Microsoft WAITFOR DELAY', 13),
+(12, 'Time Delays: PostgreSQL pg_sleep', 14),
+(12, 'Time Delays: MySQL sleep', 15),
+(12, 'Conditional Delays: Oracle', 16),
+(12, 'Conditional Delays: Microsoft', 17),
+(12, 'Conditional Delays: PostgreSQL', 18),
+(12, 'Conditional Delays: MySQL', 19);
+
+-- Inserir items de Cross-Site Scripting Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(13, 'Try XSS using QuickXSS tool by theinfosecguy', 1),
+(13, 'Upload file using img src=x onerror=alert payload', 2),
+(13, 'If script tags are banned, use <h1> and other HTML tags', 3),
+(13, 'If output is reflected back inside the JavaScript use alert(1)', 4),
+(13, 'If " are filtered then use img src=d onerror=confirm payload', 5),
+(13, 'Upload a JavaScript using Image file', 6),
+(13, 'Unusual way to execute JS payload is to change method from POST to GET', 7),
+(13, 'Tag attribute value: Input landed in input tag', 8),
+(13, 'Tag attribute value: Payload to be inserted with onfocus', 9),
+(13, 'Tag attribute value: Syntax Encoding payload', 10),
+(13, 'XSS filter evasion: < and > can be replace with html entities', 11),
+(13, 'XSS filter evasion: Try an XSS polyglot', 12),
+(13, 'XSS Firewall Bypass: Check if the firewall is blocking only lowercase', 13),
+(13, 'XSS Firewall Bypass: Try to break firewall regex with new line', 14),
+(13, 'XSS Firewall Bypass: Try Double Encoding', 15),
+(13, 'XSS Firewall Bypass: Testing for recursive filters', 16),
+(13, 'XSS Firewall Bypass: Injecting anchor tag without whitespaces', 17),
+(13, 'XSS Firewall Bypass: Try to bypass whitespaces using Bullet', 18),
+(13, 'XSS Firewall Bypass: Try to change request method', 19);
+
+-- Inserir items de CSRF Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(14, 'Anti-CSRF token: Removing the Anti-CSRF Token', 1),
+(14, 'Anti-CSRF token: Altering the Anti-CSRF Token', 2),
+(14, 'Anti-CSRF token: Using the Attacker''s Anti-CSRF Token', 3),
+(14, 'Anti-CSRF token: Spoofing the Anti-CSRF Token', 4),
+(14, 'Anti-CSRF token: Using guessable Anti-CSRF Tokens', 5),
+(14, 'Anti-CSRF token: Stealing Anti-CSRF Tokens', 6),
+(14, 'Double Submit Cookie: Check for session fixation on subdomains', 7),
+(14, 'Double Submit Cookie: Man in the the middle attack', 8),
+(14, 'Referrer/Origin validation: Restricting the CSRF POC from sending Referrer header', 9),
+(14, 'Referrer/Origin validation: Bypass whitelisting/blacklisting mechanism', 10),
+(14, 'JSON/XML format: By using normal HTML Form1', 11),
+(14, 'JSON/XML format: By using normal HTML Form2 (Fetch Request)', 12),
+(14, 'JSON/XML format: By using XMLHTTP Request/AJAX request', 13),
+(14, 'JSON/XML format: By using Flash file', 14),
+(14, 'Samesite Cookie: SameSite Lax bypass via method override', 15),
+(14, 'Samesite Cookie: SameSite Strict bypass via client-side redirect', 16),
+(14, 'Samesite Cookie: SameSite Strict bypass via sibling domain', 17),
+(14, 'Samesite Cookie: SameSite Lax bypass via cookie refresh', 18);
+
+-- Inserir items de SSO Vulnerabilities
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(15, 'If internal.company.com Redirects You To SSO, Do FUZZ On Internal', 1),
+(15, 'If company.com/internal Redirects To SSO, Try company.com/public/internal', 2),
+(15, 'Try To Craft SAML Request With Token And Send It To The Server', 3),
+(15, 'If There Is AssertionConsumerServiceURL Try To Insert Your Domain', 4),
+(15, 'If There Is AssertionConsumerServiceURL Try To Do FUZZ On Value', 5),
+(15, 'If There Is Any UUID, Try To Change It To UUID Of Victim', 6),
+(15, 'Try To Figure Out If Server Vulnerable To XML Signature Wrapping', 7),
+(15, 'Try To Figure Out If Server Checks The Identity Of The Signer', 8),
+(15, 'Try To Inject XXE Payloads At The Top Of The SAML Response', 9),
+(15, 'Try To Inject XSLT Payloads Into The Transforms Element', 10),
+(15, 'If Victim Can Accept Tokens Issued By Same Identity Provider', 11),
+(15, 'While Testing SSO Try To search In Burp About URLs In Cookie Header', 12);
+
+-- Inserir items de XML Injection Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(16, 'Change the content type to text/xml and test XXE with /etc/passwd', 1),
+(16, 'Test XXE with /etc/hosts', 2),
+(16, 'Test XXE with /proc/self/cmdline', 3),
+(16, 'Test XXE with /proc/version', 4),
+(16, 'Blind XXE with out-of-band interaction', 5);
+
+-- Inserir items de CORS
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(17, 'Errors parsing Origin headers', 1),
+(17, 'Whitelisted null origin value', 2);
+
+-- Inserir items de SSRF
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(18, 'Try basic localhost payloads', 1),
+(18, 'Bypassing filters: Bypass using HTTPS', 2),
+(18, 'Bypassing filters: Bypass with [::]', 3),
+(18, 'Bypassing filters: Bypass with a domain redirection', 4),
+(18, 'Bypassing filters: Bypass using a decimal IP location', 5),
+(18, 'Bypassing filters: Bypass using IPv6/IPv4 Address Embedding', 6),
+(18, 'Bypassing filters: Bypass using malformed urls', 7),
+(18, 'Bypassing filters: Bypass using rare address', 8),
+(18, 'Bypassing filters: Bypass using enclosed alphanumerics', 9),
+(18, 'Cloud Instances: AWS metadata endpoints', 10),
+(18, 'Cloud Instances: Google Cloud metadata endpoints', 11),
+(18, 'Cloud Instances: Digital Ocean metadata endpoints', 12),
+(18, 'Cloud Instances: Azure metadata endpoints', 13),
+(18, 'Bypassing via open redirection', 14);
+
+-- Inserir items de File Upload Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(19, 'Upload malicious file to archive upload functionality', 1),
+(19, 'Upload a file and change its path to overwrite an existing system file', 2),
+(19, 'Large File Denial of Service', 3),
+(19, 'Metadata Leakage', 4),
+(19, 'ImageMagick Library Attacks', 5),
+(19, 'Pixel Flood Attack', 6),
+(19, 'Bypasses: Null Byte (%00) Bypass', 7),
+(19, 'Bypasses: Content-Type Bypass', 8),
+(19, 'Bypasses: Magic Byte Bypass', 9),
+(19, 'Bypasses: Client-Side Validation Bypass', 10),
+(19, 'Bypasses: Blacklisted Extension Bypass', 11),
+(19, 'Bypasses: Homographic Character Bypass', 12);
+
+-- Inserir items de CAPTCHA Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(20, 'Missing Captcha Field Integrity Checks', 1),
+(20, 'HTTP Verb Manipulation', 2),
+(20, 'Content Type Conversion', 3),
+(20, 'Reusuable Captcha', 4),
+(20, 'Check if captcha is retrievable with the absolute path', 5),
+(20, 'Check for server side validation for CAPTCHA', 6),
+(20, 'Check if image recognition can be done with OCR tool', 7);
+
+-- Inserir items de JWT Token Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(21, 'Brute-forcing secret keys', 1),
+(21, 'Signing a new token with the "none" algorithm', 2),
+(21, 'Changing the signing algorithm of the token', 3),
+(21, 'Signing the asymmetrically-signed token to its symmetric algorithm match', 4);
+
+-- Inserir items de Websockets Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(22, 'Intercepting and modifying WebSocket messages', 1),
+(22, 'Websockets MITM attempts', 2),
+(22, 'Testing secret header websocket', 3),
+(22, 'Content stealing in websockets', 4),
+(22, 'Token authentication testing in websockets', 5);
+
+-- Inserir items de GraphQL Vulnerabilities Testing
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(23, 'Inconsistent Authorization Checks', 1),
+(23, 'Missing Validation of Custom Scalars', 2),
+(23, 'Failure to Appropriately Rate-limit', 3),
+(23, 'Introspection Query Enabled/Disabled', 4);
+
+-- Inserir items de WordPress Common Vulnerabilities
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(24, 'XSPA in wordpress', 1),
+(24, 'Bruteforce in wp-login.php', 2),
+(24, 'Information disclosure wordpress username', 3),
+(24, 'Backup file wp-config exposed', 4),
+(24, 'Log files exposed', 5),
+(24, 'Denial of Service via load-styles.php', 6),
+(24, 'Denial of Service via load-scripts.php', 7),
+(24, 'DDOS using xmlrpc.php', 8),
+(24, 'CVE-2018-6389', 9),
+(24, 'CVE-2021-24364', 10),
+(24, 'WP-Cronjob DOS', 11);
+
+-- Inserir items de XPath Injection
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(25, 'XPath injection to bypass authentication', 1),
+(25, 'XPath injection to exfiltrate data', 2),
+(25, 'Blind and Time-based XPath injections to exfiltrate data', 3);
+
+-- Inserir items de LDAP Injection
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(26, 'LDAP injection to bypass authentication', 1),
+(26, 'LDAP injection to exfiltrate data', 2);
+
+-- Inserir items de Denial of Service
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(27, 'Cookie bomb', 1),
+(27, 'Pixel flood, using image with a huge pixels', 2),
+(27, 'Frame flood, using GIF with a huge frame', 3),
+(27, 'ReDoS (Regex DoS)', 4),
+(27, 'CPDoS (Cache Poisoned Denial of Service)', 5);
+
+-- Inserir items de 403 Bypass
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(28, 'Using "X-Original-URL" header', 1),
+(28, 'Appending %2e after the first slash', 2),
+(28, 'Try add dot (.) slash (/) and semicolon (;) in the URL', 3),
+(28, 'Add "..;/" after the directory name', 4),
+(28, 'Try to uppercase the alphabet in the url', 5),
+(28, 'Tool-bypass-403', 6),
+(28, 'Burp Extension-403 Bypasser', 7);
+
+-- Inserir items de Other Test Cases
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(29, 'Testing for Role authorization', 1),
+(29, 'Check if normal user can access resources of high privileged users', 2),
+(29, 'Forced browsing', 3),
+(29, 'Insecure direct object reference', 4),
+(29, 'Parameter tampering to switch user account', 5),
+(29, 'Check for security headers: X Frame Options', 6),
+(29, 'Check for security headers: X-XSS header', 7),
+(29, 'Check for security headers: HSTS header', 8),
+(29, 'Check for security headers: CSP header', 9),
+(29, 'Check for security headers: Referrer Policy', 10),
+(29, 'Check for security headers: Cache Control', 11),
+(29, 'Check for security headers: Public key pins', 12),
+(29, 'Blind OS command injection: using time delays', 13),
+(29, 'Blind OS command injection: by redirecting output', 14),
+(29, 'Blind OS command injection: with out-of-band interaction', 15),
+(29, 'Blind OS command injection: with out-of-band data exfiltration', 16),
+(29, 'Command injection on CSV export (Upload/Download)', 17),
+(29, 'CSV Excel Macro Injection', 18),
+(29, 'If you find phpinfo.php file, check for configuration leakage', 19),
+(29, 'Parameter Pollution Social Media Sharing Buttons', 20),
+(29, 'Broken Cryptography: Cryptography Implementation Flaw', 21),
+(29, 'Broken Cryptography: Encrypted Information Compromised', 22),
+(29, 'Broken Cryptography: Weak Ciphers Used for Encryption', 23),
+(29, 'Web Services Testing: Test for directory traversal', 24),
+(29, 'Web Services Testing: Web services documentation disclosure', 25);
+
+-- Inserir items de Burp Suite Extensions
+INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+(30, 'Scanners: ActiveScanPlusPlus', 1),
+(30, 'Scanners: additional-scanner-checks', 2),
+(30, 'Scanners: backslash-powered-scanner', 3),
+(30, 'Information Gathering: filter-options-method', 4),
+(30, 'Information Gathering: Admin-Panel_Finder', 5),
+(30, 'Information Gathering: BigIPDiscover', 6),
+(30, 'Information Gathering: PwnBack', 7),
+(30, 'Vulnerability Analysis: Burp-NoSQLiScanner', 8);
