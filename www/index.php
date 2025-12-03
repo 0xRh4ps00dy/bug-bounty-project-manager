@@ -62,9 +62,9 @@
         <h2>Connexió a MySQL</h2>
         <?php
         $host = 'db';
-        $dbname = 'lamp_db';
-        $username = 'lamp_user';
-        $password = 'lamp_password';
+        $dbname = 'bbpm_db';
+        $username = 'bbpm_user';
+        $password = 'bbpm_password';
 
         try {
             $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

@@ -6,7 +6,7 @@ services:
     build: 
       context: ./apache
       dockerfile: Dockerfile
-    container_name: lamp_web
+    container_name: bbpm_web
     ports:
       - "80:80"
     volumes:
@@ -14,30 +14,30 @@ services:
     depends_on:
       - db
     networks:
-      - lamp_network
+      - bbpm_network
 
   # MySQL
   db:
     image: mysql:8.0
-    container_name: lamp_mysql
+    container_name: bbpm_mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: lamp_db
-      MYSQL_USER: lamp_user
-      MYSQL_PASSWORD: lamp_password
+      MYSQL_DATABASE: bbpm_db
+      MYSQL_USER: bbpm_user
+      MYSQL_PASSWORD: bbpm_password
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "3306:3306"
     networks:
-      - lamp_network
+      - bbpm_network
 
   # phpMyAdmin
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: lamp_phpmyadmin
+    container_name: bbpm_phpmyadmin
     restart: always
     ports:
       - "8080:80"
@@ -47,10 +47,10 @@ services:
     depends_on:
       - db
     networks:
-      - lamp_network
+      - bbpm_network
 
 networks:
-  lamp_network:
+  bbpm_network:
     driver: bridge
 
 volumes:

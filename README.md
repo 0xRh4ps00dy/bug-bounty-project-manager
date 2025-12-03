@@ -28,8 +28,8 @@ docker-compose logs -f
 ### Accedir als serveis:
 - **Aplicació web**: http://localhost
 - **phpMyAdmin**: http://localhost:8080
-  - Usuari: `lamp_user`
-  - Contrasenya: `lamp_password`
+  - Usuari: `bbpm_user`
+  - Contrasenya: `bbpm_password`
   - O com a root: `root` / `root_password`
 
 ## Estructura del projecte
@@ -48,9 +48,9 @@ docker-compose logs -f
 ## Credencials de MySQL
 
 - **Root Password**: `root_password`
-- **Database**: `lamp_db`
-- **User**: `lamp_user`
-- **Password**: `lamp_password`
+- **Database**: `bbpm_db`
+- **User**: `bbpm_user`
+- **Password**: `bbpm_password`
 
 ## Notes
 
