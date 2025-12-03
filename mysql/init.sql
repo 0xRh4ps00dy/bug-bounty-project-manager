@@ -10,6 +10,28 @@ INSERT INTO users (name, email) VALUES
     ('Test User', 'test@example.com'),
     ('Admin', 'admin@example.com');
 
+-- Taula de projectes
+CREATE TABLE IF NOT EXISTS projects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Taula de targets (objectius dins de cada projecte)
+CREATE TABLE IF NOT EXISTS targets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    project_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    url VARCHAR(500),
+    description TEXT,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+);
+
 -- Taula de categories de testing
 CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -18,17 +40,95 @@ CREATE TABLE IF NOT EXISTS categories (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Taula de checklist items
+-- Taula de checklist items (plantilla base)
 CREATE TABLE IF NOT EXISTS checklist_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
-    is_checked BOOLEAN DEFAULT FALSE,
     sort_order INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
+
+-- Taula de checklist per target (còpia de la checklist per cada target)
+CREATE TABLE IF NOT EXISTS target_checklist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    target_id INT NOT NULL,
+    checklist_item_id INT NOT NULL,
+    is_checked BOOLEAN DEFAULT FALSE,
+    notes TEXT,
+    checked_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (target_id) REFERENCES targets(id) ON DELETE CASCADE,
+    FOREIGN KEY (checklist_item_id) REFERENCES checklist_items(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_target_item (target_id, checklist_item_id)
+);
+
+-- Augmentar el límit de GROUP_CONCAT
+SET SESSION group_concat_max_len = 1000000;
+
+-- Trigger per actualitzar automàticament les notes del target
+DELIMITER //
+
+CREATE TRIGGER update_target_notes_on_insert
+AFTER INSERT ON target_checklist
+FOR EACH ROW
+BEGIN
+    UPDATE targets 
+    SET notes = (
+        SELECT GROUP_CONCAT(
+            CONCAT(ci.title, ': ', tc.notes) 
+            SEPARATOR '\n\n---\n\n'
+        )
+        FROM target_checklist tc
+        INNER JOIN checklist_items ci ON tc.checklist_item_id = ci.id
+        WHERE tc.target_id = NEW.target_id 
+        AND tc.notes IS NOT NULL 
+        AND tc.notes != ''
+    )
+    WHERE id = NEW.target_id;
+END//
+
+CREATE TRIGGER update_target_notes_on_update
+AFTER UPDATE ON target_checklist
+FOR EACH ROW
+BEGIN
+    UPDATE targets 
+    SET notes = (
+        SELECT GROUP_CONCAT(
+            CONCAT(ci.title, ': ', tc.notes) 
+            SEPARATOR '\n\n---\n\n'
+        )
+        FROM target_checklist tc
+        INNER JOIN checklist_items ci ON tc.checklist_item_id = ci.id
+        WHERE tc.target_id = NEW.target_id 
+        AND tc.notes IS NOT NULL 
+        AND tc.notes != ''
+    )
+    WHERE id = NEW.target_id;
+END//
+
+CREATE TRIGGER update_target_notes_on_delete
+AFTER DELETE ON target_checklist
+FOR EACH ROW
+BEGIN
+    UPDATE targets 
+    SET notes = (
+        SELECT GROUP_CONCAT(
+            CONCAT(ci.title, ': ', tc.notes) 
+            SEPARATOR '\n\n---\n\n'
+        )
+        FROM target_checklist tc
+        INNER JOIN checklist_items ci ON tc.checklist_item_id = ci.id
+        WHERE tc.target_id = OLD.target_id 
+        AND tc.notes IS NOT NULL 
+        AND tc.notes != ''
+    )
+    WHERE id = OLD.target_id;
+END//
+
+DELIMITER ;
 
 -- Inserir categories
 INSERT INTO categories (name, description) VALUES
@@ -519,3 +619,105 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (30, 'Information Gathering: BigIPDiscover', 6),
 (30, 'Information Gathering: PwnBack', 7),
 (30, 'Vulnerability Analysis: Burp-NoSQLiScanner', 8);
+
+-- ==========================================
+-- DADES DE PROVA
+-- ==========================================
+
+-- Inserir projectes de prova
+INSERT INTO projects (name, description) VALUES
+('E-commerce Platform Security Audit', 'Security assessment for a major e-commerce platform with payment processing'),
+('Banking Application Pentest', 'Comprehensive penetration testing for online banking application'),
+('Social Media Platform Bug Bounty', 'Bug bounty program for a social networking platform'),
+('API Security Assessment', 'REST API security testing for mobile backend');
+
+-- Inserir targets de prova
+INSERT INTO targets (project_id, name, url, description) VALUES
+(1, 'Main Website', 'https://shop.example.com', 'Primary e-commerce website with product catalog and checkout'),
+(1, 'Admin Panel', 'https://admin.shop.example.com', 'Administrative backend for managing products and orders'),
+(1, 'Payment Gateway', 'https://pay.shop.example.com', 'Payment processing integration endpoint'),
+(2, 'Online Banking Portal', 'https://bank.example.com', 'Customer-facing online banking portal'),
+(2, 'Mobile Banking API', 'https://api.bank.example.com', 'REST API for mobile banking application'),
+(3, 'Main Platform', 'https://social.example.com', 'Main social networking platform'),
+(3, 'User Profile API', 'https://api.social.example.com/users', 'User profile management API endpoints'),
+(4, 'Authentication API', 'https://api.mobile.example.com/auth', 'Authentication and authorization endpoints'),
+(4, 'User Data API', 'https://api.mobile.example.com/data', 'User data management endpoints');
+
+-- Inserir items de checklist per al primer target (Main Website)
+-- Alguns items de Recon Phase
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes, checked_at) VALUES
+(1, 1, TRUE, 'Server: Apache 2.4.52, PHP 8.1, MySQL 8.0. Detected using Wappalyzer and Nmap.', NOW()),
+(1, 2, TRUE, 'Found 3 subsidiaries: shop-eu.example.com, shop-asia.example.com, shop-us.example.com', NOW()),
+(1, 5, TRUE, 'Found exposed credentials in public GitHub repo: github.com/example/shop-config', NOW()),
+(1, 7, TRUE, 'Discovered /admin, /backup, /old directories. /backup returns 403 but exists.', NOW()),
+(1, 10, TRUE, 'Found 23 subdomains including dev.shop.example.com (development environment exposed)', NOW()),
+(1, 15, FALSE, 'Wayback machine shows old endpoints: /api/v1/legacy still accessible', NULL),
+(1, 18, FALSE, NULL, NULL);
+
+-- Items de Registration Feature Testing
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes) VALUES
+(1, 19, TRUE, 'Password policy allows weak passwords like "password123". Minimum 8 chars but no complexity requirements.'),
+(1, 20, TRUE, 'Email verification can be bypassed by intercepting the request and changing verified=false to verified=true'),
+(1, 21, TRUE, 'Accepts disposable emails from temp-mail.org and guerrillamail.com'),
+(1, 22, FALSE, NULL);
+
+-- Items de Authentication Testing per al target 2 (Admin Panel)
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes, checked_at) VALUES
+(2, 26, TRUE, 'Username enumeration possible via different response times. Valid users: admin, administrator, root', NOW()),
+(2, 27, TRUE, 'SQL injection in login form: username=admin OR 1=1 bypasses authentication', NOW()),
+(2, 31, TRUE, 'No account lockout after 100 failed attempts. Rate limiting can be bypassed with X-Forwarded-For header', NOW()),
+(2, 35, FALSE, 'Testing OAuth implementation', NULL);
+
+-- Items de Session Management per al target 3 (Payment Gateway)
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes, checked_at) VALUES
+(3, 38, TRUE, 'Session cookie: PHPSESSID, not HttpOnly, not Secure flag despite HTTPS', NOW()),
+(3, 42, TRUE, 'Session fixation vulnerability confirmed. Session ID not regenerated after login.', NOW()),
+(3, 45, TRUE, 'User information (user_id, role) stored in plaintext in cookie payload', NOW());
+
+-- Items de SQL Injection per al target 4 (Online Banking Portal)
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes, checked_at) VALUES
+(4, 162, TRUE, 'SQL injection detected in account_id parameter using single quote test', NOW()),
+(4, 166, TRUE, 'Successfully bypassed WAF using URL encoding: %27%20OR%20%271%27=%271', NOW()),
+(4, 170, TRUE, 'Time-based blind SQLi confirmed using MySQL SLEEP(5) - response delayed by 5 seconds', NOW());
+
+-- Items de XSS per al target 5 (Mobile Banking API)
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes, checked_at) VALUES
+(5, 177, TRUE, 'Reflected XSS in search parameter: /search?q=<script>alert(1)</script>', NOW()),
+(5, 179, TRUE, 'Stored XSS in user profile bio field. Payload persists with img tag and onerror handler', NOW()),
+(5, 183, FALSE, 'Testing XSS filter evasion techniques', NULL);
+
+-- Items de CSRF per al target 6 (Main Platform)
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes, checked_at) VALUES
+(6, 190, TRUE, 'CSRF token missing on password change endpoint. Successfully changed password via CSRF attack.', NOW()),
+(6, 192, TRUE, 'CSRF token is reusable across different sessions. Same token valid for multiple requests.', NOW());
+
+-- Items de File Upload per al target 7 (User Profile API)
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes, checked_at) VALUES
+(7, 230, TRUE, 'Uploaded PHP shell disguised as image with double extension - successfully executed on server', NOW()),
+(7, 236, TRUE, 'Content-Type validation bypassed by changing header to image/jpeg while uploading PHP file', NOW()),
+(7, 237, TRUE, 'Magic byte check bypassed by prepending GIF89a to PHP shell code', NOW());
+
+-- Items de API Testing per al target 8 (Authentication API)
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes) VALUES
+(8, 251, TRUE, 'JWT secret key is weak: "secret123". Successfully forged tokens using jwt.io'),
+(8, 252, TRUE, 'Algorithm confusion attack successful. Changed alg from RS256 to HS256 and signed with public key'),
+(8, 253, FALSE, 'Testing for "none" algorithm acceptance');
+
+-- Items de SSRF per al target 9 (User Data API)
+INSERT INTO target_checklist (target_id, checklist_item_id, is_checked, notes, checked_at) VALUES
+(9, 221, TRUE, 'SSRF vulnerability in image fetch parameter. Able to access http://localhost:8080/admin', NOW()),
+(9, 222, TRUE, 'Bypassed localhost filter using http://127.0.0.1 and http://0.0.0.0', NOW()),
+(9, 226, TRUE, 'AWS metadata exposed via SSRF: http://169.254.169.254/latest/meta-data/iam/security-credentials/', NOW());
+
+-- Actualitzar manualment les notes dels targets (els triggers funcionaran per futures actualitzacions)
+UPDATE targets SET notes = (
+    SELECT GROUP_CONCAT(
+        CONCAT(ci.title, ': ', tc.notes) 
+        SEPARATOR '\n\n---\n\n'
+    )
+    FROM target_checklist tc
+    INNER JOIN checklist_items ci ON tc.checklist_item_id = ci.id
+    WHERE tc.target_id = targets.id 
+    AND tc.notes IS NOT NULL 
+    AND tc.notes != ''
+) WHERE id IN (SELECT DISTINCT target_id FROM target_checklist);
