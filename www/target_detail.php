@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
             case 'update_notes':
                 $checklistId = (int)$_POST['checklist_id'];
-                $notes = $_POST['notes'];
+                $notes = isset($_POST['notes']) ? trim($_POST['notes']) : '';
                 
                 $stmt = $pdo->prepare("UPDATE target_checklist SET notes = ? WHERE id = ?");
                 $stmt->execute([$notes, $checklistId]);

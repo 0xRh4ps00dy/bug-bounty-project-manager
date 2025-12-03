@@ -21,11 +21,14 @@ Obre el teu navegador i accedeix a: **http://localhost**
 5. Afegeix una descripció
 6. Guarda
 
-### 3. Afegir Items de Checklist al Target
+**✨ Important**: Quan es crea un nou target, **automàticament s'assignen tots els 367 checklist items** al target. No cal afegir-los manualment!
+
+### 3. Treballar amb la Checklist del Target
 1. Ves al detall del target (fes clic a "Veure" des de la llista de targets)
-2. Fes clic a **Afegir Items**
-3. Selecciona una categoria (ex: "Recon Phase", "SQL Injection Testing")
-4. Tots els items de la categoria s'afegiran automàticament
+2. Veuràs tots els 367 checklist items organitzats per categories
+3. Els items estan agrupats per categoria per facilitar la navegació
+
+**Nota**: Si per algun motiu un target no té tots els items, pots utilitzar el botó **Afegir Items** per afegir items d'una categoria específica.
 
 ### 4. Treballar amb la Checklist
 1. Marca els items com a completats fent clic al checkbox

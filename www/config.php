@@ -26,7 +26,15 @@ function getConnection() {
 
 // Funció per sanititzar input
 function sanitize($data) {
-    return htmlspecialchars(strip_tags(trim($data)));
+    if (is_null($data) || $data === '') {
+        return '';
+    }
+    return trim($data);
+}
+
+// Funció per sanititzar per mostrar (escapar HTML)
+function sanitizeOutput($data) {
+    return htmlspecialchars($data ?? '', ENT_QUOTES, 'UTF-8');
 }
 
 // Funció per redirigir

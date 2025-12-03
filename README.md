@@ -96,6 +96,7 @@ docker-compose up -d
 ### Gestió de Targets
 - Assignar targets a projectes
 - Afegir URL i descripció
+- **Creació automàtica de checklist**: Quan es crea un target, tots els 367 checklist items s'assignen automàticament
 - Gestionar checklist de seguretat per cada target
 - Notes individuals per cada item de checklist
 - Visualització del progrés (% completat)

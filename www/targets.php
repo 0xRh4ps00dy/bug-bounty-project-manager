@@ -17,7 +17,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("INSERT INTO targets (project_id, name, url, description) VALUES (?, ?, ?, ?)");
                 $stmt->execute([$project_id, $name, $url, $description]);
                 
-                setFlashMessage("Target creat correctament!", "success");
+                // Obtenir l'ID del target creat
+                $targetId = $pdo->lastInsertId();
+                
+                // Afegir TOTS els checklist items al nou target
+                $allItems = $pdo->query("SELECT id FROM checklist_items")->fetchAll();
+                $insertStmt = $pdo->prepare("INSERT INTO target_checklist (target_id, checklist_item_id) VALUES (?, ?)");
+                
+                foreach ($allItems as $item) {
+                    $insertStmt->execute([$targetId, $item['id']]);
+                }
+                
+                setFlashMessage("Target creat amb " . count($allItems) . " checklist items assignats!", "success");
                 redirect("targets.php");
                 break;
                 

@@ -65,8 +65,8 @@ CREATE TABLE IF NOT EXISTS target_checklist (
     UNIQUE KEY unique_target_item (target_id, checklist_item_id)
 );
 
--- Augmentar el límit de GROUP_CONCAT
-SET SESSION group_concat_max_len = 1000000;
+-- Augmentar el límit de GROUP_CONCAT globalment
+SET GLOBAL group_concat_max_len = 10000000;
 
 -- Trigger per actualitzar automàticament les notes del target
 DELIMITER //
@@ -75,25 +75,30 @@ CREATE TRIGGER update_target_notes_on_insert
 AFTER INSERT ON target_checklist
 FOR EACH ROW
 BEGIN
-    UPDATE targets 
-    SET notes = (
-        SELECT GROUP_CONCAT(
-            CONCAT(ci.title, ': ', tc.notes) 
-            SEPARATOR '\n\n---\n\n'
+    -- Només actualitzar si el nou item té notes
+    IF NEW.notes IS NOT NULL AND NEW.notes != '' THEN
+        SET SESSION group_concat_max_len = 10000000;
+        UPDATE targets 
+        SET notes = (
+            SELECT GROUP_CONCAT(
+                CONCAT(ci.title, ': ', tc.notes) 
+                SEPARATOR '\n\n---\n\n'
+            )
+            FROM target_checklist tc
+            INNER JOIN checklist_items ci ON tc.checklist_item_id = ci.id
+            WHERE tc.target_id = NEW.target_id 
+            AND tc.notes IS NOT NULL 
+            AND tc.notes != ''
         )
-        FROM target_checklist tc
-        INNER JOIN checklist_items ci ON tc.checklist_item_id = ci.id
-        WHERE tc.target_id = NEW.target_id 
-        AND tc.notes IS NOT NULL 
-        AND tc.notes != ''
-    )
-    WHERE id = NEW.target_id;
+        WHERE id = NEW.target_id;
+    END IF;
 END//
 
 CREATE TRIGGER update_target_notes_on_update
 AFTER UPDATE ON target_checklist
 FOR EACH ROW
 BEGIN
+    SET SESSION group_concat_max_len = 10000000;
     UPDATE targets 
     SET notes = (
         SELECT GROUP_CONCAT(
@@ -113,6 +118,7 @@ CREATE TRIGGER update_target_notes_on_delete
 AFTER DELETE ON target_checklist
 FOR EACH ROW
 BEGIN
+    SET SESSION group_concat_max_len = 10000000;
     UPDATE targets 
     SET notes = (
         SELECT GROUP_CONCAT(
