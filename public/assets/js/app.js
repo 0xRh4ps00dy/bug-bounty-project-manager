@@ -1,0 +1,285 @@
+// Modern Bug Bounty Project Manager - JavaScript Application
+
+class BBPM {
+    constructor() {
+        this.baseUrl = window.location.origin;
+        this.init();
+    }
+    
+    init() {
+        // Add event listeners
+        this.attachEventListeners();
+    }
+    
+    attachEventListeners() {
+        // Form submissions
+        document.addEventListener('submit', (e) => {
+            if (e.target.classList.contains('ajax-form')) {
+                e.preventDefault();
+                this.handleFormSubmit(e.target);
+            }
+        });
+        
+        // Delete buttons
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-delete')) {
+                e.preventDefault();
+                const btn = e.target.closest('.btn-delete');
+                this.handleDelete(btn);
+            }
+            
+            // Toggle checklist item
+            if (e.target.closest('.checklist-toggle')) {
+                e.preventDefault();
+                const checkbox = e.target.closest('.checklist-toggle');
+                this.toggleChecklistItem(checkbox);
+            }
+        });
+        
+        // Note updates (debounced)
+        document.addEventListener('blur', (e) => {
+            if (e.target.classList.contains('checklist-notes')) {
+                this.updateNotes(e.target);
+            }
+        }, true);
+    }
+    
+    async handleFormSubmit(form) {
+        const formData = new FormData(form);
+        const method = form.dataset.method || form.method.toUpperCase();
+        const url = form.action;
+        
+        // Convert FormData to JSON
+        const data = Object.fromEntries(formData.entries());
+        
+        try {
+            this.showLoading(form);
+            
+            const response = await this.fetch(url, {
+                method: method,
+                body: JSON.stringify(data)
+            });
+            
+            if (response.success) {
+                this.showSuccess(response.message || 'Operation successful');
+                
+                // Reload or redirect
+                setTimeout(() => {
+                    if (form.dataset.redirect) {
+                        window.location.href = form.dataset.redirect;
+                    } else {
+                        window.location.reload();
+                    }
+                }, 1000);
+            } else {
+                this.showError(response.error || 'Operation failed');
+            }
+        } catch (error) {
+            this.showError(error.message);
+        } finally {
+            this.hideLoading(form);
+        }
+    }
+    
+    async handleDelete(btn) {
+        const url = btn.dataset.url;
+        const confirmMsg = btn.dataset.confirm || 'Are you sure you want to delete this item?';
+        
+        if (!confirm(confirmMsg)) {
+            return;
+        }
+        
+        try {
+            this.showLoading(btn);
+            
+            const response = await this.fetch(url, {
+                method: 'DELETE'
+            });
+            
+            if (response.success) {
+                this.showSuccess(response.message || 'Deleted successfully');
+                
+                // Remove element or reload
+                setTimeout(() => {
+                    const row = btn.closest('tr') || btn.closest('.card');
+                    if (row) {
+                        row.remove();
+                    } else {
+                        window.location.reload();
+                    }
+                }, 500);
+            } else {
+                this.showError(response.error || 'Delete failed');
+            }
+        } catch (error) {
+            this.showError(error.message);
+        } finally {
+            this.hideLoading(btn);
+        }
+    }
+    
+    async toggleChecklistItem(checkbox) {
+        const targetId = checkbox.dataset.targetId;
+        const itemId = checkbox.dataset.itemId;
+        const isChecked = checkbox.checked ? 1 : 0;
+        
+        const url = `/targets/${targetId}/checklist/${itemId}/toggle`;
+        
+        try {
+            const response = await this.fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({ is_checked: isChecked })
+            });
+            
+            if (response.success) {
+                // Update progress bar if exists
+                this.updateProgress();
+            } else {
+                // Revert checkbox
+                checkbox.checked = !checkbox.checked;
+                this.showError(response.error || 'Toggle failed');
+            }
+        } catch (error) {
+            checkbox.checked = !checkbox.checked;
+            this.showError(error.message);
+        }
+    }
+    
+    async updateNotes(textarea) {
+        const targetId = textarea.dataset.targetId;
+        const itemId = textarea.dataset.itemId;
+        const notes = textarea.value.trim();
+        
+        const url = `/targets/${targetId}/checklist/${itemId}/notes`;
+        
+        try {
+            const response = await this.fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({ notes: notes })
+            });
+            
+            if (response.success) {
+                this.showSuccess('Notes updated', 1000);
+            } else {
+                this.showError(response.error || 'Update failed');
+            }
+        } catch (error) {
+            this.showError(error.message);
+        }
+    }
+    
+    async updateProgress() {
+        // Reload progress stats
+        const progressBar = document.querySelector('.progress-bar');
+        if (!progressBar) return;
+        
+        const targetId = progressBar.dataset.targetId;
+        if (!targetId) return;
+        
+        try {
+            const response = await this.fetch(`/api/targets/${targetId}`);
+            if (response.target) {
+                progressBar.style.width = response.target.progress + '%';
+                progressBar.textContent = response.target.progress + '%';
+                
+                const completedSpan = document.querySelector('.completed-count');
+                if (completedSpan) {
+                    completedSpan.textContent = response.target.completed_items;
+                }
+            }
+        } catch (error) {
+            console.error('Failed to update progress:', error);
+        }
+    }
+    
+    async fetch(url, options = {}) {
+        const defaults = {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        };
+        
+        const config = { ...defaults, ...options };
+        
+        const response = await fetch(url, config);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    showLoading(element) {
+        const btn = element.tagName === 'FORM' 
+            ? element.querySelector('[type="submit"]')
+            : element;
+        
+        if (btn) {
+            btn.disabled = true;
+            btn.dataset.originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Loading...';
+        }
+    }
+    
+    hideLoading(element) {
+        const btn = element.tagName === 'FORM'
+            ? element.querySelector('[type="submit"]')
+            : element;
+        
+        if (btn && btn.dataset.originalText) {
+            btn.disabled = false;
+            btn.innerHTML = btn.dataset.originalText;
+        }
+    }
+    
+    showSuccess(message, duration = 3000) {
+        this.showToast(message, 'success', duration);
+    }
+    
+    showError(message, duration = 5000) {
+        this.showToast(message, 'danger', duration);
+    }
+    
+    showToast(message, type = 'info', duration = 3000) {
+        // Create toast container if doesn't exist
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'toast-container position-fixed top-0 end-0 p-3';
+            document.body.appendChild(container);
+        }
+        
+        // Create toast
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${type} border-0`;
+        toast.setAttribute('role', 'alert');
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+        
+        container.appendChild(toast);
+        
+        // Show toast
+        const bsToast = new bootstrap.Toast(toast, { delay: duration });
+        bsToast.show();
+        
+        // Remove after hidden
+        toast.addEventListener('hidden.bs.toast', () => {
+            toast.remove();
+        });
+    }
+}
+
+// Initialize on DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        window.bbpm = new BBPM();
+    });
+} else {
+    window.bbpm = new BBPM();
+}

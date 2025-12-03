@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
+    status VARCHAR(50) DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -26,7 +27,10 @@ CREATE TABLE IF NOT EXISTS targets (
     name VARCHAR(255) NOT NULL,
     url VARCHAR(500),
     description TEXT,
+    status VARCHAR(50) DEFAULT 'active',
+    progress DECIMAL(5,2) DEFAULT 0.00,
     notes TEXT,
+    aggregated_notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
@@ -37,6 +41,7 @@ CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
+    order_num INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -46,7 +51,7 @@ CREATE TABLE IF NOT EXISTS checklist_items (
     category_id INT NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
-    sort_order INT DEFAULT 0,
+    order_num INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
@@ -79,7 +84,7 @@ BEGIN
     IF NEW.notes IS NOT NULL AND NEW.notes != '' THEN
         SET SESSION group_concat_max_len = 10000000;
         UPDATE targets 
-        SET notes = (
+        SET aggregated_notes = (
             SELECT GROUP_CONCAT(
                 CONCAT(ci.title, ': ', tc.notes) 
                 SEPARATOR '\n\n---\n\n'
@@ -100,7 +105,7 @@ FOR EACH ROW
 BEGIN
     SET SESSION group_concat_max_len = 10000000;
     UPDATE targets 
-    SET notes = (
+    SET aggregated_notes = (
         SELECT GROUP_CONCAT(
             CONCAT(ci.title, ': ', tc.notes) 
             SEPARATOR '\n\n---\n\n'
@@ -120,7 +125,7 @@ FOR EACH ROW
 BEGIN
     SET SESSION group_concat_max_len = 10000000;
     UPDATE targets 
-    SET notes = (
+    SET aggregated_notes = (
         SELECT GROUP_CONCAT(
             CONCAT(ci.title, ': ', tc.notes) 
             SEPARATOR '\n\n---\n\n'

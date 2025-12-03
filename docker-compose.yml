@@ -10,7 +10,13 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./www:/var/www/html
+      - .:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: bbpm_db
+      DB_USER: bbpm_user
+      DB_PASS: bbpm_password
     depends_on:
       - db
     networks:
