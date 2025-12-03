@@ -1,6 +1,6 @@
 # Bug Bounty Project Manager
 
-Aplicació web completa per gestionar projectes de Bug Bounty amb checklist de seguretat, desenvolupada amb LAMP Stack (Linux, Apache, MySQL, PHP) i Docker Compose.
+Aplicació web **moderna i professional** per gestionar projectes de Bug Bounty amb checklist de seguretat, desenvolupada amb **arquitectura MVC**, **RESTful API**, i **tecnologies modernes**.
 
 ## 🚀 Característiques
 
@@ -80,38 +80,32 @@ docker-compose up -d
     └── checklist.php         # CRUD de checklist items
 ```
 
-## 📊 Funcionalitats de l'Aplicació
+## 🌐 Endpoints API
 
-### Dashboard
-- Estadístiques generals (projectes, targets, categories, items completats)
-- Projectes recents
-- Targets amb activitat recent
-- Accions ràpides
+### Projects
+- `GET /api/projects` - Llistar tots els projectes
+- `GET /api/projects/{id}` - Obtenir un projecte
+- `POST /api/projects` - Crear projecte
+- `PUT /api/projects/{id}` - Actualitzar projecte
+- `DELETE /api/projects/{id}` - Eliminar projecte
 
-### Gestió de Projectes
-- Crear, editar i eliminar projectes
-- Veure detalls amb tots els targets associats
-- Seguiment de progrés per projecte
+### Targets
+- `GET /api/targets` - Llistar tots els targets
+- `GET /api/targets/{id}` - Obtenir un target amb checklist
+- `POST /api/targets` - Crear target (auto-assigna 367 items)
+- `PUT /api/targets/{id}` - Actualitzar target
+- `DELETE /api/targets/{id}` - Eliminar target
 
-### Gestió de Targets
-- Assignar targets a projectes
-- Afegir URL i descripció
-- **Creació automàtica de checklist**: Quan es crea un target, tots els 367 checklist items s'assignen automàticament
-- Gestionar checklist de seguretat per cada target
-- Notes individuals per cada item de checklist
-- Visualització del progrés (% completat)
+### Target Checklist
+- `POST /api/targets/{targetId}/checklist/{itemId}/toggle` - Toggle item check
+- `POST /api/targets/{targetId}/checklist/{itemId}/notes` - Actualitzar notes
 
-### Categories i Checklist Items
-- 30 categories predefinides (Recon, XSS, SQLi, CSRF, etc.)
-- Més de 350 checklist items
-- Crear categories i items personalitzats
-- Ordenació personalitzada
+### Categories & Checklist
+- `GET /api/categories` - Llistar categories
+- `GET /api/checklist` - Llistar items
+- CRUD complet per categories i checklist items
 
-### Sistema de Notes
-- Cada item de checklist pot tenir notes
-- Les notes s'agreguen automàticament al camp `notes` del target
-- Format estructurat: `[Títol del item]: [Notes]`
-- Actualització automàtica via triggers MySQL
+**Documentació completa:** Veure [API_DOCUMENTATION.md](API_DOCUMENTATION.md)
 
 ## 🔐 Credencials de MySQL
 
