@@ -50,24 +50,24 @@
                 <i class="bi bi-plus-circle"></i> Add Target
             </button>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
             <?php if (empty($project['targets'])): ?>
-                <p class="text-muted">No targets yet. Add your first target!</p>
+                <p class="text-muted p-3">No targets yet. Add your first target!</p>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover mb-0">
                         <thead>
                             <tr>
                                 <th>URL</th>
                                 <th>Description</th>
                                 <th>Status</th>
                                 <th>Progress</th>
-                                <th>Actions</th>
+                                <th class="actions-cell">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($project['targets'] as $target): ?>
-                                <tr>
+                                <tr class="clickable-row" onclick="window.location.href='/targets/<?= $target['id'] ?>';" style="cursor: pointer;">
                                     <td><?= htmlspecialchars($target['url']) ?></td>
                                     <td><?= htmlspecialchars($target['description'] ?? '') ?></td>
                                     <td>
@@ -82,7 +82,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td class="actions-cell" onclick="event.stopPropagation();">
                                         <a href="/targets/<?= $target['id'] ?>" class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-eye"></i>
                                         </a>
