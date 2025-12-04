@@ -1,7 +1,7 @@
 SET NAMES utf8mb4;
 SET CHARACTER SET utf8mb4;
 
--- Taula d'usuaris
+-- Tabla de usuarios
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -10,10 +10,10 @@ CREATE TABLE IF NOT EXISTS users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO users (name, email) VALUES 
-    ('Test User', 'test@example.com'),
-    ('Admin', 'admin@example.com');
+    ('Usuario Prueba', 'prueba@ejemplo.com'),
+    ('Administrador', 'admin@ejemplo.com');
 
--- Taula de projectes
+-- Tabla de proyectos
 CREATE TABLE IF NOT EXISTS projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS projects (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Taula de targets (objectius dins de cada projecte)
+-- Tabla de targets (objetivos dentro de cada proyecto)
 CREATE TABLE IF NOT EXISTS targets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     project_id INT NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS targets (
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Taula de categories de testing
+-- Tabla de categorías de testing
 CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS categories (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Taula de checklist items (plantilla base)
+-- Tabla de items de checklist (plantilla base)
 CREATE TABLE IF NOT EXISTS checklist_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS checklist_items (
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Taula de checklist per target (còpia de la checklist per cada target)
+-- Tabla de checklist por target (copia de la checklist para cada target)
 CREATE TABLE IF NOT EXISTS target_checklist (
     id INT AUTO_INCREMENT PRIMARY KEY,
     target_id INT NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS target_checklist (
     UNIQUE KEY unique_target_item (target_id, checklist_item_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Taula d'historial de notas
+-- Tabla de historial de notas
 CREATE TABLE IF NOT EXISTS notes_history (
     id INT AUTO_INCREMENT PRIMARY KEY,
     target_id INT NOT NULL,
@@ -93,10 +93,10 @@ CREATE TABLE IF NOT EXISTS notes_history (
     INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Augmentar el límit de GROUP_CONCAT globalment
+-- Aumentar el límite de GROUP_CONCAT globalmente
 SET GLOBAL group_concat_max_len = 10000000;
 
--- Trigger per actualitzar automàticament les notes del target (INSERT)
+-- Trigger para actualizar automáticamente las notas del target (INSERT)
 DELIMITER //
 
 CREATE TRIGGER update_target_notes_on_insert
@@ -135,7 +135,7 @@ BEGIN
     END IF;
 END//
 
--- Trigger per actualitzar automàticament les notes del target (UPDATE)
+-- Trigger para actualizar automáticamente las notas del target (UPDATE)
 CREATE TRIGGER update_target_notes_on_update
 AFTER UPDATE ON target_checklist
 FOR EACH ROW
@@ -170,7 +170,7 @@ BEGIN
     WHERE id = NEW.target_id;
 END//
 
--- Trigger per actualitzar automàticament les notes del target (DELETE)
+-- Trigger para actualizar automáticamente las notas del target (DELETE)
 CREATE TRIGGER update_target_notes_on_delete
 AFTER DELETE ON target_checklist
 FOR EACH ROW
@@ -207,36 +207,36 @@ DELIMITER ;
 
 -- Inserir categories
 INSERT INTO categories (name, description, order_num) VALUES
-('Recon Phase', 'Reconnaissance and information gathering', 1),
-('Registration Feature Testing', 'Testing user registration functionality', 2),
-('Session Management Testing', 'Testing session handling and cookies', 3),
-('Authentication Testing', 'Testing login and authentication mechanisms', 4),
-('My Account (Post Login) Testing', 'Testing post-authentication features', 5),
-('Forgot Password Testing', 'Testing password recovery functionality', 6),
-('Contact Us Form Testing', 'Testing contact forms', 7),
-('Product Purchase Testing', 'Testing e-commerce functionality', 8),
-('Banking Application Testing', 'Testing banking-specific features', 9),
-('Open Redirection Testing', 'Testing for open redirect vulnerabilities', 10),
-('Host Header Injection', 'Testing Host header manipulation', 11),
-('SQL Injection Testing', 'Testing for SQL injection vulnerabilities', 12),
-('Cross-Site Scripting Testing', 'Testing for XSS vulnerabilities', 13),
-('CSRF Testing', 'Testing for Cross-Site Request Forgery', 14),
-('SSO Vulnerabilities', 'Testing Single Sign-On implementations', 15),
-('XML Injection Testing', 'Testing for XXE vulnerabilities', 16),
-('CORS', 'Cross-Origin Resource Sharing testing', 17),
-('SSRF', 'Server-Side Request Forgery testing', 18),
-('File Upload Testing', 'Testing file upload functionality', 19),
-('CAPTCHA Testing', 'Testing CAPTCHA implementations', 20),
-('JWT Token Testing', 'Testing JSON Web Tokens', 21),
-('Websockets Testing', 'Testing WebSocket connections', 22),
-('GraphQL Vulnerabilities Testing', 'Testing GraphQL implementations', 23),
-('WordPress Common Vulnerabilities', 'Testing WordPress-specific issues', 24),
-('XPath Injection', 'Testing XPath injection vulnerabilities', 25),
-('LDAP Injection', 'Testing LDAP injection vulnerabilities', 26),
-('Denial of Service', 'Testing DoS vulnerabilities', 27),
-('403 Bypass', 'Testing access control bypasses', 28),
-('Other Test Cases', 'Miscellaneous security tests', 29),
-('Burp Suite Extensions', 'Useful Burp Suite extensions', 30);
+('Fase de Reconocimiento', 'Reconocimiento y recopilación de información', 1),
+('Pruebas de Registro de Usuarios', 'Pruebas de funcionalidad de registro de usuarios', 2),
+('Pruebas de Gestión de Sesiones', 'Pruebas de manejo de sesiones y cookies', 3),
+('Pruebas de Autenticación', 'Pruebas de mecanismos de login y autenticación', 4),
+('Pruebas de Mi Cuenta (Post-Login)', 'Pruebas de características después de la autenticación', 5),
+('Pruebas de Recuperación de Contraseña', 'Pruebas de funcionalidad de recuperación de contraseña', 6),
+('Pruebas de Formulario de Contacto', 'Pruebas de formularios de contacto', 7),
+('Pruebas de Compra de Productos', 'Pruebas de funcionalidad de comercio electrónico', 8),
+('Pruebas de Aplicación Bancaria', 'Pruebas de características específicas de banca', 9),
+('Pruebas de Redirección Abierta', 'Pruebas de vulnerabilidades de redirección abierta', 10),
+('Inyección de Encabezado Host', 'Pruebas de manipulación de encabezado Host', 11),
+('Pruebas de Inyección SQL', 'Pruebas de vulnerabilidades de inyección SQL', 12),
+('Pruebas de Cross-Site Scripting', 'Pruebas de vulnerabilidades XSS', 13),
+('Pruebas de CSRF', 'Pruebas de Cross-Site Request Forgery', 14),
+('Vulnerabilidades SSO', 'Pruebas de implementaciones de Sign-On Único', 15),
+('Pruebas de Inyección XML', 'Pruebas de vulnerabilidades XXE', 16),
+('CORS', 'Pruebas de Cross-Origin Resource Sharing', 17),
+('SSRF', 'Pruebas de Server-Side Request Forgery', 18),
+('Pruebas de Carga de Archivos', 'Pruebas de funcionalidad de carga de archivos', 19),
+('Pruebas de CAPTCHA', 'Pruebas de implementaciones de CAPTCHA', 20),
+('Pruebas de Token JWT', 'Pruebas de JSON Web Tokens', 21),
+('Pruebas de Websockets', 'Pruebas de conexiones WebSocket', 22),
+('Pruebas de Vulnerabilidades de GraphQL', 'Pruebas de implementaciones de GraphQL', 23),
+('Vulnerabilidades Comunes de WordPress', 'Pruebas de problemas específicos de WordPress', 24),
+('Inyección XPath', 'Pruebas de vulnerabilidades de inyección XPath', 25),
+('Inyección LDAP', 'Pruebas de vulnerabilidades de inyección LDAP', 26),
+('Denegación de Servicio', 'Pruebas de vulnerabilidades DoS', 27),
+('Bypass 403', 'Pruebas de bypasses de control de acceso 403', 28),
+('Otros Casos de Prueba', 'Pruebas de seguridad diversas', 29),
+('Extensiones de Burp Suite', 'Extensiones útiles de Burp Suite', 30);
 
 -- Inserir items de Recon Phase con descripciones tipo "Guía Maestra"
 INSERT INTO checklist_items (category_id, title, description, order_num) VALUES
@@ -1125,22 +1125,22 @@ INSERT INTO checklist_items (category_id, title, description, order_num) VALUES
 
 -- Inserir projectes de prova
 INSERT INTO projects (name, description) VALUES
-('E-commerce Platform Security Audit', 'Security assessment for a major e-commerce platform with payment processing'),
-('Banking Application Pentest', 'Comprehensive penetration testing for online banking application'),
-('Social Media Platform Bug Bounty', 'Bug bounty program for a social networking platform'),
-('API Security Assessment', 'REST API security testing for mobile backend');
+('Auditoría de Seguridad de Plataforma de Comercio Electrónico', 'Evaluación de seguridad para una plataforma de comercio electrónico importante con procesamiento de pagos'),
+('Prueba de Penetración de Aplicación Bancaria', 'Prueba de penetración integral de aplicación de banca en línea'),
+('Programa de Recompensas por Bugs de Plataforma de Redes Sociales', 'Programa de recompensas por bugs para una plataforma de redes sociales'),
+('Evaluación de Seguridad de API', 'Pruebas de seguridad de API REST para backend móvil');
 
 -- Inserir targets de prova
 INSERT INTO targets (project_id, name, target, target_type, description) VALUES
-(1, 'Main Website', 'https://shop.example.com', 'url', 'Primary e-commerce website with product catalog and checkout'),
-(1, 'Admin Panel', 'https://admin.shop.example.com', 'url', 'Administrative backend for managing products and orders'),
-(1, 'Payment Gateway', 'https://pay.shop.example.com', 'url', 'Payment processing integration endpoint'),
-(2, 'Online Banking Portal', 'https://bank.example.com', 'url', 'Customer-facing online banking portal'),
-(2, 'Mobile Banking API', 'https://api.bank.example.com', 'url', 'REST API for mobile banking application'),
-(3, 'Main Platform', 'https://social.example.com', 'url', 'Main social networking platform'),
-(3, 'User Profile API', 'https://api.social.example.com/users', 'url', 'User profile management API endpoints'),
-(4, 'Authentication API', 'https://api.mobile.example.com/auth', 'url', 'Authentication and authorization endpoints'),
-(4, 'User Data API', 'https://api.mobile.example.com/data', 'url', 'User data management endpoints');
+(1, 'Sitio Web Principal', 'https://shop.example.com', 'url', 'Sitio web de comercio electrónico principal con catálogo de productos y pago'),
+(1, 'Panel de Administración', 'https://admin.shop.example.com', 'url', 'Backend administrativo para gestionar productos y pedidos'),
+(1, 'Pasarela de Pago', 'https://pay.shop.example.com', 'url', 'Punto final de integración de procesamiento de pagos'),
+(2, 'Portal de Banca en Línea', 'https://bank.example.com', 'url', 'Portal de banca en línea orientado al cliente'),
+(2, 'API de Banca Móvil', 'https://api.bank.example.com', 'url', 'API REST para aplicación de banca móvil'),
+(3, 'Plataforma Principal', 'https://social.example.com', 'url', 'Plataforma de redes sociales principal'),
+(3, 'API de Perfil de Usuario', 'https://api.social.example.com/users', 'url', 'Puntos finales de API de gestión de perfil de usuario'),
+(4, 'API de Autenticación', 'https://api.mobile.example.com/auth', 'url', 'Puntos finales de autenticación y autorización'),
+(4, 'API de Datos de Usuario', 'https://api.mobile.example.com/data', 'url', 'Puntos finales de gestión de datos de usuario');
 
 -- Inserir items de checklist per al primer target (Main Website)
 -- Alguns items de Recon Phase
