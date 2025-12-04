@@ -1,34 +1,40 @@
-<?php $active = 'targets'; $title = htmlspecialchars($target['url']) . ' - Bug Bounty Project Manager'; ?>
+<?php $active = 'targets'; $title = htmlspecialchars($target['target']) . ' - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/targets">Targets</a></li>
-            <li class="breadcrumb-item active"><?= htmlspecialchars($target['url']) ?></li>
+            <li class="breadcrumb-item active"><?= htmlspecialchars($target['target']) ?></li>
         </ol>
     </nav>
     
     <div class="card mb-4">
         <div class="card-body">
-            <h1 class="mb-3"><?= htmlspecialchars($target['url']) ?></h1>
+            <h1 class="mb-3"><?= htmlspecialchars($target['target']) ?></h1>
             <p class="text-muted"><?= htmlspecialchars($target['description'] ?? '') ?></p>
             
             <div class="row mt-4">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <strong>Project:</strong><br>
                     <a href="/projects/<?= $target['project_id'] ?>"><?= htmlspecialchars($target['project_name']) ?></a>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    <strong>Type:</strong><br>
+                    <span class="badge bg-<?= $target['target_type'] === 'url' ? 'primary' : ($target['target_type'] === 'ip' ? 'info' : 'secondary') ?>">
+                        <?= ucfirst(htmlspecialchars($target['target_type'])) ?>
+                    </span>
+                </div>
+                <div class="col-md-2">
                     <strong>Status:</strong><br>
                     <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?>">
                         <?= htmlspecialchars($target['status'] ?? 'active') ?>
                     </span>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <strong>Progress:</strong><br>
                     <span class="completed-count"><?= $target['completed_items'] ?? 0 ?></span> / <?= $target['total_items'] ?? 0 ?>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="progress" style="height: 30px;" data-target-id="<?= $target['id'] ?>">
                         <div class="progress-bar" role="progressbar" style="width: <?= $target['progress'] ?? 0 ?>%">
                             <?= round($target['progress'] ?? 0) ?>%

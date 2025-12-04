@@ -2,6 +2,17 @@
 
 Aplicació web **moderna i professional** per gestionar projectes de Bug Bounty amb checklist de seguretat, desenvolupada amb **arquitectura MVC**, **RESTful API**, i **tecnologies modernes**.
 
+## 📝 Cambios Recientes (v1.1)
+
+### ✨ Soporte para múltiples tipos de Targets
+
+Los targets ahora soportan tres tipos:
+- **URLs**: Aplicaciones web completas (ej: `https://api.example.com/v1`)
+- **IPs**: Direcciones IPv4 e IPv6 (ej: `192.168.1.100`, `2001:0db8:85a3::8a2e:0370:7334`)
+- **Dominios**: Nombres de dominio (ej: `example.com`, `subdomain.example.co.uk`)
+
+Para más detalles sobre estos cambios, ver [TARGETS_ENHANCEMENT.md](TARGETS_ENHANCEMENT.md).
+
 ## 🚀 Característiques
 
 - **Gestió de Projectes**: Crea i gestiona projectes de bug bounty

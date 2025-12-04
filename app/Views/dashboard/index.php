@@ -112,7 +112,7 @@
                                 <a href="/targets/<?= $target['id'] ?>" class="list-group-item list-group-item-action">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h6 class="mb-1"><?= htmlspecialchars($target['url']) ?></h6>
+                                            <h6 class="mb-1"><?= htmlspecialchars($target['target']) ?></h6>
                                             <small class="text-muted">
                                                 <?= htmlspecialchars($target['project_name']) ?>
                                             </small>

@@ -73,10 +73,25 @@ class TargetController extends Controller
     
     public function store(): array|null
     {
+        $target = trim($this->input('target'));
+        $targetType = $this->input('target_type', 'url');
+        
+        // Validate target based on type
+        if (!$this->validateTarget($target, $targetType)) {
+            if ($this->isApiRequest()) {
+                http_response_code(400);
+                return ['error' => 'Invalid target format for type: ' . $targetType];
+            }
+            $_SESSION['flash_error'] = 'Invalid target format for type: ' . $targetType;
+            $this->redirect('/targets');
+            return null;
+        }
+        
         $data = [
             'project_id' => (int) $this->input('project_id'),
             'name' => trim($this->input('name')),
-            'url' => trim($this->input('url')),
+            'target' => $target,
+            'target_type' => $targetType,
             'description' => trim($this->input('description', '')),
             'status' => $this->input('status', 'active')
         ];
@@ -107,9 +122,23 @@ class TargetController extends Controller
     
     public function update(int $id): void
     {
+        $targetValue = trim($this->input('target'));
+        $targetType = $this->input('target_type', 'url');
+        
+        // Validate target based on type
+        if (!$this->validateTarget($targetValue, $targetType)) {
+            if ($this->isAjax()) {
+                $this->json(['error' => 'Invalid target format for type: ' . $targetType], 400);
+            }
+            $_SESSION['flash_error'] = 'Invalid target format for type: ' . $targetType;
+            $this->redirect('/targets/' . $id);
+            return;
+        }
+        
         $data = [
-            'project_id' => (int) $this->input('project_id'),
-            'url' => trim($this->input('url')),
+            'name' => trim($this->input('name')),
+            'target' => $targetValue,
+            'target_type' => $targetType,
             'description' => trim($this->input('description', '')),
             'status' => $this->input('status')
         ];
@@ -177,4 +206,49 @@ class TargetController extends Controller
             $this->json(['error' => $e->getMessage()], 500);
         }
     }
+    
+    /**
+     * Validate target based on its type
+     */
+    private function validateTarget(string $target, string $type): bool
+    {
+        if (empty($target)) {
+            return false;
+        }
+        
+        return match($type) {
+            'url' => $this->isValidUrl($target),
+            'ip' => $this->isValidIp($target),
+            'domain' => $this->isValidDomain($target),
+            default => false,
+        };
+    }
+    
+    /**
+     * Validate if string is a valid URL
+     */
+    private function isValidUrl(string $url): bool
+    {
+        return filter_var($url, FILTER_VALIDATE_URL) !== false;
+    }
+    
+    /**
+     * Validate if string is a valid IPv4 or IPv6 address
+     */
+    private function isValidIp(string $ip): bool
+    {
+        return filter_var($ip, FILTER_VALIDATE_IP) !== false;
+    }
+    
+    /**
+     * Validate if string is a valid domain
+     * Allows: example.com, subdomain.example.com, example.co.uk, etc.
+     */
+    private function isValidDomain(string $domain): bool
+    {
+        // Domain pattern: labels separated by dots, each label 1-63 chars
+        $pattern = '/^(?!-)(?:[a-zA-Z0-9-]{1,63}(?<!-)\.)*(?!-)(?:[a-zA-Z0-9-]{1,63}(?<!-))\.(?:[a-zA-Z]{2,})$/';
+        return preg_match($pattern, $domain) === 1;
+    }
 }
+

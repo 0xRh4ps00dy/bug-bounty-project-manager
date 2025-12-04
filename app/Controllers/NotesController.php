@@ -88,7 +88,8 @@ class NotesController extends Controller
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         
         echo "# Bug Bounty Target Report\n\n";
-        echo "**Target:** {$target['url']}\n";
+        echo "**Target:** {$target['target']}\n";
+        echo "**Target Type:** " . strtoupper($target['target_type']) . "\n";
         echo "**Project:** {$target['project_name']}\n";
         echo "**Status:** {$target['status']}\n";
         echo "**Progress:** {$target['progress']}%\n";
@@ -117,7 +118,8 @@ class NotesController extends Controller
         return [
             'target' => [
                 'id' => $target['id'],
-                'url' => $target['url'],
+                'target' => $target['target'],
+                'target_type' => $target['target_type'],
                 'project' => $target['project_name'],
                 'status' => $target['status'],
                 'progress' => $target['progress'],
@@ -173,7 +175,7 @@ class NotesController extends Controller
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Bug Bounty Report - <?= htmlspecialchars($target['url']) ?></title>
+    <title>Bug Bounty Report - <?= htmlspecialchars($target['target']) ?></title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1, h2 { color: #333; }
@@ -193,7 +195,8 @@ class NotesController extends Controller
     <h1>Bug Bounty Target Report</h1>
     
     <div class="target-info">
-        <p><strong>Target:</strong> <?= htmlspecialchars($target['url']) ?></p>
+        <p><strong>Target:</strong> <?= htmlspecialchars($target['target']) ?></p>
+        <p><strong>Target Type:</strong> <?= ucfirst(htmlspecialchars($target['target_type'])) ?></p>
         <p><strong>Project:</strong> <?= htmlspecialchars($target['project_name']) ?></p>
         <p><strong>Status:</strong> <?= htmlspecialchars($target['status']) ?></p>
         <p><strong>Progress:</strong> <?= $target['progress'] ?>%</p>
@@ -247,7 +250,8 @@ class NotesController extends Controller
         
         echo "TARGET INFORMATION\n";
         echo str_repeat("-", 60) . "\n";
-        echo "URL: {$target['url']}\n";
+        echo "Target: {$target['target']}\n";
+        echo "Type: " . strtoupper($target['target_type']) . "\n";
         echo "Project: {$target['project_name']}\n";
         echo "Status: {$target['status']}\n";
         echo "Progress: {$target['progress']}%\n";

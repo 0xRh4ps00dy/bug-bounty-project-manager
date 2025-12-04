@@ -24,7 +24,8 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Project</th>
-                                <th>URL</th>
+                                <th>Target</th>
+                                <th>Type</th>
                                 <th>Status</th>
                                 <th>Progress</th>
                                 <th class="actions-cell">Actions</th>
@@ -35,7 +36,18 @@
                                 <tr class="clickable-row" onclick="window.location.href='/targets/<?= $target['id'] ?>';" style="cursor: pointer;">
                                     <td><strong><?= htmlspecialchars($target['name']) ?></strong></td>
                                     <td><?= htmlspecialchars($target['project_name'] ?? $target['project_id']) ?></td>
-                                    <td><a href="<?= htmlspecialchars($target['url']) ?>" target="_blank" onclick="event.stopPropagation();"><?= htmlspecialchars($target['url']) ?></a></td>
+                                    <td>
+                                        <?php if ($target['target_type'] === 'url'): ?>
+                                            <a href="<?= htmlspecialchars($target['target']) ?>" target="_blank" onclick="event.stopPropagation();"><?= htmlspecialchars($target['target']) ?></a>
+                                        <?php else: ?>
+                                            <?= htmlspecialchars($target['target']) ?>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-<?= $target['target_type'] === 'url' ? 'primary' : ($target['target_type'] === 'ip' ? 'info' : 'secondary') ?>">
+                                            <?= ucfirst(htmlspecialchars($target['target_type'])) ?>
+                                        </span>
+                                    </td>
                                     <td>
                                         <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?>">
                                             <?= htmlspecialchars($target['status'] ?? 'active') ?>
@@ -94,8 +106,17 @@
                         <input type="text" name="name" class="form-control" placeholder="e.g., Main Website, API Server" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">URL *</label>
-                        <input type="url" name="url" class="form-control" placeholder="https://example.com" required>
+                        <label class="form-label">Target Type *</label>
+                        <select name="target_type" class="form-select" id="targetType" required onchange="updateTargetPlaceholder()">
+                            <option value="">Select type...</option>
+                            <option value="url">URL</option>
+                            <option value="ip">IP Address</option>
+                            <option value="domain">Domain</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Target *</label>
+                        <input type="text" name="target" class="form-control" id="targetInput" placeholder="https://example.com" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
@@ -118,3 +139,20 @@
         </div>
     </div>
 </div>
+
+<script>
+function updateTargetPlaceholder() {
+    const typeSelect = document.getElementById('targetType');
+    const targetInput = document.getElementById('targetInput');
+    const type = typeSelect.value;
+    
+    const placeholders = {
+        'url': 'https://example.com or https://api.example.com/endpoint',
+        'ip': '192.168.1.1 or 2001:0db8:85a3:0000:0000:8a2e:0370:7334',
+        'domain': 'example.com or subdomain.example.co.uk'
+    };
+    
+    targetInput.placeholder = placeholders[type] || 'Enter target value';
+    targetInput.type = type === 'url' ? 'url' : 'text';
+}
+</script>

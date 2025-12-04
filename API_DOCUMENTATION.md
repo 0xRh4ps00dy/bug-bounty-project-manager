@@ -192,7 +192,8 @@ Returns all targets.
   {
     "id": 1,
     "project_id": 1,
-    "url": "https://shop.example.com",
+    "target": "https://shop.example.com",
+    "target_type": "url",
     "description": "Main shop",
     "status": "active",
     "progress": 45.5,
@@ -219,7 +220,8 @@ Returns a single target with progress and checklist grouped by categories.
     "id": 1,
     "project_id": 1,
     "project_name": "E-commerce Security",
-    "url": "https://shop.example.com",
+    "target": "https://shop.example.com",
+    "target_type": "url",
     "description": "Main shop",
     "status": "active",
     "progress": 45.50,
@@ -255,11 +257,17 @@ Returns a single target with progress and checklist grouped by categories.
 
 Creates a new target and automatically assigns all 367 checklist items.
 
+Supports three target types:
+- `url` - Full URL (e.g., https://example.com or https://api.example.com/endpoint)
+- `ip` - IPv4 or IPv6 address (e.g., 192.168.1.1 or 2001:0db8:85a3::8a2e:0370:7334)
+- `domain` - Domain name (e.g., example.com or subdomain.example.co.uk)
+
 **Request Body:**
 ```json
 {
   "project_id": 1,
-  "url": "https://api.example.com",
+  "target": "https://api.example.com",
+  "target_type": "url",
   "description": "API endpoints",
   "status": "active"
 }
@@ -286,9 +294,9 @@ Updates an existing target.
 **Request Body:**
 ```json
 {
-  "project_id": 1,
-  "url": "https://api.example.com",
-  "description": "Updated description",
+  "target": "192.168.1.100",
+  "target_type": "ip",
+  "description": "Internal server IP",
   "status": "completed"
 }
 ```
@@ -600,10 +608,25 @@ curl -X POST http://localhost/api/projects \
   -H "Content-Type: application/json" \
   -d '{"name":"New Project","description":"Test","status":"active"}'
 
+# Create target (URL)
+curl -X POST http://localhost/api/targets \
+  -H "Content-Type: application/json" \
+  -d '{"project_id":1,"target":"https://example.com","target_type":"url","description":"Main site"}'
+
+# Create target (IP)
+curl -X POST http://localhost/api/targets \
+  -H "Content-Type: application/json" \
+  -d '{"project_id":1,"target":"192.168.1.100","target_type":"ip","description":"Internal server"}'
+
+# Create target (Domain)
+curl -X POST http://localhost/api/targets \
+  -H "Content-Type: application/json" \
+  -d '{"project_id":1,"target":"example.com","target_type":"domain","description":"Root domain"}'
+
 # Update target
 curl -X PUT http://localhost/api/targets/1 \
   -H "Content-Type: application/json" \
-  -d '{"url":"https://updated.com","description":"Updated","status":"active","project_id":1}'
+  -d '{"target":"updated.example.com","target_type":"domain","description":"Updated","status":"active"}'
 
 # Delete project
 curl -X DELETE http://localhost/api/projects/5
@@ -623,7 +646,8 @@ projects = response.json()
 # Create target
 data = {
     'project_id': 1,
-    'url': 'https://example.com',
+    'target': 'https://example.com',
+    'target_type': 'url',
     'description': 'Test target',
     'status': 'active'
 }

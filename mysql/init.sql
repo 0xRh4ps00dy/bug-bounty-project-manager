@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS targets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     project_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    url VARCHAR(500),
+    target VARCHAR(500),
+    target_type ENUM('url', 'ip', 'domain') DEFAULT 'url',
     description TEXT,
     status VARCHAR(50) DEFAULT 'active',
     progress DECIMAL(5,2) DEFAULT 0.00,
@@ -703,16 +704,16 @@ INSERT INTO projects (name, description) VALUES
 ('API Security Assessment', 'REST API security testing for mobile backend');
 
 -- Inserir targets de prova
-INSERT INTO targets (project_id, name, url, description) VALUES
-(1, 'Main Website', 'https://shop.example.com', 'Primary e-commerce website with product catalog and checkout'),
-(1, 'Admin Panel', 'https://admin.shop.example.com', 'Administrative backend for managing products and orders'),
-(1, 'Payment Gateway', 'https://pay.shop.example.com', 'Payment processing integration endpoint'),
-(2, 'Online Banking Portal', 'https://bank.example.com', 'Customer-facing online banking portal'),
-(2, 'Mobile Banking API', 'https://api.bank.example.com', 'REST API for mobile banking application'),
-(3, 'Main Platform', 'https://social.example.com', 'Main social networking platform'),
-(3, 'User Profile API', 'https://api.social.example.com/users', 'User profile management API endpoints'),
-(4, 'Authentication API', 'https://api.mobile.example.com/auth', 'Authentication and authorization endpoints'),
-(4, 'User Data API', 'https://api.mobile.example.com/data', 'User data management endpoints');
+INSERT INTO targets (project_id, name, target, target_type, description) VALUES
+(1, 'Main Website', 'https://shop.example.com', 'url', 'Primary e-commerce website with product catalog and checkout'),
+(1, 'Admin Panel', 'https://admin.shop.example.com', 'url', 'Administrative backend for managing products and orders'),
+(1, 'Payment Gateway', 'https://pay.shop.example.com', 'url', 'Payment processing integration endpoint'),
+(2, 'Online Banking Portal', 'https://bank.example.com', 'url', 'Customer-facing online banking portal'),
+(2, 'Mobile Banking API', 'https://api.bank.example.com', 'url', 'REST API for mobile banking application'),
+(3, 'Main Platform', 'https://social.example.com', 'url', 'Main social networking platform'),
+(3, 'User Profile API', 'https://api.social.example.com/users', 'url', 'User profile management API endpoints'),
+(4, 'Authentication API', 'https://api.mobile.example.com/auth', 'url', 'Authentication and authorization endpoints'),
+(4, 'User Data API', 'https://api.mobile.example.com/data', 'url', 'User data management endpoints');
 
 -- Inserir items de checklist per al primer target (Main Website)
 -- Alguns items de Recon Phase

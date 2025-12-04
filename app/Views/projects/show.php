@@ -58,7 +58,8 @@
                     <table class="table table-hover mb-0">
                         <thead>
                             <tr>
-                                <th>URL</th>
+                                <th>Target</th>
+                                <th>Type</th>
                                 <th>Description</th>
                                 <th>Status</th>
                                 <th>Progress</th>
@@ -68,7 +69,18 @@
                         <tbody>
                             <?php foreach ($project['targets'] as $target): ?>
                                 <tr class="clickable-row" onclick="window.location.href='/targets/<?= $target['id'] ?>';" style="cursor: pointer;">
-                                    <td><?= htmlspecialchars($target['url']) ?></td>
+                                    <td>
+                                        <?php if ($target['target_type'] === 'url'): ?>
+                                            <a href="<?= htmlspecialchars($target['target']) ?>" target="_blank" onclick="event.stopPropagation();"><?= htmlspecialchars($target['target']) ?></a>
+                                        <?php else: ?>
+                                            <?= htmlspecialchars($target['target']) ?>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-<?= $target['target_type'] === 'url' ? 'primary' : ($target['target_type'] === 'ip' ? 'info' : 'secondary') ?>">
+                                            <?= ucfirst(htmlspecialchars($target['target_type'])) ?>
+                                        </span>
+                                    </td>
                                     <td><?= htmlspecialchars($target['description'] ?? '') ?></td>
                                     <td>
                                         <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?>">
