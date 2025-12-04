@@ -146,6 +146,19 @@ class Target extends Model
         return $stmt->execute($values);
     }
     
+    public function updateChecklistItemDescription(int $itemId, string $description): bool
+    {
+        // Clean description
+        $description = trim($description);
+        $description = preg_replace('/\s+/', ' ', $description);
+        $description = trim($description);
+        
+        $sql = "UPDATE checklist_items SET description = ? WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        
+        return $stmt->execute([$description, $itemId]);
+    }
+    
     public function getNotesHistory(int $targetId, int $limit = 50): array
     {
         $sql = "

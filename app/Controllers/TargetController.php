@@ -214,7 +214,8 @@ class TargetController extends Controller
         $description = trim($description);
         
         try {
-            $this->model->updateChecklistItem($targetId, $itemId, ['description' => $description]);
+            // Update in checklist_items table (the template)
+            $this->model->updateChecklistItemDescription($itemId, $description);
             $this->json(['success' => true, 'message' => 'Descripción actualizada']);
         } catch (\Exception $e) {
             $this->json(['error' => $e->getMessage()], 500);
