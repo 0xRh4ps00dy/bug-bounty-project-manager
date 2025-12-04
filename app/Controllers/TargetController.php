@@ -19,7 +19,7 @@ class TargetController extends Controller
     
     public function index(): void
     {
-        $targets = $this->model->all();
+        $targets = $this->model->getAllWithProgress();
         $projects = $this->projectModel->all();
         
         if ($this->isAjax()) {

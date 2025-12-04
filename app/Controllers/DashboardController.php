@@ -57,25 +57,62 @@ class DashboardController extends Controller
     
     private function getRecentProjects(): array
     {
+        // Get targets with progress
         $sql = "
-            SELECT p.id, p.name, p.description, p.status, p.created_at, p.updated_at,
-                   COUNT(t.id) as target_count
+            SELECT t.id, t.project_id,
+                   COUNT(tc.id) as total_items,
+                   SUM(CASE WHEN tc.is_checked THEN 1 ELSE 0 END) as completed_items,
+                   COALESCE(
+                       ROUND((SUM(CASE WHEN tc.is_checked THEN 1 ELSE 0 END) / COUNT(tc.id)) * 100, 2),
+                       0
+                   ) as progress
+            FROM targets t
+            LEFT JOIN target_checklist tc ON t.id = tc.target_id
+            GROUP BY t.id, t.project_id
+        ";
+        
+        $targetProgress = $this->projectModel->query($sql)->fetchAll();
+        
+        // Get projects with target count
+        $sql = "
+            SELECT p.*, COUNT(t.id) as target_count
             FROM projects p
             LEFT JOIN targets t ON p.id = t.project_id
-            GROUP BY p.id, p.name, p.description, p.status, p.created_at, p.updated_at
+            GROUP BY p.id
             ORDER BY p.created_at DESC
             LIMIT 5
         ";
         
-        return $this->projectModel->query($sql)->fetchAll();
+        $projects = $this->projectModel->query($sql)->fetchAll();
+        
+        // Add progress to each project
+        foreach ($projects as &$project) {
+            $projectTargets = array_filter($targetProgress, fn($t) => $t['project_id'] == $project['id']);
+            $totalProgress = 0;
+            foreach ($projectTargets as $target) {
+                $totalProgress += $target['progress'] ?? 0;
+            }
+            $project['avg_progress'] = count($projectTargets) > 0 ? round($totalProgress / count($projectTargets), 2) : 0;
+        }
+        
+        return $projects;
     }
     
     private function getRecentTargets(): array
     {
         $sql = "
-            SELECT t.*, p.name as project_name
+            SELECT t.*,
+                   p.name as project_name,
+                   COUNT(tc.id) as total_items,
+                   SUM(CASE WHEN tc.is_checked THEN 1 ELSE 0 END) as completed_items,
+                   COALESCE(
+                       ROUND((SUM(CASE WHEN tc.is_checked THEN 1 ELSE 0 END) / COUNT(tc.id)) * 100, 2),
+                       0
+                   ) as progress
             FROM targets t
             JOIN projects p ON t.project_id = p.id
+            LEFT JOIN target_checklist tc ON t.id = tc.target_id
+            GROUP BY t.id, t.target, t.target_type, t.description, t.project_id, t.status, t.created_at, t.updated_at, p.name
             ORDER BY t.updated_at DESC
             LIMIT 5
         ";
