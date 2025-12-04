@@ -17,9 +17,9 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th>Name</th>
                         <th>Project</th>
                         <th>URL</th>
-                        <th>Description</th>
                         <th>Status</th>
                         <th>Progress</th>
                         <th>Actions</th>
@@ -28,9 +28,9 @@
                 <tbody>
                     <?php foreach ($targets as $target): ?>
                         <tr>
-                            <td><?= htmlspecialchars($target['project_id']) ?></td>
-                            <td><?= htmlspecialchars($target['url']) ?></td>
-                            <td><?= htmlspecialchars($target['description'] ?? '') ?></td>
+                            <td><strong><?= htmlspecialchars($target['name']) ?></strong></td>
+                            <td><?= htmlspecialchars($target['project_name'] ?? $target['project_id']) ?></td>
+                            <td><a href="<?= htmlspecialchars($target['url']) ?>" target="_blank"><?= htmlspecialchars($target['url']) ?></a></td>
                             <td>
                                 <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?>">
                                     <?= htmlspecialchars($target['status'] ?? 'active') ?>
@@ -83,8 +83,12 @@
                         </select>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Name *</label>
+                        <input type="text" name="name" class="form-control" placeholder="e.g., Main Website, API Server" required>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">URL *</label>
-                        <input type="url" name="url" class="form-control" required>
+                        <input type="url" name="url" class="form-control" placeholder="https://example.com" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>

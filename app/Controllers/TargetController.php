@@ -71,10 +71,11 @@ class TargetController extends Controller
         ]);
     }
     
-    public function store(): void
+    public function store(): array|null
     {
         $data = [
             'project_id' => (int) $this->input('project_id'),
+            'name' => trim($this->input('name')),
             'url' => trim($this->input('url')),
             'description' => trim($this->input('description', '')),
             'status' => $this->input('status', 'active')
@@ -83,19 +84,24 @@ class TargetController extends Controller
         try {
             $id = $this->model->createWithChecklist($data);
             
-            if ($this->isAjax()) {
-                $this->json(['success' => true, 'id' => $id, 'message' => 'Target created successfully'], 201);
+            // If it's an API request, return array (will be converted to JSON by index.php)
+            if ($this->isApiRequest()) {
+                http_response_code(201);
+                return ['success' => true, 'id' => $id, 'message' => 'Target created successfully'];
             }
             
             $_SESSION['flash_message'] = 'Target created successfully with full checklist';
             $this->redirect('/targets');
+            return null;
         } catch (\Exception $e) {
-            if ($this->isAjax()) {
-                $this->json(['error' => $e->getMessage()], 500);
+            if ($this->isApiRequest()) {
+                http_response_code(500);
+                return ['error' => $e->getMessage()];
             }
             
             $_SESSION['flash_error'] = $e->getMessage();
             $this->redirect('/targets');
+            return null;
         }
     }
     

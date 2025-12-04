@@ -8,6 +8,18 @@ class Target extends Model
 {
     protected string $table = 'targets';
     
+    public function all(): array
+    {
+        $sql = "
+            SELECT t.*, p.name as project_name
+            FROM targets t
+            LEFT JOIN projects p ON t.project_id = p.id
+            ORDER BY t.created_at DESC
+        ";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll();
+    }
+    
     public function createWithChecklist(array $data): int
     {
         // Create target

@@ -76,4 +76,10 @@ abstract class Controller
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
+    
+    protected function isApiRequest(): bool
+    {
+        $uri = $_SERVER['REQUEST_URI'] ?? '';
+        return str_starts_with($uri, '/api/') || $this->isAjax();
+    }
 }

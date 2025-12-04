@@ -235,7 +235,7 @@ INSERT INTO categories (name, description) VALUES
 ('Burp Suite Extensions', 'Useful Burp Suite extensions');
 
 -- Inserir items de Recon Phase
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (1, 'Identify web server, technologies and database', 1),
 (1, 'Subsidiary and Acquisition Enumeration', 2),
 (1, 'Reverse Lookup', 3),
@@ -256,7 +256,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (1, 'Misconfigured Cloud Storage', 18);
 
 -- Inserir items de Registration Feature Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (2, 'Check for duplicate registration/Overwrite existing user', 1),
 (2, 'Check for weak password policy', 2),
 (2, 'Check for reuse existing usernames', 3),
@@ -266,7 +266,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (2, 'Overwrite default web application pages by specially crafted username registrations', 7);
 
 -- Inserir items de Session Management Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (3, 'Identify actual session cookie out of bulk cookies in the application', 1),
 (3, 'Decode cookies using some standard decoding algorithms such as Base64, hex, URL, etc', 2),
 (3, 'Modify cookie.session token value by 1 bit/byte', 3),
@@ -282,7 +282,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (3, 'Failure to Invalidate Session on (Email Change,2FA Activation)', 13);
 
 -- Inserir items de Authentication Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (4, 'Username enumeration', 1),
 (4, 'Bypass authentication using various SQL Injections on username and password field', 2),
 (4, 'Lack of password confirmation on Change email address', 3),
@@ -337,7 +337,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (4, 'Test 2FA Misconfiguration: With null or 000000', 52);
 
 -- Inserir items de My Account (Post Login) Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (5, 'Find parameter which uses active account user id. Try to tamper it', 1),
 (5, 'Create a list of features that are pertaining to a user account only', 2),
 (5, 'Post login change email id and update with any existing email id', 3),
@@ -347,7 +347,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (5, 'Check whether application re authenticates for performing sensitive operation', 7);
 
 -- Inserir items de Forgot Password Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (6, 'Failure to invalidate session on Logout and Password reset', 1),
 (6, 'Check if forget password reset link/code uniqueness', 2),
 (6, 'Check if reset link does get expire or not', 3),
@@ -364,13 +364,13 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (6, 'Send continuous forget password requests so that it may send sequential tokens', 14);
 
 -- Inserir items de Contact Us Form Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (7, 'Is CAPTCHA implemented on contact us form', 1),
 (7, 'Does it allow to upload file on the server?', 2),
 (7, 'Blind XSS', 3);
 
 -- Inserir items de Product Purchase Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (8, 'Buy Now: Tamper product ID to purchase other high valued product with low prize', 1),
 (8, 'Buy Now: Tamper product data to increase the number of product with the same prize', 2),
 (8, 'Gift/Voucher: Tamper gift/voucher count in the request', 3),
@@ -398,7 +398,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (8, 'Out of band: Can user order product which is out of stock?', 25);
 
 -- Inserir items de Banking Application Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (9, 'Billing Activity: Check if user A can view the account statement for user B', 1),
 (9, 'Billing Activity: Check if user A can view the transaction report for user B', 2),
 (9, 'Billing Activity: Check if user A can view the summary report for user B', 3),
@@ -430,7 +430,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (9, 'Bill Payment: Check if user A can view the payment made details of user B', 29);
 
 -- Inserir items de Open Redirection Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (10, 'Use burp find option to find parameters such as URL, red, redirect, redir, origin', 1),
 (10, 'Check the value of these parameter which may contain a URL', 2),
 (10, 'Change the URL value and check if gets redirected', 3),
@@ -444,7 +444,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (10, 'Using ° symbol to bypass', 11);
 
 -- Inserir items de Host Header Injection
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (11, 'Supply an arbitrary Host header', 1),
 (11, 'Check for flawed validation', 2),
 (11, 'Send ambiguous requests: Inject duplicate Host headers', 3),
@@ -453,7 +453,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (11, 'Inject host override headers', 6);
 
 -- Inserir items de SQL Injection Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (12, 'Entry point detection: Simple characters', 1),
 (12, 'Entry point detection: Multiple encoding', 2),
 (12, 'Entry point detection: Merging characters', 3),
@@ -475,7 +475,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (12, 'Conditional Delays: MySQL', 19);
 
 -- Inserir items de Cross-Site Scripting Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (13, 'Try XSS using QuickXSS tool by theinfosecguy', 1),
 (13, 'Upload file using img src=x onerror=alert payload', 2),
 (13, 'If script tags are banned, use <h1> and other HTML tags', 3),
@@ -497,7 +497,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (13, 'XSS Firewall Bypass: Try to change request method', 19);
 
 -- Inserir items de CSRF Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (14, 'Anti-CSRF token: Removing the Anti-CSRF Token', 1),
 (14, 'Anti-CSRF token: Altering the Anti-CSRF Token', 2),
 (14, 'Anti-CSRF token: Using the Attacker''s Anti-CSRF Token', 3),
@@ -518,7 +518,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (14, 'Samesite Cookie: SameSite Lax bypass via cookie refresh', 18);
 
 -- Inserir items de SSO Vulnerabilities
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (15, 'If internal.company.com Redirects You To SSO, Do FUZZ On Internal', 1),
 (15, 'If company.com/internal Redirects To SSO, Try company.com/public/internal', 2),
 (15, 'Try To Craft SAML Request With Token And Send It To The Server', 3),
@@ -533,7 +533,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (15, 'While Testing SSO Try To search In Burp About URLs In Cookie Header', 12);
 
 -- Inserir items de XML Injection Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (16, 'Change the content type to text/xml and test XXE with /etc/passwd', 1),
 (16, 'Test XXE with /etc/hosts', 2),
 (16, 'Test XXE with /proc/self/cmdline', 3),
@@ -541,12 +541,12 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (16, 'Blind XXE with out-of-band interaction', 5);
 
 -- Inserir items de CORS
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (17, 'Errors parsing Origin headers', 1),
 (17, 'Whitelisted null origin value', 2);
 
 -- Inserir items de SSRF
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (18, 'Try basic localhost payloads', 1),
 (18, 'Bypassing filters: Bypass using HTTPS', 2),
 (18, 'Bypassing filters: Bypass with [::]', 3),
@@ -563,7 +563,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (18, 'Bypassing via open redirection', 14);
 
 -- Inserir items de File Upload Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (19, 'Upload malicious file to archive upload functionality', 1),
 (19, 'Upload a file and change its path to overwrite an existing system file', 2),
 (19, 'Large File Denial of Service', 3),
@@ -578,7 +578,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (19, 'Bypasses: Homographic Character Bypass', 12);
 
 -- Inserir items de CAPTCHA Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (20, 'Missing Captcha Field Integrity Checks', 1),
 (20, 'HTTP Verb Manipulation', 2),
 (20, 'Content Type Conversion', 3),
@@ -588,14 +588,14 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (20, 'Check if image recognition can be done with OCR tool', 7);
 
 -- Inserir items de JWT Token Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (21, 'Brute-forcing secret keys', 1),
 (21, 'Signing a new token with the "none" algorithm', 2),
 (21, 'Changing the signing algorithm of the token', 3),
 (21, 'Signing the asymmetrically-signed token to its symmetric algorithm match', 4);
 
 -- Inserir items de Websockets Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (22, 'Intercepting and modifying WebSocket messages', 1),
 (22, 'Websockets MITM attempts', 2),
 (22, 'Testing secret header websocket', 3),
@@ -603,14 +603,14 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (22, 'Token authentication testing in websockets', 5);
 
 -- Inserir items de GraphQL Vulnerabilities Testing
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (23, 'Inconsistent Authorization Checks', 1),
 (23, 'Missing Validation of Custom Scalars', 2),
 (23, 'Failure to Appropriately Rate-limit', 3),
 (23, 'Introspection Query Enabled/Disabled', 4);
 
 -- Inserir items de WordPress Common Vulnerabilities
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (24, 'XSPA in wordpress', 1),
 (24, 'Bruteforce in wp-login.php', 2),
 (24, 'Information disclosure wordpress username', 3),
@@ -624,18 +624,18 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (24, 'WP-Cronjob DOS', 11);
 
 -- Inserir items de XPath Injection
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (25, 'XPath injection to bypass authentication', 1),
 (25, 'XPath injection to exfiltrate data', 2),
 (25, 'Blind and Time-based XPath injections to exfiltrate data', 3);
 
 -- Inserir items de LDAP Injection
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (26, 'LDAP injection to bypass authentication', 1),
 (26, 'LDAP injection to exfiltrate data', 2);
 
 -- Inserir items de Denial of Service
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (27, 'Cookie bomb', 1),
 (27, 'Pixel flood, using image with a huge pixels', 2),
 (27, 'Frame flood, using GIF with a huge frame', 3),
@@ -643,7 +643,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (27, 'CPDoS (Cache Poisoned Denial of Service)', 5);
 
 -- Inserir items de 403 Bypass
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (28, 'Using "X-Original-URL" header', 1),
 (28, 'Appending %2e after the first slash', 2),
 (28, 'Try add dot (.) slash (/) and semicolon (;) in the URL', 3),
@@ -653,7 +653,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (28, 'Burp Extension-403 Bypasser', 7);
 
 -- Inserir items de Other Test Cases
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (29, 'Testing for Role authorization', 1),
 (29, 'Check if normal user can access resources of high privileged users', 2),
 (29, 'Forced browsing', 3),
@@ -681,7 +681,7 @@ INSERT INTO checklist_items (category_id, title, sort_order) VALUES
 (29, 'Web Services Testing: Web services documentation disclosure', 25);
 
 -- Inserir items de Burp Suite Extensions
-INSERT INTO checklist_items (category_id, title, sort_order) VALUES
+INSERT INTO checklist_items (category_id, title, order_num) VALUES
 (30, 'Scanners: ActiveScanPlusPlus', 1),
 (30, 'Scanners: additional-scanner-checks', 2),
 (30, 'Scanners: backslash-powered-scanner', 3),
