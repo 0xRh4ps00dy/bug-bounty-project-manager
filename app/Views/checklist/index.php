@@ -122,7 +122,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Descripción</label>
-                        <textarea name="description" class="form-control" rows="3"></textarea>
+                        <textarea name="description" class="form-control" rows="8" placeholder="Escribe la descripción del elemento..."></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Orden</label>
@@ -162,7 +162,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Descripción</label>
-                        <textarea name="description" id="edit_description" class="form-control" rows="3"></textarea>
+                        <textarea name="description" id="edit_description" class="form-control" rows="8" placeholder="Escribe la descripción del elemento..."></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Orden</label>

@@ -108,35 +108,44 @@ $parsedown = new \Parsedown();
                                         <!-- Description Section -->
                                         <div class="description-section mt-2 mb-2">
                                             <div class="description-view small text-muted markdown-content">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div>
+                                                <div class="d-flex justify-content-between align-items-start gap-2">
+                                                    <div class="flex-grow-1">
                                                         <?php if (!empty($item['description'])): ?>
                                                             <?= $parsedown->text($item['description']) ?>
                                                         <?php else: ?>
-                                                            <em>Sin descripción</em>
+                                                            <em class="text-secondary">Sin descripción</em>
                                                         <?php endif; ?>
                                                     </div>
-                                                    <button type="button" class="btn btn-sm btn-link edit-description-btn ms-2" 
+                                                    <button type="button" class="btn btn-sm btn-outline-primary edit-description-btn flex-shrink-0" 
                                                             data-target-id="<?= $target['id'] ?>"
                                                             data-item-id="<?= $item['checklist_item_id'] ?>"
                                                             title="Editar descripción">
-                                                        <i class="bi bi-pencil"></i>
+                                                        <i class="bi bi-pencil-square"></i> Editar
                                                     </button>
                                                 </div>
                                             </div>
                                             <div class="description-edit d-none">
-                                                <textarea class="form-control form-control-sm description-textarea" 
-                                                          placeholder="Escribir descripción..." 
-                                                          rows="3"><?= htmlspecialchars($item['description'] ?? '') ?></textarea>
-                                                <div class="mt-2 d-flex gap-2">
-                                                    <button type="button" class="btn btn-sm btn-success save-description" 
-                                                            data-target-id="<?= $target['id'] ?>"
-                                                            data-item-id="<?= $item['checklist_item_id'] ?>">
-                                                        <i class="bi bi-check"></i> Guardar
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-secondary cancel-description">
-                                                        <i class="bi bi-x"></i> Cancelar
-                                                    </button>
+                                                <div class="card border-primary bg-light">
+                                                    <div class="card-header bg-primary bg-opacity-10 border-primary">
+                                                        <h6 class="mb-0 text-primary">
+                                                            <i class="bi bi-pencil"></i> Editar Descripción
+                                                        </h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <textarea class="form-control description-textarea" 
+                                                                  placeholder="Escribir descripción..." 
+                                                                  rows="8"><?= htmlspecialchars($item['description'] ?? '') ?></textarea>
+                                                    </div>
+                                                    <div class="card-footer bg-light d-flex gap-2 justify-content-end">
+                                                        <button type="button" class="btn btn-sm btn-secondary cancel-description">
+                                                            <i class="bi bi-x-circle"></i> Cancelar
+                                                        </button>
+                                                        <button type="button" class="btn btn-sm btn-primary save-description" 
+                                                                data-target-id="<?= $target['id'] ?>"
+                                                                data-item-id="<?= $item['checklist_item_id'] ?>">
+                                                            <i class="bi bi-check-circle"></i> Guardar
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
