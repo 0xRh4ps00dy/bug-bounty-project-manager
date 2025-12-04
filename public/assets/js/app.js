@@ -265,7 +265,11 @@ class BBPM {
             
             // Update progress and category counter
             await this.updateProgress();
-            this.updateCategoryCounter(categorySection);
+            
+            // Wait a bit for DOM to update, then update the counter and button
+            setTimeout(() => {
+                this.updateCategoryCounter(categorySection);
+            }, 100);
             
             this.showSuccess(allChecked ? 'All items unchecked' : 'All items checked successfully');
         } catch (error) {
@@ -288,29 +292,26 @@ class BBPM {
         const btn = categorySection.querySelector('.check-all-category');
         if (btn) {
             const allChecked = checkedItems.length === items.length && items.length > 0;
-            const icon = btn.querySelector('i');
             
-            if (icon) {
-                // Save data attributes
-                const categoryId = btn.dataset.categoryId;
-                const targetId = btn.dataset.targetId;
-                
-                if (allChecked) {
-                    btn.innerHTML = '<i class="bi bi-x-circle"></i> Uncheck All';
-                    btn.classList.remove('btn-light');
-                    btn.classList.add('btn-outline-light');
-                    btn.title = 'Uncheck all items';
-                } else {
-                    btn.innerHTML = '<i class="bi bi-check-all"></i> Check All';
-                    btn.classList.remove('btn-outline-light');
-                    btn.classList.add('btn-light');
-                    btn.title = 'Mark all as checked';
-                }
-                
-                // Restore data attributes
-                btn.dataset.categoryId = categoryId;
-                btn.dataset.targetId = targetId;
+            // Save data attributes
+            const categoryId = btn.dataset.categoryId;
+            const targetId = btn.dataset.targetId;
+            
+            if (allChecked) {
+                btn.innerHTML = '<i class="bi bi-x-circle me-1"></i>Uncheck All';
+                btn.classList.remove('btn-light');
+                btn.classList.add('btn-outline-light');
+                btn.title = 'Uncheck all items';
+            } else {
+                btn.innerHTML = '<i class="bi bi-check-all me-1"></i>Check All';
+                btn.classList.remove('btn-outline-light');
+                btn.classList.add('btn-light');
+                btn.title = 'Mark all as checked';
             }
+            
+            // Restore data attributes
+            btn.dataset.categoryId = categoryId;
+            btn.dataset.targetId = targetId;
         }
     }
     
