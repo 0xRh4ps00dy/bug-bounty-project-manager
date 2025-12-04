@@ -111,12 +111,25 @@ class Target extends Model
         
         if (isset($data['notes'])) {
             $sets[] = 'notes = ?';
-            $values[] = $data['notes'];
+            // Limpiar: trim, reemplazar todos los espacios en blanco, trim final
+            $notes = trim($data['notes']);
+            $notes = preg_replace('/\s+/', ' ', $notes);
+            $notes = trim($notes);
+            $values[] = $notes;
         }
         
         if (isset($data['severity'])) {
             $sets[] = 'severity = ?';
             $values[] = $data['severity'];
+        }
+        
+        if (isset($data['description'])) {
+            $sets[] = 'description = ?';
+            // Limpiar: trim, reemplazar todos los espacios en blanco, trim final
+            $description = trim($data['description']);
+            $description = preg_replace('/\s+/', ' ', $description);
+            $description = trim($description);
+            $values[] = $description;
         }
         
         if (empty($sets)) {
@@ -153,21 +166,42 @@ class Target extends Model
     {
         $sql = "
             SELECT 
-                c.id,
+                c.id as category_id,
                 c.name as category_name,
-                COUNT(tc.id) as total_items,
-                SUM(CASE WHEN tc.notes IS NOT NULL AND tc.notes != '' THEN 1 ELSE 0 END) as items_with_notes,
-                COUNT(CASE WHEN tc.is_checked = 1 THEN 1 END) as checked_items
+                ci.id as checklist_item_id,
+                ci.title,
+                TRIM(tc.notes) as notes,
+                tc.is_checked,
+                tc.severity
             FROM target_checklist tc
             JOIN checklist_items ci ON tc.checklist_item_id = ci.id
             JOIN categories c ON ci.category_id = c.id
-            WHERE tc.target_id = ?
-            GROUP BY c.id, c.name
-            ORDER BY c.id ASC
+            WHERE tc.target_id = ? AND (tc.notes IS NOT NULL AND tc.notes != '')
+            ORDER BY c.order_num, ci.order_num
         ";
         
         $stmt = $this->query($sql, [$targetId]);
-        return $stmt->fetchAll();
+        $results = $stmt->fetchAll();
+        
+        // Group by category and clean notes at PHP level
+        $grouped = [];
+        foreach ($results as $item) {
+            // Clean whitespace at PHP level
+            $item['notes'] = trim($item['notes']);
+            $item['notes'] = preg_replace('/\s+/', ' ', $item['notes']);
+            
+            $catId = $item['category_id'];
+            if (!isset($grouped[$catId])) {
+                $grouped[$catId] = [
+                    'category_id' => $catId,
+                    'category_name' => $item['category_name'],
+                    'items' => []
+                ];
+            }
+            $grouped[$catId]['items'][] = $item;
+        }
+        
+        return array_values($grouped);
     }
     
     public function getNotesBySeverity(int $targetId): array

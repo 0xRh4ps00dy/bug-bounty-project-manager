@@ -46,25 +46,37 @@ class NotesController extends Controller
     /**
      * Obtener historial de cambios de notas
      */
-    public function getHistory(int $targetId): array
+    public function getHistory(int $targetId): void
     {
-        return $this->targetModel->getNotesHistory($targetId, 100);
+        $history = $this->targetModel->getNotesHistory($targetId, 100);
+        
+        if ($this->isAjax()) {
+            $this->json($history);
+        }
     }
     
     /**
      * Notas agrupadas por categoría
      */
-    public function getByCategory(int $targetId): array
+    public function getByCategory(int $targetId): void
     {
-        return $this->targetModel->getAggregatedNotesByCategory($targetId);
+        $data = $this->targetModel->getAggregatedNotesByCategory($targetId);
+        
+        if ($this->isAjax()) {
+            $this->json($data);
+        }
     }
     
     /**
      * Notas agrupadas por severidad
      */
-    public function getBySeverity(int $targetId): array
+    public function getBySeverity(int $targetId): void
     {
-        return $this->targetModel->getNotesBySeverity($targetId);
+        $data = $this->targetModel->getNotesBySeverity($targetId);
+        
+        if ($this->isAjax()) {
+            $this->json($data);
+        }
     }
     
     /**

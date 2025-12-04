@@ -1199,6 +1199,31 @@ body {
     box-shadow: 0 0 0 0.2rem rgba(90, 158, 255, 0.25);
 }
 
+/* Checklist Notes Styling */
+.checklist-notes {
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+}
+
+.checklist-notes.saving {
+    border-color: var(--warning);
+    background-color: rgba(255, 193, 7, 0.05);
+}
+
+[data-theme="dark"] .checklist-notes.saving {
+    background-color: rgba(251, 191, 36, 0.08);
+}
+
+.checklist-notes.saved {
+    border-color: var(--success);
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
+[data-theme="dark"] .checklist-notes.saved {
+    background-color: rgba(74, 222, 128, 0.08);
+}
+
 /* Transitions for theme switching */
 * {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;

@@ -191,7 +191,11 @@ class TargetController extends Controller
     
     public function updateNotes(int $targetId, int $itemId): void
     {
-        $notes = trim($this->input('notes', ''));
+        $notes = $this->input('notes', '');
+        // Limpiar: trim y reemplazar todos los espacios en blanco con un espacio
+        $notes = trim($notes);
+        $notes = preg_replace('/\s+/', ' ', $notes);
+        $notes = trim($notes);
         
         try {
             $this->model->updateChecklistItem($targetId, $itemId, ['notes' => $notes]);
@@ -203,7 +207,11 @@ class TargetController extends Controller
     
     public function updateDescription(int $targetId, int $itemId): void
     {
-        $description = trim($this->input('description', ''));
+        $description = $this->input('description', '');
+        // Limpiar: trim y reemplazar todos los espacios en blanco con un espacio
+        $description = trim($description);
+        $description = preg_replace('/\s+/', ' ', $description);
+        $description = trim($description);
         
         try {
             $this->model->updateChecklistItem($targetId, $itemId, ['description' => $description]);

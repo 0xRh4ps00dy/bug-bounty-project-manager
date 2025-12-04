@@ -74,9 +74,28 @@ class BBPM {
             }
         });
         
-        // Note updates (debounced)
+        // Note updates with debounce on input
+        document.addEventListener('input', (e) => {
+            if (e.target.classList.contains('checklist-notes')) {
+                // Clear previous timeout
+                if (e.target.updateTimeout) {
+                    clearTimeout(e.target.updateTimeout);
+                }
+                // Set new timeout
+                e.target.updateTimeout = setTimeout(() => {
+                    this.updateNotes(e.target);
+                }, 1000);
+            }
+        });
+        
+        // Save notes immediately on blur if not already saving
         document.addEventListener('blur', (e) => {
             if (e.target.classList.contains('checklist-notes')) {
+                // Clear timeout to avoid duplicate saves
+                if (e.target.updateTimeout) {
+                    clearTimeout(e.target.updateTimeout);
+                }
+                // Save immediately
                 this.updateNotes(e.target);
             }
         }, true);
@@ -259,22 +278,40 @@ class BBPM {
     async updateNotes(textarea) {
         const targetId = textarea.dataset.targetId;
         const itemId = textarea.dataset.itemId;
-        const notes = textarea.value.trim();
+        // Limpiar: trim, reemplazar todos los espacios en blanco con uno solo
+        let notes = textarea.value.trim();
+        notes = notes.replace(/\s+/g, ' ').trim();
+        
+        // Skip if no notes
+        if (notes === '') {
+            return;
+        }
         
         const url = `/targets/${targetId}/checklist/${itemId}/notes`;
         
         try {
+            // Add visual feedback
+            textarea.classList.add('saving');
+            
             const response = await this.fetch(url, {
                 method: 'POST',
                 body: JSON.stringify({ notes: notes })
             });
             
             if (response.success) {
-                this.showSuccess('Notas actualizadas', 1000);
+                textarea.classList.remove('saving');
+                textarea.classList.add('saved');
+                
+                // Remove saved class after 1 second
+                setTimeout(() => {
+                    textarea.classList.remove('saved');
+                }, 1000);
             } else {
+                textarea.classList.remove('saving');
                 this.showError(response.error || 'Error al actualizar');
             }
         } catch (error) {
+            textarea.classList.remove('saving');
             this.showError(error.message);
         }
     }
