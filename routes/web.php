@@ -5,6 +5,7 @@ use App\Controllers\ProjectController;
 use App\Controllers\TargetController;
 use App\Controllers\CategoryController;
 use App\Controllers\ChecklistController;
+use App\Controllers\NotesController;
 
 // Dashboard
 $router->get('/', [DashboardController::class, 'index']);
@@ -27,6 +28,13 @@ $router->delete('/targets/{id}', [TargetController::class, 'destroy']);
 // Target Checklist Actions
 $router->post('/targets/{targetId}/checklist/{itemId}/toggle', [TargetController::class, 'toggleCheck']);
 $router->post('/targets/{targetId}/checklist/{itemId}/notes', [TargetController::class, 'updateNotes']);
+
+// Notes Management
+$router->get('/targets/{id}/notes', [NotesController::class, 'getAggregatedNotes']);
+$router->get('/targets/{id}/notes/history', [NotesController::class, 'getHistory']);
+$router->get('/targets/{id}/notes/by-category', [NotesController::class, 'getByCategory']);
+$router->get('/targets/{id}/notes/by-severity', [NotesController::class, 'getBySeverity']);
+$router->get('/targets/{id}/notes/export', [NotesController::class, 'export']);
 
 // Categories
 $router->get('/categories', [CategoryController::class, 'index']);

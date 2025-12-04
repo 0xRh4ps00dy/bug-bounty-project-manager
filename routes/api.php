@@ -4,8 +4,7 @@ use App\Controllers\ProjectController;
 use App\Controllers\TargetController;
 use App\Controllers\CategoryController;
 use App\Controllers\ChecklistController;
-
-// All API routes will return JSON
+use App\Controllers\NotesController;
 
 // Projects API
 $router->get('/api/projects', [ProjectController::class, 'index']);
@@ -24,6 +23,13 @@ $router->delete('/api/targets/{id}', [TargetController::class, 'destroy']);
 // Target Checklist API
 $router->post('/api/targets/{targetId}/checklist/{itemId}/toggle', [TargetController::class, 'toggleCheck']);
 $router->post('/api/targets/{targetId}/checklist/{itemId}/notes', [TargetController::class, 'updateNotes']);
+
+// Notes API
+$router->get('/api/targets/{id}/notes', [NotesController::class, 'getAggregatedNotes']);
+$router->get('/api/targets/{id}/notes/history', [NotesController::class, 'getHistory']);
+$router->get('/api/targets/{id}/notes/by-category', [NotesController::class, 'getByCategory']);
+$router->get('/api/targets/{id}/notes/by-severity', [NotesController::class, 'getBySeverity']);
+$router->get('/api/targets/{id}/notes/export', [NotesController::class, 'export']);
 
 // Categories API
 $router->get('/api/categories', [CategoryController::class, 'index']);

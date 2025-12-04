@@ -77,10 +77,16 @@ class Target extends Model
             $values[] = $data['notes'];
         }
         
+        if (isset($data['severity'])) {
+            $sets[] = 'severity = ?';
+            $values[] = $data['severity'];
+        }
+        
         if (empty($sets)) {
             return false;
         }
         
+        $sets[] = 'updated_at = NOW()';
         $values[] = $targetId;
         $values[] = $itemId;
         
@@ -88,5 +94,60 @@ class Target extends Model
         $stmt = $this->db->prepare($sql);
         
         return $stmt->execute($values);
+    }
+    
+    public function getNotesHistory(int $targetId, int $limit = 50): array
+    {
+        $sql = "
+            SELECT nh.*, ci.title as checklist_title, c.name as category_name
+            FROM notes_history nh
+            JOIN checklist_items ci ON nh.checklist_item_id = ci.id
+            JOIN categories c ON ci.category_id = c.id
+            WHERE nh.target_id = ?
+            ORDER BY nh.created_at DESC
+            LIMIT ?
+        ";
+        
+        $stmt = $this->query($sql, [$targetId, $limit]);
+        return $stmt->fetchAll();
+    }
+    
+    public function getAggregatedNotesByCategory(int $targetId): array
+    {
+        $sql = "
+            SELECT 
+                c.id,
+                c.name as category_name,
+                COUNT(tc.id) as total_items,
+                SUM(CASE WHEN tc.notes IS NOT NULL AND tc.notes != '' THEN 1 ELSE 0 END) as items_with_notes,
+                COUNT(CASE WHEN tc.is_checked = 1 THEN 1 END) as checked_items
+            FROM target_checklist tc
+            JOIN checklist_items ci ON tc.checklist_item_id = ci.id
+            JOIN categories c ON ci.category_id = c.id
+            WHERE tc.target_id = ?
+            GROUP BY c.id, c.name
+            ORDER BY c.id ASC
+        ";
+        
+        $stmt = $this->query($sql, [$targetId]);
+        return $stmt->fetchAll();
+    }
+    
+    public function getNotesBySeverity(int $targetId): array
+    {
+        $sql = "
+            SELECT 
+                tc.severity,
+                COUNT(tc.id) as count,
+                GROUP_CONCAT(DISTINCT ci.title SEPARATOR ', ') as items
+            FROM target_checklist tc
+            JOIN checklist_items ci ON tc.checklist_item_id = ci.id
+            WHERE tc.target_id = ? AND tc.notes IS NOT NULL AND tc.notes != ''
+            GROUP BY tc.severity
+            ORDER BY FIELD(tc.severity, 'critical', 'high', 'medium', 'low', 'info')
+        ";
+        
+        $stmt = $this->query($sql, [$targetId]);
+        return $stmt->fetchAll();
     }
 }

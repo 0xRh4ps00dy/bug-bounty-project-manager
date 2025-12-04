@@ -60,8 +60,8 @@ abstract class Controller
         $input = array_merge($input, $_POST);
         
         // JSON body
-        if ($_SERVER['CONTENT_TYPE'] === 'application/json' || 
-            str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) {
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        if ($contentType === 'application/json' || str_contains($contentType, 'application/json')) {
             $json = json_decode(file_get_contents('php://input'), true);
             if ($json) {
                 $input = array_merge($input, $json);

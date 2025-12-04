@@ -63,30 +63,61 @@ CREATE TABLE IF NOT EXISTS target_checklist (
     checklist_item_id INT NOT NULL,
     is_checked BOOLEAN DEFAULT FALSE,
     notes TEXT,
+    severity ENUM('low', 'medium', 'high', 'critical', 'info') DEFAULT 'info',
     checked_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (target_id) REFERENCES targets(id) ON DELETE CASCADE,
     FOREIGN KEY (checklist_item_id) REFERENCES checklist_items(id) ON DELETE CASCADE,
     UNIQUE KEY unique_target_item (target_id, checklist_item_id)
 );
 
+-- Taula d'historial de notas
+CREATE TABLE IF NOT EXISTS notes_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    target_id INT NOT NULL,
+    checklist_item_id INT NOT NULL,
+    old_notes TEXT,
+    new_notes TEXT,
+    severity VARCHAR(50),
+    changed_by VARCHAR(100) DEFAULT 'system',
+    change_type ENUM('created', 'updated', 'deleted', 'severity_changed') DEFAULT 'updated',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (target_id) REFERENCES targets(id) ON DELETE CASCADE,
+    FOREIGN KEY (checklist_item_id) REFERENCES checklist_items(id) ON DELETE CASCADE,
+    INDEX idx_target_id (target_id),
+    INDEX idx_created_at (created_at)
+);
+
 -- Augmentar el límit de GROUP_CONCAT globalment
 SET GLOBAL group_concat_max_len = 10000000;
 
--- Trigger per actualitzar automàticament les notes del target
+-- Trigger per actualitzar automàticament les notes del target (INSERT)
 DELIMITER //
 
 CREATE TRIGGER update_target_notes_on_insert
 AFTER INSERT ON target_checklist
 FOR EACH ROW
 BEGIN
-    -- Només actualitzar si el nou item té notes
+    DECLARE v_old_notes TEXT;
+    
+    SET SESSION group_concat_max_len = 10000000;
+    
+    -- Registrar en historial
+    INSERT INTO notes_history (target_id, checklist_item_id, new_notes, severity, change_type, created_at)
+    VALUES (NEW.target_id, NEW.checklist_item_id, NEW.notes, NEW.severity, 'created', NOW());
+    
+    -- Actualizar notas agregadas solo si hay notas
     IF NEW.notes IS NOT NULL AND NEW.notes != '' THEN
-        SET SESSION group_concat_max_len = 10000000;
         UPDATE targets 
         SET aggregated_notes = (
             SELECT GROUP_CONCAT(
-                CONCAT(ci.title, ': ', tc.notes) 
+                CONCAT(
+                    '[', DATE_FORMAT(tc.updated_at, '%Y-%m-%d %H:%i'), '] ',
+                    UPPER(tc.severity), ': ',
+                    ci.title, '\n', 
+                    tc.notes
+                )
                 SEPARATOR '\n\n---\n\n'
             )
             FROM target_checklist tc
@@ -94,20 +125,35 @@ BEGIN
             WHERE tc.target_id = NEW.target_id 
             AND tc.notes IS NOT NULL 
             AND tc.notes != ''
+            ORDER BY tc.updated_at DESC
         )
         WHERE id = NEW.target_id;
     END IF;
 END//
 
+-- Trigger per actualitzar automàticament les notes del target (UPDATE)
 CREATE TRIGGER update_target_notes_on_update
 AFTER UPDATE ON target_checklist
 FOR EACH ROW
 BEGIN
     SET SESSION group_concat_max_len = 10000000;
+    
+    -- Registrar en historial si las notas cambiaron
+    IF OLD.notes != NEW.notes OR OLD.severity != NEW.severity THEN
+        INSERT INTO notes_history (target_id, checklist_item_id, old_notes, new_notes, severity, change_type, created_at)
+        VALUES (NEW.target_id, NEW.checklist_item_id, OLD.notes, NEW.notes, NEW.severity, 'updated', NOW());
+    END IF;
+    
+    -- Actualizar notas agregadas
     UPDATE targets 
     SET aggregated_notes = (
         SELECT GROUP_CONCAT(
-            CONCAT(ci.title, ': ', tc.notes) 
+            CONCAT(
+                '[', DATE_FORMAT(tc.updated_at, '%Y-%m-%d %H:%i'), '] ',
+                UPPER(tc.severity), ': ',
+                ci.title, '\n', 
+                tc.notes
+            )
             SEPARATOR '\n\n---\n\n'
         )
         FROM target_checklist tc
@@ -115,19 +161,32 @@ BEGIN
         WHERE tc.target_id = NEW.target_id 
         AND tc.notes IS NOT NULL 
         AND tc.notes != ''
+        ORDER BY tc.updated_at DESC
     )
     WHERE id = NEW.target_id;
 END//
 
+-- Trigger per actualitzar automàticament les notes del target (DELETE)
 CREATE TRIGGER update_target_notes_on_delete
 AFTER DELETE ON target_checklist
 FOR EACH ROW
 BEGIN
     SET SESSION group_concat_max_len = 10000000;
+    
+    -- Registrar en historial
+    INSERT INTO notes_history (target_id, checklist_item_id, old_notes, change_type, created_at)
+    VALUES (OLD.target_id, OLD.checklist_item_id, OLD.notes, 'deleted', NOW());
+    
+    -- Actualizar notas agregadas
     UPDATE targets 
     SET aggregated_notes = (
         SELECT GROUP_CONCAT(
-            CONCAT(ci.title, ': ', tc.notes) 
+            CONCAT(
+                '[', DATE_FORMAT(tc.updated_at, '%Y-%m-%d %H:%i'), '] ',
+                UPPER(tc.severity), ': ',
+                ci.title, '\n', 
+                tc.notes
+            )
             SEPARATOR '\n\n---\n\n'
         )
         FROM target_checklist tc
@@ -135,6 +194,7 @@ BEGIN
         WHERE tc.target_id = OLD.target_id 
         AND tc.notes IS NOT NULL 
         AND tc.notes != ''
+        ORDER BY tc.updated_at DESC
     )
     WHERE id = OLD.target_id;
 END//

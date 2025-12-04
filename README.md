@@ -7,11 +7,20 @@ Aplicació web **moderna i professional** per gestionar projectes de Bug Bounty 
 - **Gestió de Projectes**: Crea i gestiona projectes de bug bounty
 - **Gestió de Targets**: Assigna targets (objectius) a cada projecte
 - **Checklist de Seguretat**: Més de 350 tests de seguretat predefinits organitzats en 30 categories
-- **Notes per Item**: Cada item de checklist pot tenir les seves pròpies notes
-- **Agregació Automàtica**: Les notes dels items s'agreguen automàticament al target
+- **Notes per Item**: Cada item de checklist pot tenir les seves pròpies notes amb nivells de severitat
+- **Agregació Automàtica**: Les notes dels items s'agreguen automàticament al target amb timestamps i severitat
+- **Sistema de Severitat**: Classifica els findings per severitat (low, medium, high, critical, info)
+- **Historial de Canvis**: Seguiment complet de tots els canvis en les notes
+- **Vistes Avançades de Notes**:
+  - Notas agregades amb format markdown
+  - Agrupació per severitat
+  - Agrupació per categoria
+  - Historial de canvis
+- **Exportació Multiformat**: Exporta els findings en TXT, Markdown, JSON, CSV i HTML
 - **Dashboard Interactiu**: Visualitza l'estat dels teus projectes i targets
 - **Tracking de Progrés**: Seguiment del percentatge de completació per cada target
-- **Interfície Moderna**: UI responsive amb Bootstrap 5
+- **RESTful API**: Accés programàtic a tots els endpoints
+- **Interfície Moderna**: UI responsive amb Bootstrap 5 i ES6+ JavaScript
 
 ## 📦 Components
 
@@ -99,6 +108,13 @@ docker-compose up -d
 ### Target Checklist
 - `POST /api/targets/{targetId}/checklist/{itemId}/toggle` - Toggle item check
 - `POST /api/targets/{targetId}/checklist/{itemId}/notes` - Actualitzar notes
+
+### Notes Management (Nou!)
+- `GET /api/targets/{id}/notes` - Obtenir notas agregadas del target
+- `GET /api/targets/{id}/notes/history` - Historial de canvis de notes
+- `GET /api/targets/{id}/notes/by-category` - Notas agrupades per categoria
+- `GET /api/targets/{id}/notes/by-severity` - Notas agrupades per severitat
+- `GET /api/targets/{id}/notes/export?format={txt|md|json|csv|html}` - Exportar notes en diversos formats
 
 ### Categories & Checklist
 - `GET /api/categories` - Llistar categories
