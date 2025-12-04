@@ -1,32 +1,32 @@
-<?php $active = 'categories'; $title = 'Categories - Bug Bounty Project Manager'; ?>
+<?php $active = 'categories'; $title = 'Categorías - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1><i class="bi bi-tags"></i> Categories</h1>
+        <h1><i class="bi bi-tags"></i> Categorías</h1>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-            <i class="bi bi-plus-circle"></i> New Category
+            <i class="bi bi-plus-circle"></i> Nueva Categoría
         </button>
     </div>
     
     <?php if (empty($categories)): ?>
         <div class="alert alert-info">
-            No categories found.
+            No se encontraron categorías.
         </div>
     <?php else: ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="bi bi-tags"></i> Categories</h5>
+                <h5 class="mb-0"><i class="bi bi-tags"></i> Categorías</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead>
                             <tr>
-                                <th style="width: 100px;">Order</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Items</th>
-                                <th style="width: 250px;">Actions</th>
+                                <th style="width: 100px;">Orden</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Elementos</th>
+                                <th style="width: 250px;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,7 +43,7 @@
                                             <form method="POST" action="/categories/<?= $category['id'] ?>/move-up" style="display: inline;">
                                                 <button type="submit" 
                                                         class="btn btn-secondary" 
-                                                        title="Move Up"
+                                                        title="Subir"
                                                         <?= $index === 0 ? 'disabled' : '' ?>>
                                                     <i class="bi bi-arrow-up"></i>
                                                 </button>
@@ -51,7 +51,7 @@
                                             <form method="POST" action="/categories/<?= $category['id'] ?>/move-down" style="display: inline;">
                                                 <button type="submit" 
                                                         class="btn btn-secondary" 
-                                                        title="Move Down"
+                                                        title="Bajar"
                                                         <?= $index === count($categories) - 1 ? 'disabled' : '' ?>>
                                                     <i class="bi bi-arrow-down"></i>
                                                 </button>
@@ -60,13 +60,13 @@
                                         <div class="btn-group btn-group-sm">
                                             <button class="btn btn-warning" 
                                                     onclick="editCategory(<?= htmlspecialchars(json_encode($category)) ?>)"
-                                                    title="Edit">
+                                                    title="Editar">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                             <button class="btn btn-danger btn-delete" 
                                                     data-url="/categories/<?= $category['id'] ?>"
-                                                    data-confirm="Delete category '<?= htmlspecialchars($category['name']) ?>'"
-                                                    title="Delete">
+                                                    data-confirm="¿Eliminar categoría '<?= htmlspecialchars($category['name']) ?>'?"
+                                                    title="Eliminar">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
@@ -81,64 +81,64 @@
     <?php endif; ?>
 </div>
 
-<!-- Create Modal -->
+<!-- Modal Crear -->
 <div class="modal fade" id="createModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="/categories" method="POST" class="ajax-form" data-redirect="/categories">
                 <div class="modal-header">
-                    <h5 class="modal-title">New Category</h5>
+                    <h5 class="modal-title">Nueva Categoría</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name *</label>
+                        <label class="form-label">Nombre *</label>
                         <input type="text" name="name" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Descripción</label>
                         <textarea name="description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Order</label>
+                        <label class="form-label">Orden</label>
                         <input type="number" name="order_num" class="form-control" value="0">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Category</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Categoría</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Edit Modal -->
+<!-- Modal Editar -->
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="editForm" method="POST" class="ajax-form" data-method="PUT" data-redirect="/categories">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Category</h5>
+                    <h5 class="modal-title">Editar Categoría</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name *</label>
+                        <label class="form-label">Nombre *</label>
                         <input type="text" name="name" id="edit_name" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Descripción</label>
                         <textarea name="description" id="edit_description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Order</label>
+                        <label class="form-label">Orden</label>
                         <input type="number" name="order_num" id="edit_order_num" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
         </div>

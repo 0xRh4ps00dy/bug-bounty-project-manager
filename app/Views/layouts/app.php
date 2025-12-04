@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,31 +31,31 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link <?= isset($active) && $active === 'dashboard' ? 'active' : '' ?>" href="/">
-                            <i class="bi bi-speedometer2"></i> Dashboard
+                            <i class="bi bi-speedometer2"></i> Panel de Control
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?= isset($active) && $active === 'projects' ? 'active' : '' ?>" href="/projects">
-                            <i class="bi bi-folder"></i> Projects
+                            <i class="bi bi-folder"></i> Proyectos
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?= isset($active) && $active === 'targets' ? 'active' : '' ?>" href="/targets">
-                            <i class="bi bi-bullseye"></i> Targets
+                            <i class="bi bi-bullseye"></i> Objetivos
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?= isset($active) && $active === 'categories' ? 'active' : '' ?>" href="/categories">
-                            <i class="bi bi-tags"></i> Categories
+                            <i class="bi bi-tags"></i> Categorías
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?= isset($active) && $active === 'checklist' ? 'active' : '' ?>" href="/checklist">
-                            <i class="bi bi-list-check"></i> Checklist
+                            <i class="bi bi-list-check"></i> Lista de Verificación
                         </a>
                     </li>
                     <li class="nav-item ms-3">
-                        <button id="theme-toggle-btn" class="theme-toggle" type="button" aria-label="Switch theme">
+                        <button id="theme-toggle-btn" class="theme-toggle" type="button" aria-label="Cambiar tema">
                             <i class="bi bi-moon-stars-fill"></i>
                         </button>
                     </li>
@@ -93,7 +93,7 @@
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-3 mt-5">
         <div class="container">
-            <p class="mb-0">&copy; 2025 Gestor de Proyectos Bug Bounty</p>
+            <p class="mb-0">&copy; 2025 Bug Bounty Project Manager</p>
         </div>
     </footer>
 

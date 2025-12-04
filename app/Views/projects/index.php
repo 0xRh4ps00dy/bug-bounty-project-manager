@@ -1,35 +1,35 @@
-<?php $active = 'projects'; $title = 'Projects - Bug Bounty Project Manager'; ?>
+<?php $active = 'projects'; $title = 'Proyectos - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1><i class="bi bi-folder"></i> Projects</h1>
+        <h1><i class="bi bi-folder"></i> Proyectos</h1>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-            <i class="bi bi-plus-circle"></i> New Project
+            <i class="bi bi-plus-circle"></i> Nuevo Proyecto
         </button>
     </div>
     
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0"><i class="bi bi-folder"></i> Projects</h5>
+            <h5 class="mb-0"><i class="bi bi-folder"></i> Proyectos</h5>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>Targets</th>
-                            <th>Progress</th>
-                            <th>Created</th>
-                            <th class="actions-cell">Actions</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th>Objetivos</th>
+                            <th>Progreso</th>
+                            <th>Creado</th>
+                            <th class="actions-cell">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($projects)): ?>
                             <tr>
-                                <td colspan="7" class="text-center text-muted">No projects found</td>
+                                <td colspan="7" class="text-center text-muted">No hay proyectos</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($projects as $project): ?>
@@ -83,72 +83,72 @@
     </div>
 </div>
 
-<!-- Create Modal -->
+<!-- Modal Crear -->
 <div class="modal fade" id="createModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">New Project</h5>
+                <h5 class="modal-title">Nuevo Proyecto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="/projects" method="POST" class="ajax-form" data-redirect="/projects">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name *</label>
+                        <label class="form-label">Nombre *</label>
                         <input type="text" name="name" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Descripción</label>
                         <textarea name="description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Status</label>
+                        <label class="form-label">Estado</label>
                         <select name="status" class="form-select">
-                            <option value="active">Active</option>
-                            <option value="completed">Completed</option>
-                            <option value="archived">Archived</option>
+                            <option value="active">Activo</option>
+                            <option value="completed">Completado</option>
+                            <option value="archived">Archivado</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Project</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Proyecto</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Edit Modal -->
+<!-- Modal Editar -->
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Project</h5>
+                <h5 class="modal-title">Editar Proyecto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="editForm" method="POST" class="ajax-form" data-method="PUT" data-redirect="/projects">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name *</label>
+                        <label class="form-label">Nombre *</label>
                         <input type="text" name="name" id="edit_name" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Descripción</label>
                         <textarea name="description" id="edit_description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Status</label>
+                        <label class="form-label">Estado</label>
                         <select name="status" id="edit_status" class="form-select">
-                            <option value="active">Active</option>
-                            <option value="completed">Completed</option>
-                            <option value="archived">Archived</option>
+                            <option value="active">Activo</option>
+                            <option value="completed">Completado</option>
+                            <option value="archived">Archivado</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Project</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar Proyecto</button>
                 </div>
             </form>
         </div>

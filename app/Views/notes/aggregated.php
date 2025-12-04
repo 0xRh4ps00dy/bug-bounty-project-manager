@@ -6,37 +6,37 @@
             <!-- Panel de Navegación de Notas -->
             <div class="card sticky-top" style="top: 20px;">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="bi bi-bookmark"></i> Notes Navigation</h5>
+                    <h5 class="mb-0"><i class="bi bi-bookmark"></i> Navegación de Notas</h5>
                 </div>
                 <div class="card-body p-0">
                     <nav class="nav flex-column">
                         <a class="nav-link active notes-tab" href="#aggregated" data-bs-toggle="tab">
-                            <i class="bi bi-file-text"></i> Aggregated Findings
+                            <i class="bi bi-file-text"></i> Hallazgos Agregados
                         </a>
                         <a class="nav-link notes-tab" href="#by-severity" data-bs-toggle="tab">
-                            <i class="bi bi-exclamation-triangle"></i> By Severity
+                            <i class="bi bi-exclamation-triangle"></i> Por Severidad
                         </a>
                         <a class="nav-link notes-tab" href="#by-category" data-bs-toggle="tab">
-                            <i class="bi bi-tags"></i> By Category
+                            <i class="bi bi-tags"></i> Por Categoría
                         </a>
                         <a class="nav-link notes-tab" href="#history" data-bs-toggle="tab">
-                            <i class="bi bi-clock-history"></i> History
+                            <i class="bi bi-clock-history"></i> Historial
                         </a>
                         <hr class="my-2">
                         <button class="nav-link text-start" data-export="txt">
-                            <i class="bi bi-download"></i> Export TXT
+                            <i class="bi bi-download"></i> Exportar TXT
                         </button>
                         <button class="nav-link text-start" data-export="md">
-                            <i class="bi bi-download"></i> Export MD
+                            <i class="bi bi-download"></i> Exportar MD
                         </button>
                         <button class="nav-link text-start" data-export="json">
-                            <i class="bi bi-download"></i> Export JSON
+                            <i class="bi bi-download"></i> Exportar JSON
                         </button>
                         <button class="nav-link text-start" data-export="csv">
-                            <i class="bi bi-download"></i> Export CSV
+                            <i class="bi bi-download"></i> Exportar CSV
                         </button>
                         <button class="nav-link text-start" data-export="html">
-                            <i class="bi bi-download"></i> Export HTML
+                            <i class="bi bi-download"></i> Exportar HTML
                         </button>
                     </nav>
                 </div>
@@ -49,18 +49,18 @@
                 <div class="tab-pane fade show active" id="aggregated">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="bi bi-file-text"></i> Aggregated Findings</h5>
+                            <h5 class="mb-0"><i class="bi bi-file-text"></i> Hallazgos Agregados</h5>
                         </div>
                         <div class="card-body">
                             <div id="aggregated-notes" class="bg-light p-3 rounded" style="min-height: 300px; max-height: 600px; overflow-y: auto; font-family: monospace; white-space: pre-wrap;">
-                                <p class="text-muted">Loading...</p>
+                                <p class="text-muted">Cargando...</p>
                             </div>
                             <div class="mt-3">
                                 <button class="btn btn-sm btn-primary" id="refresh-aggregated">
-                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                    <i class="bi bi-arrow-clockwise"></i> Actualizar
                                 </button>
                                 <button class="btn btn-sm btn-secondary" id="copy-notes">
-                                    <i class="bi bi-clipboard"></i> Copy to Clipboard
+                                    <i class="bi bi-clipboard"></i> Copiar al Portapapeles
                                 </button>
                             </div>
                         </div>
@@ -71,11 +71,11 @@
                 <div class="tab-pane fade" id="by-severity">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Findings by Severity</h5>
+                            <h5 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Hallazgos por Severidad</h5>
                         </div>
                         <div class="card-body">
                             <div id="severity-content">
-                                <p class="text-muted">Loading...</p>
+                                <p class="text-muted">Cargando...</p>
                             </div>
                         </div>
                     </div>
@@ -85,11 +85,11 @@
                 <div class="tab-pane fade" id="by-category">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="bi bi-tags"></i> Findings by Category</h5>
+                            <h5 class="mb-0"><i class="bi bi-tags"></i> Hallazgos por Categoría</h5>
                         </div>
                         <div class="card-body">
                             <div id="category-content">
-                                <p class="text-muted">Loading...</p>
+                                <p class="text-muted">Cargando...</p>
                             </div>
                         </div>
                     </div>
@@ -99,25 +99,25 @@
                 <div class="tab-pane fade" id="history">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0"><i class="bi bi-clock-history"></i> Changes History</h5>
+                            <h5 class="mb-0"><i class="bi bi-clock-history"></i> Historial de Cambios</h5>
                             <button class="btn btn-sm btn-warning" id="refresh-history">
-                                <i class="bi bi-arrow-clockwise"></i> Refresh
+                                <i class="bi bi-arrow-clockwise"></i> Actualizar
                             </button>
                         </div>
                         <div class="card-body p-0">
                             <table class="table table-hover table-sm mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Item</th>
-                                        <th>Type</th>
-                                        <th>Severity</th>
-                                        <th>Note</th>
+                                        <th>Fecha</th>
+                                        <th>Elemento</th>
+                                        <th>Tipo</th>
+                                        <th>Severidad</th>
+                                        <th>Nota</th>
                                     </tr>
                                 </thead>
                                 <tbody id="history-content">
                                     <tr>
-                                        <td colspan="5" class="text-muted text-center">Loading...</td>
+                                        <td colspan="5" class="text-muted text-center">Cargando...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -138,10 +138,10 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(`/api/targets/${targetId}/notes`);
             const data = await response.json();
-            document.getElementById('aggregated-notes').textContent = data.notes || 'No findings recorded.';
+            document.getElementById('aggregated-notes').textContent = data.notes || 'Sin hallazgos registrados.';
         } catch (error) {
             console.error('Error loading notes:', error);
-            document.getElementById('aggregated-notes').textContent = 'Error loading notes.';
+            document.getElementById('aggregated-notes').textContent = 'Error cargando notas.';
         }
     }
 
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             });
 
-            document.getElementById('severity-content').innerHTML = html || '<p class="text-muted">No findings by severity.</p>';
+            document.getElementById('severity-content').innerHTML = html || '<p class="text-muted">Sin hallazgos por severidad.</p>';
         } catch (error) {
             console.error('Error loading severity:', error);
         }
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div>
                                     <h6 class="mb-1">${item.category_name}</h6>
                                     <small class="text-muted">
-                                        ${item.items_with_notes} findings out of ${item.total_items} items
+                                        ${item.items_with_notes} hallazgos de ${item.total_items} elementos
                                     </small>
                                 </div>
                                 <div class="text-end">
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             });
 
-            document.getElementById('category-content').innerHTML = html || '<p class="text-muted">No findings by category.</p>';
+            document.getElementById('category-content').innerHTML = html || '<p class="text-muted">Sin hallazgos por categoría.</p>';
         } catch (error) {
             console.error('Error loading categories:', error);
         }
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             });
 
-            document.getElementById('history-content').innerHTML = html || '<tr><td colspan="5" class="text-muted text-center">No history.</td></tr>';
+            document.getElementById('history-content').innerHTML = html || '<tr><td colspan="5" class="text-muted text-center">Sin historial.</td></tr>';
         } catch (error) {
             console.error('Error loading history:', error);
         }
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('copy-notes').addEventListener('click', function() {
         const text = document.getElementById('aggregated-notes').textContent;
         navigator.clipboard.writeText(text).then(() => {
-            Bug Bounty Project Manager.showSuccess('Copied to clipboard!', 2000);
+            Bug Bounty Project Manager.showSuccess('¡Copiado al portapapeles!', 2000);
         });
     });
 

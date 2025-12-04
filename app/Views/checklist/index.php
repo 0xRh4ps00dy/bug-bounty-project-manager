@@ -1,16 +1,16 @@
-<?php $active = 'checklist'; $title = 'Checklist Items - Bug Bounty Project Manager'; ?>
+<?php $active = 'checklist'; $title = 'Elementos de Lista de Verificación - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1><i class="bi bi-list-check"></i> Checklist Items</h1>
+        <h1><i class="bi bi-list-check"></i> Elementos de Lista de Verificación</h1>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-            <i class="bi bi-plus-circle"></i> New Item
+            <i class="bi bi-plus-circle"></i> Nuevo Elemento
         </button>
     </div>
     
     <div class="mb-3">
         <select class="form-select" onchange="window.location.href='/checklist?category_id=' + this.value">
-            <option value="">All Categories</option>
+            <option value="">Todas las Categorías</option>
             <?php foreach ($categories as $cat): ?>
                 <option value="<?= $cat['id'] ?>" <?= ($selectedCategory == $cat['id']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($cat['name']) ?>
@@ -21,23 +21,23 @@
     
     <?php if (empty($items)): ?>
         <div class="alert alert-info">
-            No checklist items found.
+            No se encontraron elementos de lista de verificación.
         </div>
     <?php else: ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="bi bi-list-check"></i> Checklist Items</h5>
+                <h5 class="mb-0"><i class="bi bi-list-check"></i> Elementos de Lista de Verificación</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead>
                             <tr>
-                                <th style="width: 100px;">Order</th>
-                                <th>Category</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th style="width: 200px;">Actions</th>
+                                <th style="width: 100px;">Orden</th>
+                                <th>Categoría</th>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th style="width: 200px;">Acciones</th>
                             </tr>
                         </thead>
                 <tbody>
@@ -59,7 +59,7 @@
                                     <form method="POST" action="/checklist/<?= $item['id'] ?>/move-up" style="display: inline;">
                                         <button type="submit" 
                                                 class="btn btn-secondary" 
-                                                title="Move Up"
+                                                title="Subir"
                                                 <?= $index === 0 || ($index > 0 && $items[$index-1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
                                             <i class="bi bi-arrow-up"></i>
                                         </button>
@@ -67,7 +67,7 @@
                                     <form method="POST" action="/checklist/<?= $item['id'] ?>/move-down" style="display: inline;">
                                         <button type="submit" 
                                                 class="btn btn-secondary" 
-                                                title="Move Down"
+                                                title="Bajar"
                                                 <?= $index === count($items) - 1 || ($index < count($items) - 1 && $items[$index+1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
                                             <i class="bi bi-arrow-down"></i>
                                         </button>
@@ -76,13 +76,13 @@
                                 <div class="btn-group btn-group-sm">
                                     <button class="btn btn-warning" 
                                             onclick="editItem(<?= htmlspecialchars(json_encode($item)) ?>)"
-                                            title="Edit">
+                                            title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </button>
                                     <button class="btn btn-danger btn-delete" 
                                             data-url="/checklist/<?= $item['id'] ?>"
-                                            data-confirm="Delete this item?"
-                                            title="Delete">
+                                            data-confirm="¿Eliminar este elemento?"
+                                            title="Eliminar">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -103,35 +103,35 @@
         <div class="modal-content">
             <form action="/checklist" method="POST" class="ajax-form" data-redirect="/checklist">
                 <div class="modal-header">
-                    <h5 class="modal-title">New Checklist Item</h5>
+                    <h5 class="modal-title">Nuevo Elemento de Lista de Verificación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Category *</label>
+                        <label class="form-label">Categoría *</label>
                         <select name="category_id" class="form-select" required>
-                            <option value="">Select category...</option>
+                            <option value="">Selecciona una categoría...</option>
                             <?php foreach ($categories as $cat): ?>
                                 <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Title *</label>
+                        <label class="form-label">Título *</label>
                         <input type="text" name="title" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Descripción</label>
                         <textarea name="description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Order</label>
+                        <label class="form-label">Orden</label>
                         <input type="number" name="order_num" class="form-control" value="0">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Item</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Elemento</button>
                 </div>
             </form>
         </div>
@@ -144,12 +144,12 @@
         <div class="modal-content">
             <form id="editForm" method="POST" class="ajax-form" data-method="PUT" data-redirect="/checklist">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Checklist Item</h5>
+                    <h5 class="modal-title">Editar Elemento de Lista de Verificación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Category *</label>
+                        <label class="form-label">Categoría *</label>
                         <select name="category_id" id="edit_category_id" class="form-select" required>
                             <?php foreach ($categories as $cat): ?>
                                 <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
@@ -157,21 +157,21 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Title *</label>
+                        <label class="form-label">Título *</label>
                         <input type="text" name="title" id="edit_title" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Descripción</label>
                         <textarea name="description" id="edit_description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Order</label>
+                        <label class="form-label">Orden</label>
                         <input type="number" name="order_num" id="edit_order_num" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
         </div>

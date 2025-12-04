@@ -3,7 +3,7 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/projects">Projects</a></li>
+            <li class="breadcrumb-item"><a href="/projects">Proyectos</a></li>
             <li class="breadcrumb-item active"><?= htmlspecialchars($project['name']) ?></li>
         </ol>
     </nav>
@@ -24,19 +24,19 @@
                 <div class="col-md-4">
                     <div class="text-center p-3 bg-light rounded">
                         <h3 class="text-primary"><?= $project['target_count'] ?? 0 ?></h3>
-                        <small class="text-muted">Total Targets</small>
+                        <small class="text-muted">Total de Objetivos</small>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="text-center p-3 bg-light rounded">
                         <h3 class="text-success"><?= round($project['avg_progress'] ?? 0) ?>%</h3>
-                        <small class="text-muted">Average Progress</small>
+                        <small class="text-muted">Progreso Promedio</small>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="text-center p-3 bg-light rounded">
                         <h3 class="text-info"><?= date('Y-m-d', strtotime($project['created_at'])) ?></h3>
-                        <small class="text-muted">Created</small>
+                        <small class="text-muted">Creado</small>
                     </div>
                 </div>
             </div>
@@ -45,25 +45,25 @@
     
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0"><i class="bi bi-bullseye"></i> Targets</h5>
+            <h5 class="mb-0"><i class="bi bi-bullseye"></i> Objetivos</h5>
             <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#createTargetModal">
-                <i class="bi bi-plus-circle"></i> Add Target
+                <i class="bi bi-plus-circle"></i> Agregar Objetivo
             </button>
         </div>
         <div class="card-body p-0">
             <?php if (empty($project['targets'])): ?>
-                <p class="text-muted p-3">No targets yet. Add your first target!</p>
+                <p class="text-muted p-3">Sin objetivos aún. ¡Agrega tu primer objetivo!</p>
             <?php else: ?>
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead>
                             <tr>
-                                <th>Target</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                                <th>Progress</th>
-                                <th class="actions-cell">Actions</th>
+                                <th>Objetivo</th>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th>Progreso</th>
+                                <th class="actions-cell">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -98,19 +98,19 @@
                                         <div class="btn-group btn-group-sm">
                                             <a href="/targets/<?= $target['id'] ?>" 
                                                class="btn btn-info" 
-                                               title="View">
+                                               title="Ver">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             <button class="btn btn-warning" 
                                                     type="button"
                                                     onclick="editTarget(<?= htmlspecialchars(json_encode($target)) ?>, <?= $project['id'] ?>)"
-                                                    title="Edit">
+                                                    title="Editar">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                             <button class="btn btn-danger btn-delete" 
                                                     data-url="/targets/<?= $target['id'] ?>"
-                                                    data-confirm="Delete this target?"
-                                                    title="Delete">
+                                                    data-confirm="¿Eliminar este objetivo?"
+                                                    title="Eliminar">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
@@ -132,42 +132,42 @@
             <form action="/targets" method="POST" class="ajax-form" data-redirect="/projects/<?= $project['id'] ?>">
                 <input type="hidden" name="project_id" value="<?= $project['id'] ?>">
                 <div class="modal-header">
-                    <h5 class="modal-title">New Target</h5>
+                    <h5 class="modal-title">Nuevo Objetivo</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name *</label>
-                        <input type="text" name="name" class="form-control" placeholder="e.g., Main Website, API Server" required>
+                        <label class="form-label">Nombre *</label>
+                        <input type="text" name="name" class="form-control" placeholder="ej. Sitio Web Principal, Servidor API" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Target Type *</label>
+                        <label class="form-label">Tipo de Objetivo *</label>
                         <select name="target_type" class="form-select" id="projectTargetType" required>
                             <option value="url" selected>URL</option>
-                            <option value="ip">IP Address</option>
-                            <option value="domain">Domain</option>
+                            <option value="ip">Dirección IP</option>
+                            <option value="domain">Dominio</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Target *</label>
+                        <label class="form-label">Objetivo *</label>
                         <input type="text" name="target" class="form-control" id="projectTargetInput" placeholder="https://example.com" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Descripción</label>
                         <textarea name="description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Status</label>
+                        <label class="form-label">Estado</label>
                         <select name="status" class="form-select">
-                            <option value="active">Active</option>
-                            <option value="completed">Completed</option>
-                            <option value="archived">Archived</option>
+                            <option value="active">Activo</option>
+                            <option value="completed">Completado</option>
+                            <option value="archived">Archivado</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Target</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Objetivo</button>
                 </div>
             </form>
         </div>
@@ -180,42 +180,42 @@
         <div class="modal-content">
             <form id="editTargetForm" method="POST" class="ajax-form" data-method="PUT" data-redirect="/projects/<?= $project['id'] ?>">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Target</h5>
+                    <h5 class="modal-title">Editar Objetivo</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Name *</label>
+                        <label class="form-label">Nombre *</label>
                         <input type="text" name="name" id="edit_target_name" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Target Type *</label>
+                        <label class="form-label">Tipo de Objetivo *</label>
                         <select name="target_type" class="form-select" id="editProjectTargetType" required>
                             <option value="url">URL</option>
-                            <option value="ip">IP Address</option>
-                            <option value="domain">Domain</option>
+                            <option value="ip">Dirección IP</option>
+                            <option value="domain">Dominio</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Target *</label>
+                        <label class="form-label">Objetivo *</label>
                         <input type="text" name="target" class="form-control" id="editProjectTargetInput" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Descripción</label>
                         <textarea name="description" class="form-control" id="edit_target_description" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Status</label>
+                        <label class="form-label">Estado</label>
                         <select name="status" class="form-select" id="edit_target_status">
-                            <option value="active">Active</option>
-                            <option value="completed">Completed</option>
-                            <option value="archived">Archived</option>
+                            <option value="active">Activo</option>
+                            <option value="completed">Completado</option>
+                            <option value="archived">Archivado</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Target</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar Objetivo</button>
                 </div>
             </form>
         </div>
