@@ -1,0 +1,10 @@
+# Ignorar todos los archivos de backup
+backups/
+*.zip
+*.sql
+temp_restore/
+
+# Excepto los scripts
+!*.ps1
+!*.md
+!.gitignore
