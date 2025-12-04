@@ -68,7 +68,7 @@
                         </thead>
                         <tbody>
                             <?php foreach ($project['targets'] as $target): ?>
-                                <tr class="clickable-row" onclick="window.location.href='/targets/<?= $target['id'] ?>';" style="cursor: pointer;">
+                                <tr class="clickable-row" data-href="/targets/<?= $target['id'] ?>" style="cursor: pointer;">
                                     <td>
                                         <?php if ($target['target_type'] === 'url'): ?>
                                             <a href="<?= htmlspecialchars($target['target']) ?>" target="_blank" onclick="event.stopPropagation();"><?= htmlspecialchars($target['target']) ?></a>
@@ -94,10 +94,14 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="actions-cell" onclick="event.stopPropagation();">
-                                        <a href="/targets/<?= $target['id'] ?>" class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
+                                    <td class="actions-cell">
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="/targets/<?= $target['id'] ?>" 
+                                               class="btn btn-info" 
+                                               title="View">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

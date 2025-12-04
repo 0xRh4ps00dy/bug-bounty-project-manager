@@ -345,6 +345,15 @@ body {
     text-decoration: none;
 }
 
+/* Prevent click propagation from action buttons */
+.actions-cell {
+    cursor: default !important;
+}
+
+.actions-cell * {
+    pointer-events: auto;
+}
+
 .table-card-wrapper {
     border-radius: 0.5rem;
     overflow: hidden;

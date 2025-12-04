@@ -20,12 +20,34 @@ class BBPM {
             }
         });
         
-        // Delete buttons
+        // Delete buttons - handle with highest priority
         document.addEventListener('click', (e) => {
-            if (e.target.closest('.btn-delete')) {
+            const deleteBtn = e.target.closest('.btn-delete');
+            if (deleteBtn) {
                 e.preventDefault();
-                const btn = e.target.closest('.btn-delete');
-                this.handleDelete(btn);
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                this.handleDelete(deleteBtn);
+                return false;
+            }
+        }, true);
+        
+        // Prevent clicks on action cells from triggering row navigation
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.actions-cell')) {
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+            }
+        }, true);
+        
+        // Handle clickable rows
+        document.addEventListener('click', (e) => {
+            const row = e.target.closest('tr.clickable-row');
+            if (row && !e.target.closest('.actions-cell')) {
+                const href = row.dataset.href;
+                if (href) {
+                    window.location.href = href;
+                }
             }
         });
         

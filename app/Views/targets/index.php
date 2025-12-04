@@ -33,7 +33,7 @@
                         </thead>
                         <tbody>
                             <?php foreach ($targets as $target): ?>
-                                <tr class="clickable-row" onclick="window.location.href='/targets/<?= $target['id'] ?>';" style="cursor: pointer;">
+                                <tr class="clickable-row" data-href="/targets/<?= $target['id'] ?>" style="cursor: pointer;">
                                     <td><strong><?= htmlspecialchars($target['name']) ?></strong></td>
                                     <td><?= htmlspecialchars($target['project_name'] ?? $target['project_id']) ?></td>
                                     <td>
@@ -60,14 +60,17 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="actions-cell" onclick="event.stopPropagation();">
-                                        <div class="btn-group">
-                                            <a href="/targets/<?= $target['id'] ?>" class="btn btn-sm btn-outline-primary">
+                                    <td class="actions-cell">
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="/targets/<?= $target['id'] ?>" 
+                                               class="btn btn-info" 
+                                               title="View">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <button class="btn btn-sm btn-outline-danger btn-delete" 
+                                            <button class="btn btn-danger btn-delete" 
                                                     data-url="/targets/<?= $target['id'] ?>"
-                                                    data-confirm="Delete this target?">
+                                                    data-confirm="Delete this target?"
+                                                    title="Delete">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>

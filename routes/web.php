@@ -47,3 +47,5 @@ $router->get('/checklist', [ChecklistController::class, 'index']);
 $router->post('/checklist', [ChecklistController::class, 'store']);
 $router->put('/checklist/{id}', [ChecklistController::class, 'update']);
 $router->delete('/checklist/{id}', [ChecklistController::class, 'destroy']);
+$router->post('/checklist/{id}/move-up', [ChecklistController::class, 'moveUp']);
+$router->post('/checklist/{id}/move-down', [ChecklistController::class, 'moveDown']);

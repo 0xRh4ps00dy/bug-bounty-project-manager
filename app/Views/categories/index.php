@@ -37,13 +37,16 @@
                                     <td><?= htmlspecialchars($category['description'] ?? '') ?></td>
                                     <td><span class="badge bg-info"><?= $category['item_count'] ?? 0 ?></span></td>
                                     <td class="actions-cell">
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-warning" onclick="editCategory(<?= htmlspecialchars(json_encode($category)) ?>)">
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-warning" 
+                                                    onclick="editCategory(<?= htmlspecialchars(json_encode($category)) ?>)"
+                                                    title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger btn-delete" 
+                                            <button class="btn btn-danger btn-delete" 
                                                     data-url="/categories/<?= $category['id'] ?>"
-                                                    data-confirm="Delete category '<?= htmlspecialchars($category['name']) ?>'?">
+                                                    data-confirm="Delete category '<?= htmlspecialchars($category['name']) ?>'"
+                                                    title="Delete">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>

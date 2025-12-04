@@ -10,7 +10,8 @@ class ChecklistItem extends Model
     
     public function getByCategory(int $categoryId): array
     {
-        return $this->where('category_id', $categoryId);
+        $sql = "SELECT * FROM checklist_items WHERE category_id = ? ORDER BY order_num";
+        return $this->query($sql, [$categoryId])->fetchAll();
     }
     
     public function getAllWithCategory(): array
@@ -23,5 +24,54 @@ class ChecklistItem extends Model
         ";
         
         return $this->query($sql)->fetchAll();
+    }
+    
+    public function moveUp(int $id): bool
+    {
+        $item = $this->find($id);
+        if (!$item) return false;
+        
+        // Find previous item in same category
+        $sql = "SELECT * FROM checklist_items 
+                WHERE category_id = ? AND order_num < ? 
+                ORDER BY order_num DESC LIMIT 1";
+        $prevItem = $this->query($sql, [$item['category_id'], $item['order_num']])->fetch();
+        
+        if (!$prevItem) return false;
+        
+        // Swap order numbers
+        $this->update($id, ['order_num' => $prevItem['order_num']]);
+        $this->update($prevItem['id'], ['order_num' => $item['order_num']]);
+        
+        return true;
+    }
+    
+    public function moveDown(int $id): bool
+    {
+        $item = $this->find($id);
+        if (!$item) return false;
+        
+        // Find next item in same category
+        $sql = "SELECT * FROM checklist_items 
+                WHERE category_id = ? AND order_num > ? 
+                ORDER BY order_num ASC LIMIT 1";
+        $nextItem = $this->query($sql, [$item['category_id'], $item['order_num']])->fetch();
+        
+        if (!$nextItem) return false;
+        
+        // Swap order numbers
+        $this->update($id, ['order_num' => $nextItem['order_num']]);
+        $this->update($nextItem['id'], ['order_num' => $item['order_num']]);
+        
+        return true;
+    }
+    
+    public function reorderCategory(int $categoryId): void
+    {
+        $items = $this->getByCategory($categoryId);
+        $order = 1;
+        foreach ($items as $item) {
+            $this->update($item['id'], ['order_num' => $order++]);
+        }
     }
 }

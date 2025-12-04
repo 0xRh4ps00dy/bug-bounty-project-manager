@@ -116,4 +116,50 @@ class ChecklistController extends Controller
             $this->redirect('/checklist');
         }
     }
+    
+    public function moveUp(int $id): void
+    {
+        try {
+            $success = $this->model->moveUp($id);
+            
+            if ($this->isAjax()) {
+                $this->json(['success' => $success]);
+            }
+            
+            if ($success) {
+                $_SESSION['flash_message'] = 'Item moved up';
+            }
+            $this->redirect('/checklist');
+        } catch (\Exception $e) {
+            if ($this->isAjax()) {
+                $this->json(['error' => $e->getMessage()], 500);
+            }
+            
+            $_SESSION['flash_error'] = $e->getMessage();
+            $this->redirect('/checklist');
+        }
+    }
+    
+    public function moveDown(int $id): void
+    {
+        try {
+            $success = $this->model->moveDown($id);
+            
+            if ($this->isAjax()) {
+                $this->json(['success' => $success]);
+            }
+            
+            if ($success) {
+                $_SESSION['flash_message'] = 'Item moved down';
+            }
+            $this->redirect('/checklist');
+        } catch (\Exception $e) {
+            if ($this->isAjax()) {
+                $this->json(['error' => $e->getMessage()], 500);
+            }
+            
+            $_SESSION['flash_error'] = $e->getMessage();
+            $this->redirect('/checklist');
+        }
+    }
 }

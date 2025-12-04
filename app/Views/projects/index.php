@@ -33,7 +33,7 @@
                             </tr>
                         <?php else: ?>
                             <?php foreach ($projects as $project): ?>
-                                <tr class="clickable-row" onclick="window.location.href='/projects/<?= $project['id'] ?>';" style="cursor: pointer;">
+                                <tr class="clickable-row" data-href="/projects/<?= $project['id'] ?>" style="cursor: pointer;">
                                     <td>
                                         <strong><?= htmlspecialchars($project['name']) ?></strong>
                                     </td>
@@ -52,9 +52,11 @@
                                         </div>
                                     </td>
                                     <td><?= date('Y-m-d', strtotime($project['created_at'])) ?></td>
-                                    <td class="actions-cell" onclick="event.stopPropagation();">
+                                    <td class="actions-cell">
                                         <div class="btn-group btn-group-sm">
-                                            <a href="/projects/<?= $project['id'] ?>" class="btn btn-info" title="View">
+                                            <a href="/projects/<?= $project['id'] ?>" 
+                                               class="btn btn-info" 
+                                               title="View">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             <button class="btn btn-warning btn-edit" 
