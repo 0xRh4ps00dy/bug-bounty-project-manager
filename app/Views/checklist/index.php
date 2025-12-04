@@ -24,17 +24,22 @@
             No checklist items found.
         </div>
     <?php else: ?>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Order</th>
-                        <th>Category</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-list-check"></i> Checklist Items</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Category</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
                 <tbody>
                     <?php foreach ($items as $item): ?>
                         <tr>
@@ -58,6 +63,8 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+                </div>
+            </div>
         </div>
     <?php endif; ?>
 </div>

@@ -104,9 +104,9 @@
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
-                        <div class="card-body">
-                            <table class="table table-hover table-sm">
-                                <thead class="table-dark">
+                        <div class="card-body p-0">
+                            <table class="table table-hover table-sm mb-0">
+                                <thead>
                                     <tr>
                                         <th>Date</th>
                                         <th>Item</th>

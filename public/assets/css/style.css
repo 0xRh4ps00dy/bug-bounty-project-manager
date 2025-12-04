@@ -583,8 +583,24 @@ body {
     border-bottom-color: #4b5563;
 }
 
+.category-section:first-child {
+    border-top: none;
+}
+
 .category-section:last-child {
     border-bottom: none;
+}
+
+.category-section > div:first-child {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+    font-size: 0.95rem;
+}
+
+[data-theme="dark"] .category-section > div:first-child {
+    background-color: #5a9eff;
 }
 
 .checklist-item {
@@ -596,16 +612,25 @@ body {
 
 [data-theme="dark"] .checklist-item {
     border-bottom-color: #4b5563;
-    background-color: transparent;
+    background-color: var(--bg-primary);
+}
+
+.checklist-item:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] .checklist-item:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.02);
 }
 
 .checklist-item:hover {
     background-color: var(--primary-light);
-    padding-left: 1.5rem;
+    transform: translateX(2px);
 }
 
 [data-theme="dark"] .checklist-item:hover {
-    background-color: rgba(90, 158, 255, 0.05);
+    background-color: rgba(90, 158, 255, 0.08);
+    transform: translateX(2px);
 }
 
 .checklist-item.checked {
@@ -613,7 +638,7 @@ body {
 }
 
 [data-theme="dark"] .checklist-item.checked {
-    background-color: rgba(74, 222, 128, 0.1);
+    background-color: rgba(74, 222, 128, 0.15);
 }
 
 .checklist-toggle {
