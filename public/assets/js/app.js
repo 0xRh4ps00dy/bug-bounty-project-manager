@@ -45,8 +45,10 @@ class BBPM {
         
         // Check all category
         document.addEventListener('click', (e) => {
-            if (e.target.closest('.check-all-category')) {
-                const btn = e.target.closest('.check-all-category');
+            const btn = e.target.closest('.check-all-category');
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
                 this.checkAllCategory(btn);
             }
         });
@@ -213,29 +215,51 @@ class BBPM {
         const categoryId = btn.dataset.categoryId;
         const targetId = btn.dataset.targetId;
         
-        if (!confirm('Mark all items in this category as checked?')) {
+        const categorySection = document.querySelector(`[data-category-id="${categoryId}"]`);
+        if (!categorySection) {
+            this.showError('Category section not found');
             return;
         }
         
-        const categorySection = document.querySelector(`[data-category-id="${categoryId}"]`);
-        const checkboxes = categorySection.querySelectorAll('.checklist-toggle:not(:checked)');
+        const checkboxes = categorySection.querySelectorAll('.checklist-toggle');
+        
+        // Determine if we should check all or uncheck all
+        const checkedCount = categorySection.querySelectorAll('.checklist-toggle:checked').length;
+        const allChecked = checkedCount === checkboxes.length;
+        const newState = !allChecked;
+        
+        const confirmMsg = allChecked 
+            ? 'Uncheck all items in this category?' 
+            : 'Mark all items in this category as checked?';
+        
+        if (!confirm(confirmMsg)) {
+            return;
+        }
         
         try {
             this.showLoading(btn);
             
-            // Check all unchecked items
+            // Toggle all items to the new state
             for (const checkbox of checkboxes) {
-                const itemId = checkbox.dataset.itemId;
-                
-                await this.fetch(`/targets/${targetId}/checklist/${itemId}/toggle`, {
-                    method: 'POST',
-                    body: JSON.stringify({ is_checked: 1 })
-                });
-                
-                checkbox.checked = true;
-                const checklistItem = checkbox.closest('.checklist-item');
-                if (checklistItem) {
-                    checklistItem.classList.add('checked');
+                if (checkbox.checked !== newState) {
+                    const itemId = checkbox.dataset.itemId;
+                    
+                    const response = await this.fetch(`/targets/${targetId}/checklist/${itemId}/toggle`, {
+                        method: 'POST',
+                        body: JSON.stringify({ is_checked: newState ? 1 : 0 })
+                    });
+                    
+                    if (response.success) {
+                        checkbox.checked = newState;
+                        const checklistItem = checkbox.closest('.checklist-item');
+                        if (checklistItem) {
+                            if (newState) {
+                                checklistItem.classList.add('checked');
+                            } else {
+                                checklistItem.classList.remove('checked');
+                            }
+                        }
+                    }
                 }
             }
             
@@ -243,9 +267,9 @@ class BBPM {
             await this.updateProgress();
             this.updateCategoryCounter(categorySection);
             
-            this.showSuccess('All items checked successfully');
+            this.showSuccess(allChecked ? 'All items unchecked' : 'All items checked successfully');
         } catch (error) {
-            this.showError('Failed to check all items: ' + error.message);
+            this.showError('Failed to toggle items: ' + error.message);
         } finally {
             this.hideLoading(btn);
         }
@@ -258,6 +282,35 @@ class BBPM {
         
         if (counter) {
             counter.textContent = `(${checkedItems.length}/${items.length})`;
+        }
+        
+        // Update button text based on state
+        const btn = categorySection.querySelector('.check-all-category');
+        if (btn) {
+            const allChecked = checkedItems.length === items.length && items.length > 0;
+            const icon = btn.querySelector('i');
+            
+            if (icon) {
+                // Save data attributes
+                const categoryId = btn.dataset.categoryId;
+                const targetId = btn.dataset.targetId;
+                
+                if (allChecked) {
+                    btn.innerHTML = '<i class="bi bi-x-circle"></i> Uncheck All';
+                    btn.classList.remove('btn-light');
+                    btn.classList.add('btn-outline-light');
+                    btn.title = 'Uncheck all items';
+                } else {
+                    btn.innerHTML = '<i class="bi bi-check-all"></i> Check All';
+                    btn.classList.remove('btn-outline-light');
+                    btn.classList.add('btn-light');
+                    btn.title = 'Mark all as checked';
+                }
+                
+                // Restore data attributes
+                btn.dataset.categoryId = categoryId;
+                btn.dataset.targetId = targetId;
+            }
         }
     }
     

@@ -74,11 +74,10 @@ $parsedown = new \Parsedown();
                                 <h6 class="mb-0"><?= htmlspecialchars($category['category_name']) ?></h6>
                                 <small class="ms-3 opacity-75">(<?= $checkedCount ?>/<?= count($category['items']) ?>)</small>
                             </div>
-                            <button class="btn btn-sm btn-light check-all-category" 
+                            <button type="button" class="btn btn-sm btn-light check-all-category" 
                                     data-category-id="<?= $category['category_id'] ?>"
                                     data-target-id="<?= $target['id'] ?>"
-                                    title="Mark all as checked"
-                                    onclick="event.stopPropagation();">
+                                    title="Mark all as checked">
                                 <i class="bi bi-check-all"></i> Check All
                             </button>
                         </div>
