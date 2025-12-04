@@ -59,13 +59,9 @@
                                                title="View">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <button class="btn btn-warning btn-edit" 
-                                                    data-id="<?= $project['id'] ?>"
-                                                    data-name="<?= htmlspecialchars($project['name']) ?>"
-                                                    data-description="<?= htmlspecialchars($project['description'] ?? '') ?>"
-                                                    data-status="<?= $project['status'] ?>"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#editModal"
+                                            <button class="btn btn-warning" 
+                                                    type="button"
+                                                    onclick="editProject(<?= htmlspecialchars(json_encode($project)) ?>)"
                                                     title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
@@ -160,14 +156,15 @@
 </div>
 
 <script>
-// Populate edit modal
-document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.btn-edit');
-    if (!btn) return;
+// Edit project function
+function editProject(project) {
+    document.getElementById('edit_name').value = project.name;
+    document.getElementById('edit_description').value = project.description || '';
+    document.getElementById('edit_status').value = project.status;
+    document.getElementById('editForm').action = '/projects/' + project.id;
     
-    document.getElementById('edit_name').value = btn.dataset.name;
-    document.getElementById('edit_description').value = btn.dataset.description;
-    document.getElementById('edit_status').value = btn.dataset.status;
-    document.getElementById('editForm').action = '/projects/' + btn.dataset.id;
-});
+    // Open modal
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    modal.show();
+}
 </script>

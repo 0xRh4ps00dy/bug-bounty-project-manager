@@ -41,6 +41,8 @@ $router->get('/categories', [CategoryController::class, 'index']);
 $router->post('/categories', [CategoryController::class, 'store']);
 $router->put('/categories/{id}', [CategoryController::class, 'update']);
 $router->delete('/categories/{id}', [CategoryController::class, 'destroy']);
+$router->post('/categories/{id}/move-up', [CategoryController::class, 'moveUp']);
+$router->post('/categories/{id}/move-down', [CategoryController::class, 'moveDown']);
 
 // Checklist Items
 $router->get('/checklist', [ChecklistController::class, 'index']);

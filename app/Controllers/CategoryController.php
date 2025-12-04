@@ -99,4 +99,50 @@ class CategoryController extends Controller
             $this->redirect('/categories');
         }
     }
+    
+    public function moveUp(int $id): void
+    {
+        try {
+            $success = $this->model->moveUp($id);
+            
+            if ($this->isAjax()) {
+                $this->json(['success' => $success]);
+            }
+            
+            if ($success) {
+                $_SESSION['flash_message'] = 'Category moved up';
+            }
+            $this->redirect('/categories');
+        } catch (\Exception $e) {
+            if ($this->isAjax()) {
+                $this->json(['error' => $e->getMessage()], 500);
+            }
+            
+            $_SESSION['flash_error'] = $e->getMessage();
+            $this->redirect('/categories');
+        }
+    }
+    
+    public function moveDown(int $id): void
+    {
+        try {
+            $success = $this->model->moveDown($id);
+            
+            if ($this->isAjax()) {
+                $this->json(['success' => $success]);
+            }
+            
+            if ($success) {
+                $_SESSION['flash_message'] = 'Category moved down';
+            }
+            $this->redirect('/categories');
+        } catch (\Exception $e) {
+            if ($this->isAjax()) {
+                $this->json(['error' => $e->getMessage()], 500);
+            }
+            
+            $_SESSION['flash_error'] = $e->getMessage();
+            $this->redirect('/categories');
+        }
+    }
 }

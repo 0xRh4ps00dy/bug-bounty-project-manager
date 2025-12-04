@@ -22,21 +22,41 @@
                     <table class="table table-hover mb-0">
                         <thead>
                             <tr>
-                                <th>Order</th>
+                                <th style="width: 100px;">Order</th>
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Items</th>
-                                <th class="actions-cell">Actions</th>
+                                <th style="width: 250px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($categories as $category): ?>
-                                <tr class="clickable-row">
-                                    <td><?= $category['order_num'] ?? 0 ?></td>
+                            <?php foreach ($categories as $index => $category): ?>
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-primary"><?= $category['order_num'] ?? 0 ?></span>
+                                    </td>
                                     <td><strong><?= htmlspecialchars($category['name']) ?></strong></td>
                                     <td><?= htmlspecialchars($category['description'] ?? '') ?></td>
                                     <td><span class="badge bg-info"><?= $category['item_count'] ?? 0 ?></span></td>
                                     <td class="actions-cell">
+                                        <div class="btn-group btn-group-sm me-2">
+                                            <form method="POST" action="/categories/<?= $category['id'] ?>/move-up" style="display: inline;">
+                                                <button type="submit" 
+                                                        class="btn btn-secondary" 
+                                                        title="Move Up"
+                                                        <?= $index === 0 ? 'disabled' : '' ?>>
+                                                    <i class="bi bi-arrow-up"></i>
+                                                </button>
+                                            </form>
+                                            <form method="POST" action="/categories/<?= $category['id'] ?>/move-down" style="display: inline;">
+                                                <button type="submit" 
+                                                        class="btn btn-secondary" 
+                                                        title="Move Down"
+                                                        <?= $index === count($categories) - 1 ? 'disabled' : '' ?>>
+                                                    <i class="bi bi-arrow-down"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                         <div class="btn-group btn-group-sm">
                                             <button class="btn btn-warning" 
                                                     onclick="editCategory(<?= htmlspecialchars(json_encode($category)) ?>)"
@@ -133,4 +153,36 @@ function editCategory(category) {
     document.getElementById('edit_order_num').value = category.order_num || 0;
     new bootstrap.Modal(document.getElementById('editModal')).show();
 }
+
+// Handle move buttons with AJAX
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('form[action*="/move-"]').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const button = this.querySelector('button[type="submit"]');
+            button.disabled = true;
+            
+            fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    button.disabled = false;
+                    alert('Failed to reorder category');
+                }
+            })
+            .catch(error => {
+                button.disabled = false;
+                console.error('Error:', error);
+            });
+        });
+    });
+});
 </script>

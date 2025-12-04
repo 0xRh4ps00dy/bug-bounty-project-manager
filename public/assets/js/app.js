@@ -32,15 +32,7 @@ class BBPM {
             }
         }, true);
         
-        // Prevent clicks on action cells from triggering row navigation
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.actions-cell')) {
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-            }
-        }, true);
-        
-        // Handle clickable rows
+        // Handle clickable rows - only if NOT in actions cell
         document.addEventListener('click', (e) => {
             const row = e.target.closest('tr.clickable-row');
             if (row && !e.target.closest('.actions-cell')) {

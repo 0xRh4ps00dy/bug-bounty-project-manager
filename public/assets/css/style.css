@@ -354,6 +354,11 @@ body {
     pointer-events: auto;
 }
 
+.actions-cell button,
+.actions-cell a {
+    cursor: pointer;
+}
+
 .table-card-wrapper {
     border-radius: 0.5rem;
     overflow: hidden;
