@@ -1,10 +1,10 @@
-# Ignorar todos los archivos de backup
-backups/
-*.zip
+# Ignorar archivos de backup
 *.sql
-temp_restore/
+*.sql.gz
+*.sql.zip
 
-# Excepto los scripts
-!*.ps1
-!*.md
-!.gitignore
+# Ignorar directorios de backup (excepto este archivo)
+backups/
+
+# Pero permitir que la carpeta exista
+!backups/.gitkeep
