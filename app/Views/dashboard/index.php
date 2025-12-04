@@ -137,30 +137,4 @@
         </div>
     </div>
     
-    <!-- Quick Actions -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0"><i class="bi bi-lightning"></i> Quick Actions</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProjectModal">
-                            <i class="bi bi-plus-circle"></i> New Project
-                        </button>
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newTargetModal">
-                            <i class="bi bi-plus-circle"></i> New Target
-                        </button>
-                        <a href="/categories" class="btn btn-warning">
-                            <i class="bi bi-tags"></i> Manage Categories
-                        </a>
-                        <a href="/checklist" class="btn btn-info">
-                            <i class="bi bi-list-check"></i> Manage Checklist
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

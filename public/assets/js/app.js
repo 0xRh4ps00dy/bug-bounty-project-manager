@@ -180,17 +180,20 @@ class BBPM {
     
     async updateProgress() {
         // Reload progress stats
-        const progressBar = document.querySelector('.progress-bar');
-        if (!progressBar) return;
+        const progressContainer = document.querySelector('.progress[data-target-id]');
+        if (!progressContainer) return;
         
-        const targetId = progressBar.dataset.targetId;
+        const targetId = progressContainer.dataset.targetId;
         if (!targetId) return;
+        
+        const progressBar = progressContainer.querySelector('.progress-bar');
+        if (!progressBar) return;
         
         try {
             const response = await this.fetch(`/api/targets/${targetId}`);
             if (response.target) {
                 progressBar.style.width = response.target.progress + '%';
-                progressBar.textContent = response.target.progress + '%';
+                progressBar.textContent = Math.round(response.target.progress) + '%';
                 
                 const completedSpan = document.querySelector('.completed-count');
                 if (completedSpan) {

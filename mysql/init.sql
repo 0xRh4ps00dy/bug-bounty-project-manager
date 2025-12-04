@@ -235,26 +235,26 @@ INSERT INTO categories (name, description, order_num) VALUES
 ('Other Test Cases', 'Miscellaneous security tests', 29),
 ('Burp Suite Extensions', 'Useful Burp Suite extensions', 30);
 
--- Inserir items de Recon Phase
+-- Inserir items de Recon Phase con descripciones formateadas en Markdown
 INSERT INTO checklist_items (category_id, title, description, order_num) VALUES
-(1, 'Identify web server, technologies and database', 'Use tools like Wappalyzer, BuiltWith, or WhatWeb to identify the tech stack. Check HTTP headers for server information.', 1),
-(1, 'Subsidiary and Acquisition Enumeration', 'Research company acquisitions and subsidiaries that might share infrastructure or have related domains.', 2),
-(1, 'Reverse Lookup', 'Perform reverse DNS lookups to find other domains hosted on the same IP address.', 3),
-(1, 'ASN & IP Space Enumeration and Service Enumeration', 'Identify the Autonomous System Number (ASN) and enumerate all IP ranges owned by the target organization.', 4),
-(1, 'Google Dorking', 'Use advanced Google search operators to find sensitive information, exposed files, and hidden endpoints.', 5),
-(1, 'Github Recon', 'Search GitHub for exposed credentials, API keys, configuration files, and source code related to the target.', 6),
-(1, 'Directory Enumeration', 'Use tools like dirsearch, gobuster, or ffuf to discover hidden directories and files.', 7),
-(1, 'IP Range Enumeration', 'Enumerate all IP addresses in the target''s network range to identify additional assets.', 8),
-(1, 'JS Files Analysis', 'Analyze JavaScript files for API endpoints, hardcoded credentials, comments, and logic flaws.', 9),
-(1, 'Subdomain Enumeration and Bruteforcing', 'Use tools like Subfinder, Amass, or Sublist3r to discover subdomains. Bruteforce with common wordlists.', 10),
-(1, 'Subdomain Takeover', 'Check if any subdomain points to unclaimed resources (AWS S3, GitHub Pages, Heroku, etc.).', 11),
-(1, 'Parameter Fuzzing', 'Fuzz GET/POST parameters to discover hidden parameters and potential injection points.', 12),
-(1, 'Port Scanning', 'Scan for open ports using Nmap or Masscan. Identify services running on non-standard ports.', 13),
-(1, 'Template-Based Scanning(Nuclei)', 'Use Nuclei templates to automatically detect known vulnerabilities and misconfigurations.', 14),
-(1, 'Wayback History', 'Use Wayback Machine to find old versions of the site that might expose deprecated endpoints or vulnerabilities.', 15),
-(1, 'Broken Link Hijacking', 'Find broken external links that could be registered to serve malicious content or steal data.', 16),
-(1, 'Internet Search Engine Discovery', 'Use search engines like Shodan, Censys, or ZoomEye to discover exposed services and devices.', 17),
-(1, 'Misconfigured Cloud Storage', 'Check for publicly accessible S3 buckets, Azure Blob Storage, or Google Cloud Storage buckets.', 18);
+(1, 'Identify web server, technologies and database', 'Realiza **Fingerprinting activo y pasivo**. Analiza cabeceras HTTP (`X-Powered-By`, `Server`), cookies y detecta WAFs. \n**Herramientas:** `Wappalyzer`, `BuiltWith`, `WhatWeb`.', 1),
+(1, 'Subsidiary and Acquisition Enumeration', 'Investiga adquisiciones y subsidiarias mediante bases de datos financieras (e.g., **Crunchbase**) y **WHOIS** para encontrar infraestructura heredada o "fuera del radar".', 2),
+(1, 'Reverse Lookup', 'Ejecuta **búsquedas DNS inversas** para identificar otros dominios alojados en la misma IP (*Virtual Hosting*). \n**Herramientas:** `DNSDumpster`, `Robtex`.', 3),
+(1, 'ASN & IP Space Enumeration and Service Enumeration', 'Identifica el **ASN** (Autonomous System Number) y enumera todos los rangos CIDR (IPv4/IPv6). \n**Herramientas:** `Amass`, `BGP Hurricane Electric`.', 4),
+(1, 'Google Dorking', 'Utiliza **Google Dorks** para hallar archivos de configuración (`ext:conf`), logs, portales de login y documentos sensibles. Consulta la **GHDB**.', 5),
+(1, 'Github Recon', 'Busca credenciales hardcodeadas, **API Keys** y secretos en repositorios de la empresa y personales de empleados. \n**Herramientas:** `GitRob`, `TruffleHog`.', 6),
+(1, 'Directory Enumeration', 'Fuerza bruta de directorios y archivos ocultos. Analiza códigos de estado (`403` vs `404`). \n**Herramientas:** `Feroxbuster`, `Gobuster`, `Dirsearch`.', 7),
+(1, 'IP Range Enumeration', 'Escanea los rangos de red identificados (Ping sweep/SYN scan) para detectar **hosts activos** sin dominio asociado. \n**Herramientas:** `Masscan`, `Nmap`.', 8),
+(1, 'JS Files Analysis', 'Analiza archivos JavaScript estáticos (`.js`) en busca de endpoints de API ocultos, lógica de cliente y credenciales. \n**Herramientas:** `LinkFinder`, `JSParser`.', 9),
+(1, 'Subdomain Enumeration and Bruteforcing', 'Combina **enumeración pasiva** (certificados SSL) y **activa** (fuerza bruta y permutaciones). \n**Herramientas:** `Subfinder`, `Amass`, `Puredns`.', 10),
+(1, 'Subdomain Takeover', 'Verifica registros **CNAME colgantes** que apunten a servicios externos no reclamados (`AWS S3`, `GitHub Pages`, `Heroku`). \n**Herramientas:** `Subjack`, `Nuclei`.', 11),
+(1, 'Parameter Fuzzing', 'Fuzzea parámetros `GET/POST` para descubrir entradas ocultas y puntos de inyección no documentados. \n**Herramientas:** `Arjun`, `ParamSpider`.', 12),
+(1, 'Port Scanning', 'Escanea los **65535 puertos** (TCP/UDP) para identificar servicios en puertos no estándar. \n**Herramientas:** `Nmap`, `Masscan`, `RustScan`.', 13),
+(1, 'Template-Based Scanning (Nuclei)', 'Utiliza plantillas de **Nuclei** para detectar automáticamente CVEs conocidos y configuraciones erróneas en la infraestructura.', 14),
+(1, 'Wayback History', 'Consulta **Wayback Machine** para encontrar versiones antiguas, endpoints API deprecados o archivos eliminados. \n**Herramientas:** `Waymore`, `Gau`.', 15),
+(1, 'Broken Link Hijacking', 'Rastrea el sitio buscando enlaces salientes rotos (`404`) hacia dominios externos que puedan registrarse para ataques de **Reputation Hijacking** o XSS.', 16),
+(1, 'Internet Search Engine Discovery', 'Utiliza motores OSINT para descubrir activos expuestos, bases de datos abiertas y dispositivos IoT. \n**Motores:** `Shodan`, `Censys`, `ZoomEye`.', 17),
+(1, 'Misconfigured Cloud Storage', 'Verifica permisos públicos en buckets (`S3`, `Azure Blob`, `GCP`). Busca archivos sensibles o backups. \n**Herramientas:** `Cloud_enum`, `AWS CLI`.', 18);
 
 -- Inserir items de Registration Feature Testing
 INSERT INTO checklist_items (category_id, title, description, order_num) VALUES
