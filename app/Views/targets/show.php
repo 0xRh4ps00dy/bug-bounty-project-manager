@@ -104,11 +104,44 @@ $parsedown = new \Parsedown();
                                     </div>
                                     <div class="col">
                                         <strong><?= htmlspecialchars($item['title']) ?></strong>
-                                        <?php if (!empty($item['description'])): ?>
-                                            <div class="description-content text-muted mb-2 small markdown-content">
-                                                <?= $parsedown->text($item['description']) ?>
+                                        
+                                        <!-- Description Section -->
+                                        <div class="description-section mt-2 mb-2">
+                                            <div class="description-view small text-muted markdown-content">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div>
+                                                        <?php if (!empty($item['description'])): ?>
+                                                            <?= $parsedown->text($item['description']) ?>
+                                                        <?php else: ?>
+                                                            <em>Sin descripción</em>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                    <button type="button" class="btn btn-sm btn-link edit-description-btn ms-2" 
+                                                            data-target-id="<?= $target['id'] ?>"
+                                                            data-item-id="<?= $item['checklist_item_id'] ?>"
+                                                            title="Editar descripción">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        <?php endif; ?>
+                                            <div class="description-edit d-none">
+                                                <textarea class="form-control form-control-sm description-textarea" 
+                                                          placeholder="Escribir descripción..." 
+                                                          rows="3"><?= htmlspecialchars($item['description'] ?? '') ?></textarea>
+                                                <div class="mt-2 d-flex gap-2">
+                                                    <button type="button" class="btn btn-sm btn-success save-description" 
+                                                            data-target-id="<?= $target['id'] ?>"
+                                                            data-item-id="<?= $item['checklist_item_id'] ?>">
+                                                        <i class="bi bi-check"></i> Guardar
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-secondary cancel-description">
+                                                        <i class="bi bi-x"></i> Cancelar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Notes Section -->
                                         <textarea class="form-control form-control-sm checklist-notes" 
                                                   data-target-id="<?= $target['id'] ?>"
                                                   data-item-id="<?= $item['checklist_item_id'] ?>"

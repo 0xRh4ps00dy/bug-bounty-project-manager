@@ -201,6 +201,18 @@ class TargetController extends Controller
         }
     }
     
+    public function updateDescription(int $targetId, int $itemId): void
+    {
+        $description = trim($this->input('description', ''));
+        
+        try {
+            $this->model->updateChecklistItem($targetId, $itemId, ['description' => $description]);
+            $this->json(['success' => true, 'message' => 'Descripción actualizada']);
+        } catch (\Exception $e) {
+            $this->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
     /**
      * Validate target based on its type
      */

@@ -28,6 +28,7 @@ $router->delete('/targets/{id}', [TargetController::class, 'destroy']);
 // Target Checklist Actions
 $router->post('/targets/{targetId}/checklist/{itemId}/toggle', [TargetController::class, 'toggleCheck']);
 $router->post('/targets/{targetId}/checklist/{itemId}/notes', [TargetController::class, 'updateNotes']);
+$router->post('/targets/{targetId}/checklist/{itemId}/description', [TargetController::class, 'updateDescription']);
 
 // Notes Management
 $router->get('/targets/{id}/notes', [NotesController::class, 'show']);

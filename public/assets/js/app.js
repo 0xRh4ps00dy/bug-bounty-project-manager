@@ -91,6 +91,36 @@ class BBPM {
             }
         });
         
+        // Edit description button
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.edit-description-btn');
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleDescriptionEdit(btn);
+            }
+        });
+        
+        // Save description
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.save-description');
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.saveDescription(btn);
+            }
+        });
+        
+        // Cancel description edit
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.cancel-description');
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.cancelDescriptionEdit(btn);
+            }
+        });
+        
         // Toggle collapse icon
         document.addEventListener('shown.bs.collapse', (e) => {
             if (e.target.classList.contains('category-items')) {
@@ -246,6 +276,71 @@ class BBPM {
             }
         } catch (error) {
             this.showError(error.message);
+        }
+    }
+    
+    toggleDescriptionEdit(btn) {
+        const descriptionSection = btn.closest('.description-section');
+        if (!descriptionSection) return;
+        
+        const descriptionView = descriptionSection.querySelector('.description-view');
+        const descriptionEdit = descriptionSection.querySelector('.description-edit');
+        const textarea = descriptionSection.querySelector('.description-textarea');
+        
+        if (!descriptionView || !descriptionEdit) return;
+        
+        descriptionView.classList.toggle('d-none');
+        descriptionEdit.classList.toggle('d-none');
+        
+        if (textarea && descriptionEdit.classList.contains('d-none') === false) {
+            textarea.focus();
+        }
+    }
+    
+    async saveDescription(btn) {
+        const targetId = btn.dataset.targetId;
+        const itemId = btn.dataset.itemId;
+        const descriptionSection = btn.closest('.description-section');
+        const textarea = descriptionSection.querySelector('.description-textarea');
+        const description = textarea.value.trim();
+        
+        const url = `/targets/${targetId}/checklist/${itemId}/description`;
+        
+        try {
+            this.showLoading(btn);
+            
+            const response = await this.fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({ description: description })
+            });
+            
+            if (response.success) {
+                this.showSuccess('Descripción actualizada');
+                
+                // Reload page to show updated description with markdown
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            } else {
+                this.showError(response.error || 'Error al actualizar');
+            }
+        } catch (error) {
+            this.showError(error.message);
+        } finally {
+            this.hideLoading(btn);
+        }
+    }
+    
+    cancelDescriptionEdit(btn) {
+        const descriptionSection = btn.closest('.description-section');
+        if (!descriptionSection) return;
+        
+        const descriptionView = descriptionSection.querySelector('.description-view');
+        const descriptionEdit = descriptionSection.querySelector('.description-edit');
+        
+        if (descriptionView && descriptionEdit) {
+            descriptionView.classList.remove('d-none');
+            descriptionEdit.classList.add('d-none');
         }
     }
     
