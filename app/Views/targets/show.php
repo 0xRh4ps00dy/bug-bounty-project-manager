@@ -49,8 +49,11 @@ $parsedown = new \Parsedown();
                     <span class="completed-count"><?= $target['completed_items'] ?? 0 ?></span> / <?= $target['total_items'] ?? 0 ?>
                 </div>
                 <div class="col-md-4">
-                    <div class="progress" style="height: 30px;" data-target-id="<?= $target['id'] ?>">
-                        <div class="progress-bar" role="progressbar" style="width: <?= $target['progress'] ?? 0 ?>%">
+                    <div class="progress" data-target-id="<?= $target['id'] ?>">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: <?= $target['progress'] ?? 0 ?>%"
+                             aria-valuenow="<?= $target['progress'] ?? 0 ?>" 
+                             aria-valuemin="0" aria-valuemax="100">
                             <?= round($target['progress'] ?? 0) ?>%
                         </div>
                     </div>

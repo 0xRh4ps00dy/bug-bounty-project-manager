@@ -118,7 +118,7 @@
                                             </small>
                                         </div>
                                         <div class="text-end">
-                                            <div class="progress" style="width: 100px; height: 20px;">
+                                            <div class="progress" style="width: 100px;">
                                                 <div class="progress-bar" role="progressbar" 
                                                      style="width: <?= $target['progress'] ?? 0 ?>%"
                                                      aria-valuenow="<?= $target['progress'] ?? 0 ?>" 
