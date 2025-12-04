@@ -201,6 +201,36 @@ body {
     color: #4d8fff;
 }
 
+/* Text utilities for dark theme */
+[data-theme="dark"] .text-muted {
+    color: #a8b0c0 !important;
+}
+
+[data-theme="dark"] .text-primary {
+    color: #4d8fff !important;
+}
+
+[data-theme="dark"] .text-success {
+    color: #51cf66 !important;
+}
+
+[data-theme="dark"] .text-warning {
+    color: #ffd43b !important;
+}
+
+[data-theme="dark"] .text-danger {
+    color: #ff6b6b !important;
+}
+
+[data-theme="dark"] .text-info {
+    color: #74c0fc !important;
+}
+
+/* Icons opacity for dark theme */
+[data-theme="dark"] .opacity-25 {
+    opacity: 0.15 !important;
+}
+
 /* Tables & Lists */
 .table {
     color: var(--text-primary);
@@ -424,7 +454,26 @@ body {
     background: #4d8fff;
 }
 
-/* Checklist Styles */
+/* List Group Items */
+.list-group-item {
+    background-color: var(--bg-primary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .list-group-item {
+    background-color: transparent;
+    border-color: #2a2d3a;
+}
+
+.list-group-item-action:hover {
+    background-color: var(--primary-light);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .list-group-item-action:hover {
+    background-color: rgba(77, 143, 255, 0.05);
+}
 .checklist-item {
     border-bottom: 1px solid var(--border-color);
     padding: 1rem;
