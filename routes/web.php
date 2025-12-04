@@ -30,7 +30,7 @@ $router->post('/targets/{targetId}/checklist/{itemId}/toggle', [TargetController
 $router->post('/targets/{targetId}/checklist/{itemId}/notes', [TargetController::class, 'updateNotes']);
 
 // Notes Management
-$router->get('/targets/{id}/notes', [NotesController::class, 'getAggregatedNotes']);
+$router->get('/targets/{id}/notes', [NotesController::class, 'show']);
 $router->get('/targets/{id}/notes/history', [NotesController::class, 'getHistory']);
 $router->get('/targets/{id}/notes/by-category', [NotesController::class, 'getByCategory']);
 $router->get('/targets/{id}/notes/by-severity', [NotesController::class, 'getBySeverity']);

@@ -15,6 +15,26 @@ class NotesController extends Controller
     }
     
     /**
+     * Show notes view
+     */
+    public function show(int $targetId): void
+    {
+        $target = $this->targetModel->getWithProgress($targetId);
+        
+        if (!$target) {
+            $this->redirect('/targets');
+            return;
+        }
+        
+        $notesByCategory = $this->targetModel->getAggregatedNotesByCategory($targetId);
+        
+        $this->view('notes.aggregated', [
+            'target' => $target,
+            'notesByCategory' => $notesByCategory
+        ]);
+    }
+    
+    /**
      * Obtener notas agregadas del target
      */
     public function getAggregatedNotes(int $targetId): array

@@ -180,7 +180,7 @@ class BBPM {
             } else {
                 // Revert checkbox
                 checkbox.checked = !checkbox.checked;
-                this.showError(response.error || 'Toggle failed');
+                this.showError(response.error || 'Error al cambiar estado');
             }
         } catch (error) {
             checkbox.checked = !checkbox.checked;
@@ -202,9 +202,9 @@ class BBPM {
             });
             
             if (response.success) {
-                this.showSuccess('Notes updated', 1000);
+                this.showSuccess('Notas actualizadas', 1000);
             } else {
-                this.showError(response.error || 'Update failed');
+                this.showError(response.error || 'Error al actualizar');
             }
         } catch (error) {
             this.showError(error.message);
@@ -217,7 +217,7 @@ class BBPM {
         
         const categorySection = document.querySelector(`[data-category-id="${categoryId}"]`);
         if (!categorySection) {
-            this.showError('Category section not found');
+            this.showError('Sección de categoría no encontrada');
             return;
         }
         
@@ -229,8 +229,8 @@ class BBPM {
         const newState = !allChecked;
         
         const confirmMsg = allChecked 
-            ? 'Uncheck all items in this category?' 
-            : 'Mark all items in this category as checked?';
+            ? '¿Desmarcar todos los elementos de esta categoría?' 
+            : '¿Marcar todos los elementos de esta categoría como completados?';
         
         if (!confirm(confirmMsg)) {
             return;
@@ -271,9 +271,9 @@ class BBPM {
                 this.updateCategoryCounter(categorySection);
             }, 100);
             
-            this.showSuccess(allChecked ? 'All items unchecked' : 'All items checked successfully');
+            this.showSuccess(allChecked ? 'Todos los elementos desmarcados' : 'Todos los elementos marcados correctamente');
         } catch (error) {
-            this.showError('Failed to toggle items: ' + error.message);
+            this.showError('Error al cambiar elementos: ' + error.message);
         } finally {
             this.hideLoading(btn);
         }
@@ -298,15 +298,15 @@ class BBPM {
             const targetId = btn.dataset.targetId;
             
             if (allChecked) {
-                btn.innerHTML = '<i class="bi bi-x-circle me-1"></i>Uncheck All';
+                btn.innerHTML = '<i class="bi bi-x-circle me-1"></i>Desmarcar Todos';
                 btn.classList.remove('btn-light');
                 btn.classList.add('btn-outline-light');
-                btn.title = 'Uncheck all items';
+                btn.title = 'Desmarcar todos los elementos';
             } else {
-                btn.innerHTML = '<i class="bi bi-check-all me-1"></i>Check All';
+                btn.innerHTML = '<i class="bi bi-check-all me-1"></i>Marcar Todos';
                 btn.classList.remove('btn-outline-light');
                 btn.classList.add('btn-light');
-                btn.title = 'Mark all as checked';
+                btn.title = 'Marcar todos como completados';
             }
             
             // Restore data attributes

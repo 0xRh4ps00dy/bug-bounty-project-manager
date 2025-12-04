@@ -10,35 +10,42 @@ $parsedown = new \Parsedown();
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/targets">Targets</a></li>
+            <li class="breadcrumb-item"><a href="/targets">Objetivos</a></li>
             <li class="breadcrumb-item active"><?= htmlspecialchars($target['target']) ?></li>
         </ol>
     </nav>
     
     <div class="card mb-4">
         <div class="card-body">
-            <h1 class="mb-3"><?= htmlspecialchars($target['target']) ?></h1>
-            <p class="text-muted"><?= htmlspecialchars($target['description'] ?? '') ?></p>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h1 class="mb-2"><?= htmlspecialchars($target['target']) ?></h1>
+                    <p class="text-muted mb-0"><?= htmlspecialchars($target['description'] ?? '') ?></p>
+                </div>
+                <a href="/targets/<?= $target['id'] ?>/notes" class="btn btn-primary">
+                    <i class="bi bi-journal-text"></i> Ver Todas las Notas
+                </a>
+            </div>
             
             <div class="row mt-4">
                 <div class="col-md-2">
-                    <strong>Project:</strong><br>
+                    <strong>Proyecto:</strong><br>
                     <a href="/projects/<?= $target['project_id'] ?>"><?= htmlspecialchars($target['project_name']) ?></a>
                 </div>
                 <div class="col-md-2">
-                    <strong>Type:</strong><br>
+                    <strong>Tipo:</strong><br>
                     <span class="badge bg-<?= $target['target_type'] === 'url' ? 'primary' : ($target['target_type'] === 'ip' ? 'info' : 'secondary') ?>">
                         <?= ucfirst(htmlspecialchars($target['target_type'])) ?>
                     </span>
                 </div>
                 <div class="col-md-2">
-                    <strong>Status:</strong><br>
+                    <strong>Estado:</strong><br>
                     <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?>">
-                        <?= htmlspecialchars($target['status'] ?? 'active') ?>
+                        <?= $target['status'] === 'active' ? 'Activo' : 'Inactivo' ?>
                     </span>
                 </div>
                 <div class="col-md-2">
-                    <strong>Progress:</strong><br>
+                    <strong>Progreso:</strong><br>
                     <span class="completed-count"><?= $target['completed_items'] ?? 0 ?></span> / <?= $target['total_items'] ?? 0 ?>
                 </div>
                 <div class="col-md-4">
@@ -54,11 +61,11 @@ $parsedown = new \Parsedown();
     
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0"><i class="bi bi-list-check"></i> Security Checklist</h5>
+            <h5 class="mb-0"><i class="bi bi-list-check"></i> Lista de Verificación de Seguridad</h5>
         </div>
         <div class="card-body p-0">
             <?php if (empty($checklist)): ?>
-                <p class="p-4 text-muted">No checklist items found.</p>
+                <p class="p-4 text-muted">No se encontraron elementos en la lista.</p>
             <?php else: ?>
                 <?php foreach ($checklist as $category): ?>
                     <?php
@@ -77,8 +84,8 @@ $parsedown = new \Parsedown();
                             <button type="button" class="btn btn-sm btn-light check-all-category" 
                                     data-category-id="<?= $category['category_id'] ?>"
                                     data-target-id="<?= $target['id'] ?>"
-                                    title="Mark all as checked">
-                                <i class="bi bi-check-all"></i> Check All
+                                    title="Marcar todos">
+                                <i class="bi bi-check-all"></i> Marcar Todos
                             </button>
                         </div>
                         <div id="category-<?= $category['category_id'] ?>" class="collapse show category-items">
@@ -102,7 +109,7 @@ $parsedown = new \Parsedown();
                                         <textarea class="form-control form-control-sm checklist-notes" 
                                                   data-target-id="<?= $target['id'] ?>"
                                                   data-item-id="<?= $item['checklist_item_id'] ?>"
-                                                  placeholder="Add notes..."
+                                                  placeholder="Añadir notas..."
                                                   rows="2"><?= htmlspecialchars($item['notes'] ?? '') ?></textarea>
                                     </div>
                                 </div>
