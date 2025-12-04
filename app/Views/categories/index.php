@@ -13,40 +13,47 @@
             No categories found.
         </div>
     <?php else: ?>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Order</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Items</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($categories as $category): ?>
-                        <tr>
-                            <td><?= $category['order_num'] ?? 0 ?></td>
-                            <td><strong><?= htmlspecialchars($category['name']) ?></strong></td>
-                            <td><?= htmlspecialchars($category['description'] ?? '') ?></td>
-                            <td><span class="badge bg-info"><?= $category['item_count'] ?? 0 ?></span></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button class="btn btn-sm btn-outline-warning" onclick="editCategory(<?= htmlspecialchars(json_encode($category)) ?>)">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger btn-delete" 
-                                            data-url="/categories/<?= $category['id'] ?>"
-                                            data-confirm="Delete category '<?= htmlspecialchars($category['name']) ?>'?">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-tags"></i> Categories</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Items</th>
+                                <th class="actions-cell">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($categories as $category): ?>
+                                <tr class="clickable-row">
+                                    <td><?= $category['order_num'] ?? 0 ?></td>
+                                    <td><strong><?= htmlspecialchars($category['name']) ?></strong></td>
+                                    <td><?= htmlspecialchars($category['description'] ?? '') ?></td>
+                                    <td><span class="badge bg-info"><?= $category['item_count'] ?? 0 ?></span></td>
+                                    <td class="actions-cell">
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-outline-warning" onclick="editCategory(<?= htmlspecialchars(json_encode($category)) ?>)">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger btn-delete" 
+                                                    data-url="/categories/<?= $category['id'] ?>"
+                                                    data-confirm="Delete category '<?= htmlspecialchars($category['name']) ?>'?">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     <?php endif; ?>
 </div>

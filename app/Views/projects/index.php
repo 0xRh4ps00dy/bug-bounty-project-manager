@@ -9,9 +9,12 @@
     </div>
     
     <div class="card">
-        <div class="card-body">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="bi bi-folder"></i> Projects</h5>
+        </div>
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover mb-0">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -20,7 +23,7 @@
                             <th>Targets</th>
                             <th>Progress</th>
                             <th>Created</th>
-                            <th>Actions</th>
+                            <th class="actions-cell">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +33,7 @@
                             </tr>
                         <?php else: ?>
                             <?php foreach ($projects as $project): ?>
-                                <tr>
+                                <tr class="clickable-row" onclick="window.location.href='/projects/<?= $project['id'] ?>';" style="cursor: pointer;">
                                     <td>
                                         <strong><?= htmlspecialchars($project['name']) ?></strong>
                                     </td>
@@ -49,7 +52,7 @@
                                         </div>
                                     </td>
                                     <td><?= date('Y-m-d', strtotime($project['created_at'])) ?></td>
-                                    <td>
+                                    <td class="actions-cell" onclick="event.stopPropagation();">
                                         <div class="btn-group btn-group-sm">
                                             <a href="/projects/<?= $project['id'] ?>" class="btn btn-info" title="View">
                                                 <i class="bi bi-eye"></i>

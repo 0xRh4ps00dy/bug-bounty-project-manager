@@ -13,52 +13,59 @@
             No targets found. Create your first target!
         </div>
     <?php else: ?>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Project</th>
-                        <th>URL</th>
-                        <th>Status</th>
-                        <th>Progress</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($targets as $target): ?>
-                        <tr>
-                            <td><strong><?= htmlspecialchars($target['name']) ?></strong></td>
-                            <td><?= htmlspecialchars($target['project_name'] ?? $target['project_id']) ?></td>
-                            <td><a href="<?= htmlspecialchars($target['url']) ?>" target="_blank"><?= htmlspecialchars($target['url']) ?></a></td>
-                            <td>
-                                <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?>">
-                                    <?= htmlspecialchars($target['status'] ?? 'active') ?>
-                                </span>
-                            </td>
-                            <td>
-                                <div class="progress" style="width: 150px; height: 25px;">
-                                    <div class="progress-bar" style="width: <?= $target['progress'] ?? 0 ?>%">
-                                        <?= round($target['progress'] ?? 0) ?>%
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <a href="/targets/<?= $target['id'] ?>" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <button class="btn btn-sm btn-outline-danger btn-delete" 
-                                            data-url="/targets/<?= $target['id'] ?>"
-                                            data-confirm="Delete this target?">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-bullseye"></i> Targets</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Project</th>
+                                <th>URL</th>
+                                <th>Status</th>
+                                <th>Progress</th>
+                                <th class="actions-cell">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($targets as $target): ?>
+                                <tr class="clickable-row" onclick="window.location.href='/targets/<?= $target['id'] ?>';" style="cursor: pointer;">
+                                    <td><strong><?= htmlspecialchars($target['name']) ?></strong></td>
+                                    <td><?= htmlspecialchars($target['project_name'] ?? $target['project_id']) ?></td>
+                                    <td><a href="<?= htmlspecialchars($target['url']) ?>" target="_blank" onclick="event.stopPropagation();"><?= htmlspecialchars($target['url']) ?></a></td>
+                                    <td>
+                                        <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?>">
+                                            <?= htmlspecialchars($target['status'] ?? 'active') ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="progress" style="width: 150px; height: 25px;">
+                                            <div class="progress-bar" style="width: <?= $target['progress'] ?? 0 ?>%">
+                                                <?= round($target['progress'] ?? 0) ?>%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="actions-cell" onclick="event.stopPropagation();">
+                                        <div class="btn-group">
+                                            <a href="/targets/<?= $target['id'] ?>" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-outline-danger btn-delete" 
+                                                    data-url="/targets/<?= $target['id'] ?>"
+                                                    data-confirm="Delete this target?">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     <?php endif; ?>
 </div>
