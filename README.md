@@ -1,53 +1,424 @@
-# Bug Bounty Project Manager
+# 🎯 Bug Bounty Project Manager
 
-Aplicació web **moderna i professional** per gestionar projectes de Bug Bounty amb checklist de seguretat, desenvolupada amb **arquitectura MVC**, **RESTful API**, i **tecnologies modernes**.
+<div align="center">
 
-## 📝 Cambios Recientes (v1.1)
+![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-### ✨ Soporte para múltiples tipos de Targets
+**A modern, professional web application for managing Bug Bounty projects with comprehensive security testing checklists**
 
-Los targets ahora soportan tres tipos:
-- **URLs**: Aplicaciones web completas (ej: `https://api.example.com/v1`)
-- **IPs**: Direcciones IPv4 e IPv6 (ej: `192.168.1.100`, `2001:0db8:85a3::8a2e:0370:7334`)
-- **Dominios**: Nombres de dominio (ej: `example.com`, `subdomain.example.co.uk`)
+[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [API](#-api-reference) • [Backup System](#-backup-system)
 
-Para más detalles sobre estos cambios, ver [TARGETS_ENHANCEMENT.md](TARGETS_ENHANCEMENT.md).
+</div>
 
-## 🚀 Característiques
+---
 
-- **Gestió de Projectes**: Crea i gestiona projectes de bug bounty
-- **Gestió de Targets**: Assigna targets (objectius) a cada projecte
-- **Checklist de Seguretat**: Més de 350 tests de seguretat predefinits organitzats en 30 categories
-- **Notes per Item**: Cada item de checklist pot tenir les seves pròpies notes amb nivells de severitat
-- **Agregació Automàtica**: Les notes dels items s'agreguen automàticament al target amb timestamps i severitat
-- **Sistema de Severitat**: Classifica els findings per severitat (low, medium, high, critical, info)
-- **Historial de Canvis**: Seguiment complet de tots els canvis en les notes
-- **Vistes Avançades de Notes**:
-  - Notas agregades amb format markdown
-  - Agrupació per severitat
-  - Agrupació per categoria
-  - Historial de canvis
-- **Exportació Multiformat**: Exporta els findings en TXT, Markdown, JSON, CSV i HTML
-- **Dashboard Interactiu**: Visualitza l'estat dels teus projectes i targets
-- **Tracking de Progrés**: Seguiment del percentatge de completació per cada target
-- **RESTful API**: Accés programàtic a tots els endpoints
-- **Interfície Moderna**: UI responsive amb Bootstrap 5 i ES6+ JavaScript
+## 📋 Overview
 
-## 📦 Components
+Bug Bounty Project Manager (BBPM) is a full-featured web application designed for security researchers and penetration testers to organize, track, and document their bug bounty hunting activities. Built with modern **MVC architecture**, **RESTful API**, and **Docker containerization**, it provides a robust platform for managing security assessments.
 
-- **Apache + PHP 8.2**: Servidor web amb PHP
-- **MySQL 8.0**: Base de dades amb triggers automàtics
-- **phpMyAdmin**: Interfície web per gestionar MySQL directament
-- **Bootstrap 5**: Framework CSS per la interfície
+### 🎯 Key Highlights
 
-## 🛠️ Instal·lació i Ús
+- **350+ Security Tests** across 30+ categories
+- **Multi-type Target Support** (URLs, IPs, Domains)
+- **Automated Note Aggregation** with severity classification
+- **Multi-format Export** (TXT, Markdown, JSON, CSV, HTML)
+- **RESTful API** for programmatic access
+- **Automated Backup System** with compression and retention
+- **Real-time Progress Tracking** and interactive dashboards
 
-### Iniciar els contenidors:
+---
+
+## ✨ Features
+
+### 🔐 Security Testing Management
+
+- **Comprehensive Checklist**: Over 350 predefined security tests organized in 30+ categories
+- **Custom Categories**: Create and manage your own test categories
+- **Flexible Target Types**:
+  - 🌐 **URLs**: Full web applications (e.g., `https://api.example.com/v1`)
+  - 🖥️ **IPs**: IPv4 and IPv6 addresses (e.g., `192.168.1.100`, `2001:0db8::1`)
+  - 🌍 **Domains**: Domain names (e.g., `example.com`, `subdomain.example.co.uk`)
+
+### 📝 Notes & Documentation
+
+- **Item-level Notes**: Add detailed notes to each checklist item
+- **Severity Classification**: Tag findings as Critical, High, Medium, Low, or Info
+- **Automatic Aggregation**: Notes automatically aggregate to target level with timestamps
+- **Change History**: Full tracking of all note modifications
+- **Advanced Views**:
+  - Aggregated notes with Markdown formatting
+  - Grouping by severity level
+  - Grouping by category
+  - Historical change tracking
+
+### 📊 Project Management
+
+- **Project Organization**: Create and manage multiple bug bounty projects
+- **Target Assignment**: Assign multiple targets to each project
+- **Progress Tracking**: Real-time completion percentage for each target
+- **Interactive Dashboard**: Visualize project status and statistics
+- **Filtering & Search**: Quickly find projects and targets
+
+### 💾 Data Export & Backup
+
+- **Multi-format Export**: Export findings in:
+  - 📄 Plain Text (TXT)
+  - 📝 Markdown (MD)
+  - 📊 JSON
+  - 📈 CSV
+  - 🌐 HTML
+- **Automated Backup System**: 
+  - Database-only backups
+  - Gzip compression
+  - Configurable retention (default 7 days)
+  - Cross-platform scripts (Windows PowerShell & Linux/Mac Bash)
+
+### 🔌 RESTful API
+
+Complete REST API for programmatic access to all resources:
+- Projects: `GET /api/projects`, `POST /api/projects`, etc.
+- Targets: `GET /api/targets`, `PUT /api/targets/{id}`, etc.
+- Checklist Items: `GET /api/checklist/items`, etc.
+- Categories: `GET /api/categories`, etc.
+- Notes: `GET /api/notes`, `POST /api/notes`, etc.
+
+### 🎨 Modern UI
+
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Bootstrap 5**: Modern, clean interface
+- **ES6+ JavaScript**: Fast, reactive frontend
+- **Real-time Updates**: Dynamic content loading without page refreshes
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- [Docker](https://www.docker.com/get-started) (20.10+)
+- [Docker Compose](https://docs.docker.com/compose/install/) (2.0+)
+- Git
+
+### Installation
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/0xRh4ps00dy/bug-bounty-project-manager.git
+cd bug-bounty-project-manager
+```
+
+2. **Start the containers**
 ```bash
 docker-compose up -d
 ```
 
-### Aturar els contenidors:
+3. **Access the application**
+- **Main Application**: http://localhost
+- **phpMyAdmin**: http://localhost:8080
+  - Username: `bbpm_user`
+  - Password: `bbpm_password`
+
+4. **Stop the containers**
+```bash
+docker-compose down
+```
+
+### First Steps
+
+1. Navigate to http://localhost
+2. Create your first project from the Dashboard
+3. Add targets to your project (URLs, IPs, or Domains)
+4. Start checking off security tests from the comprehensive checklist
+5. Add notes with severity levels as you discover findings
+6. Export your findings in your preferred format
+
+---
+
+## 📦 Architecture
+
+### Technology Stack
+
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| **Web Server** | Apache 2.4 | HTTP server |
+| **Backend** | PHP 8.2 | Application logic |
+| **Database** | MySQL 8.0 | Data persistence |
+| **Frontend** | Bootstrap 5 | Responsive UI |
+| **API** | REST | Programmatic access |
+| **Admin Panel** | phpMyAdmin | Database management |
+| **Containers** | Docker Compose | Orchestration |
+
+### Project Structure
+
+```
+bug-bounty-project-manager/
+├── apache/                 # Apache + PHP Dockerfile
+├── app/
+│   ├── Controllers/        # MVC Controllers
+│   ├── Models/            # Data models
+│   ├── Views/             # View templates
+│   └── Core/              # Core framework classes
+├── backup/                # Backup scripts & storage
+│   ├── backup-database.ps1    # Windows backup script
+│   ├── backup-database.sh     # Linux/Mac backup script
+│   ├── restore-database.ps1   # Windows restore script
+│   ├── restore-database.sh    # Linux/Mac restore script
+│   └── backups/              # Backup files (git-ignored)
+├── config/                # Configuration files
+├── mysql/                 # MySQL initialization
+│   └── init.sql          # Database schema & seed data
+├── public/               # Public web assets
+│   ├── css/             # Stylesheets
+│   └── js/              # JavaScript modules
+├── routes/              # Route definitions
+│   ├── web.php         # Web routes
+│   └── api.php         # API routes
+└── docker-compose.yml   # Docker services definition
+```
+
+### MVC Architecture
+
+```
+┌─────────────┐      ┌──────────────┐      ┌────────────┐
+│   Routes    │─────▶│ Controllers  │─────▶│   Models   │
+│  (web.php)  │      │ (Business    │      │  (Data     │
+│  (api.php)  │      │   Logic)     │      │  Access)   │
+└─────────────┘      └──────────────┘      └────────────┘
+                            │                      │
+                            ▼                      ▼
+                     ┌──────────────┐      ┌────────────┐
+                     │    Views     │      │   MySQL    │
+                     │ (Templates)  │      │  Database  │
+                     └──────────────┘      └────────────┘
+```
+
+---
+
+## 🔧 Configuration
+
+### Database Connection
+
+Database credentials are configured in `docker-compose.yml`:
+
+```yaml
+environment:
+  DB_HOST: db
+  DB_PORT: 3306
+  DB_NAME: bbpm_db
+  DB_USER: bbpm_user
+  DB_PASS: bbpm_password
+```
+
+### Port Configuration
+
+Default ports can be modified in `docker-compose.yml`:
+
+```yaml
+ports:
+  - "80:80"      # Web application
+  - "3306:3306"  # MySQL
+  - "8080:80"    # phpMyAdmin
+```
+
+### Health Checks
+
+MySQL includes a health check to ensure the database is ready before the web container starts:
+
+```yaml
+healthcheck:
+  test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password"]
+  interval: 5s
+  timeout: 3s
+  retries: 10
+  start_period: 30s
+```
+
+---
+
+## 📚 Documentation
+
+### API Reference
+
+#### Projects
+
+- `GET /api/projects` - List all projects
+- `GET /api/projects/{id}` - Get project details
+- `POST /api/projects` - Create new project
+- `PUT /api/projects/{id}` - Update project
+- `DELETE /api/projects/{id}` - Delete project
+
+#### Targets
+
+- `GET /api/targets` - List all targets
+- `GET /api/targets?project_id={id}` - Get targets by project
+- `POST /api/targets` - Create new target
+- `PUT /api/targets/{id}` - Update target
+- `DELETE /api/targets/{id}` - Delete target
+
+#### Checklist Items
+
+- `GET /api/checklist/items` - List all checklist items
+- `GET /api/checklist/items?target_id={id}` - Get items for target
+- `POST /api/checklist/items/{id}/status` - Update item status
+
+#### Notes
+
+- `GET /api/notes?target_id={id}` - Get notes for target
+- `POST /api/notes` - Create new note
+- `PUT /api/notes/{id}` - Update note
+- `DELETE /api/notes/{id}` - Delete note
+
+### API Example
+
+```bash
+# Get all projects
+curl http://localhost/api/projects
+
+# Create a new project
+curl -X POST http://localhost/api/projects \
+  -H "Content-Type: application/json" \
+  -d '{"name":"HackerOne Project","description":"Testing example.com"}'
+
+# Add a target
+curl -X POST http://localhost/api/targets \
+  -H "Content-Type: application/json" \
+  -d '{"project_id":1,"name":"Main Site","type":"url","value":"https://example.com"}'
+```
+
+---
+
+## 💾 Backup System
+
+BBPM includes a comprehensive automated backup system for the MySQL database.
+
+### Quick Backup
+
+**Windows (PowerShell):**
+```powershell
+.\backup\backup-database.ps1
+```
+
+**Linux/Mac (Bash):**
+```bash
+./backup/backup-database.sh
+```
+
+### Restore from Backup
+
+**Windows:**
+```powershell
+.\backup\restore-database.ps1 -BackupFile "backup/backups/bbpm_db_2025-12-04_22-30-00.sql.gz"
+```
+
+**Linux/Mac:**
+```bash
+./backup/restore-database.sh backup/backups/bbpm_db_2025-12-04_22-30-00.sql.gz
+```
+
+### Automated Backups
+
+#### Windows (Task Scheduler)
+
+```powershell
+# Create daily backup at 2 AM
+$action = New-ScheduledTaskAction -Execute "PowerShell.exe" `
+  -Argument "-File C:\path\to\backup\backup-database.ps1"
+$trigger = New-ScheduledTaskTrigger -Daily -At 2am
+Register-ScheduledTask -Action $action -Trigger $trigger `
+  -TaskName "BBPM Database Backup" -Description "Daily database backup"
+```
+
+#### Linux/Mac (Cron)
+
+```bash
+# Edit crontab
+crontab -e
+
+# Add daily backup at 2 AM
+0 2 * * * /path/to/backup/backup-database.sh >> /var/log/bbpm-backup.log 2>&1
+```
+
+### Backup Features
+
+- ✅ **Gzip Compression**: Reduces backup size by ~90%
+- ✅ **Automatic Retention**: Configurable cleanup of old backups (default 7 days)
+- ✅ **Cross-platform**: PowerShell (Windows) and Bash (Linux/Mac) scripts
+- ✅ **Error Handling**: Comprehensive error checking and reporting
+- ✅ **Progress Reports**: Detailed output with file sizes and compression ratios
+
+For complete backup documentation, see [backup/README.md](backup/README.md)
+
+---
+
+## 🛠️ Development
+
+### Adding Custom Categories
+
+Navigate to the Categories management page to create custom test categories for your specific needs.
+
+### Extending the Checklist
+
+You can add custom checklist items through phpMyAdmin or via the API:
+
+```sql
+INSERT INTO checklist_items (category_id, description, is_default)
+VALUES (1, 'Custom security test description', 1);
+```
+
+### Database Triggers
+
+The application uses MySQL triggers for automatic note aggregation:
+
+- `after_item_note_insert`: Aggregates new notes to target
+- `after_item_note_update`: Updates aggregated notes on modification
+- `after_item_note_delete`: Removes notes from aggregation on deletion
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ for the Bug Bounty community
+- Inspired by real-world penetration testing workflows
+- Special thanks to all security researchers who provided feedback
+
+---
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/0xRh4ps00dy/bug-bounty-project-manager/issues)
+- **Documentation**: [Wiki](https://github.com/0xRh4ps00dy/bug-bounty-project-manager/wiki)
+
+---
+
+<div align="center">
+
+**[⬆ Back to Top](#-bug-bounty-project-manager)**
+
+Made with 🔒 by security researchers, for security researchers
+
+</div>
 ```bash
 docker-compose down
 ```
