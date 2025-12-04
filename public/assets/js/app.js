@@ -27,12 +27,12 @@ class BBPM {
                 const btn = e.target.closest('.btn-delete');
                 this.handleDelete(btn);
             }
-            
-            // Toggle checklist item
-            if (e.target.closest('.checklist-toggle')) {
-                e.preventDefault();
-                const checkbox = e.target.closest('.checklist-toggle');
-                this.toggleChecklistItem(checkbox);
+        });
+        
+        // Toggle checklist item (use change event instead of click)
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('checklist-toggle')) {
+                this.toggleChecklistItem(e.target);
             }
         });
         
@@ -132,6 +132,16 @@ class BBPM {
             });
             
             if (response.success) {
+                // Update visual state
+                const checklistItem = checkbox.closest('.checklist-item');
+                if (checklistItem) {
+                    if (isChecked) {
+                        checklistItem.classList.add('checked');
+                    } else {
+                        checklistItem.classList.remove('checked');
+                    }
+                }
+                
                 // Update progress bar if exists
                 this.updateProgress();
             } else {
