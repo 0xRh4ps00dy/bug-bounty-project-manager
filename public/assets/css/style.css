@@ -275,7 +275,7 @@ body {
 
 /* Tables & Lists */
 .table {
-    color: var(--bg-secondary);
+    color: var(--text-primary);
     border-color: var(--border-color);
     margin-bottom: 0;
 }
@@ -304,6 +304,7 @@ body {
     padding: 0.75rem;
     vertical-align: middle;
     background-color: #3f4651;
+    color: #f8f9fa;
 }
 
 .table-hover tbody tr {

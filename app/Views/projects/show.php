@@ -121,8 +121,20 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">URL *</label>
-                        <input type="url" name="url" class="form-control" required>
+                        <label class="form-label">Name *</label>
+                        <input type="text" name="name" class="form-control" placeholder="e.g., Main Website, API Server" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Target Type *</label>
+                        <select name="target_type" class="form-select" id="projectTargetType" required>
+                            <option value="url" selected>URL</option>
+                            <option value="ip">IP Address</option>
+                            <option value="domain">Domain</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Target *</label>
+                        <input type="text" name="target" class="form-control" id="projectTargetInput" placeholder="https://example.com" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
@@ -145,3 +157,31 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const typeSelect = document.getElementById('projectTargetType');
+    const targetInput = document.getElementById('projectTargetInput');
+    
+    function updateTargetPlaceholder() {
+        const type = typeSelect.value;
+        
+        const placeholders = {
+            'url': 'https://example.com or https://api.example.com/endpoint',
+            'ip': '192.168.1.1 or 2001:0db8:85a3:0000:0000:8a2e:0370:7334',
+            'domain': 'example.com or subdomain.example.co.uk'
+        };
+        
+        targetInput.placeholder = placeholders[type] || 'Enter target value';
+        targetInput.type = type === 'url' ? 'url' : 'text';
+    }
+    
+    // Add event listener
+    if (typeSelect) {
+        typeSelect.addEventListener('change', updateTargetPlaceholder);
+        // Initialize on page load
+        updateTargetPlaceholder();
+    }
+});
+</script>
+

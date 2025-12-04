@@ -71,20 +71,18 @@ class TargetController extends Controller
         ]);
     }
     
-    public function store(): array|null
+    public function store(): void
     {
         $target = trim($this->input('target'));
         $targetType = $this->input('target_type', 'url');
         
         // Validate target based on type
         if (!$this->validateTarget($target, $targetType)) {
-            if ($this->isApiRequest()) {
-                http_response_code(400);
-                return ['error' => 'Invalid target format for type: ' . $targetType];
+            if ($this->isAjax()) {
+                $this->json(['error' => 'Invalid target format for type: ' . $targetType], 400);
             }
             $_SESSION['flash_error'] = 'Invalid target format for type: ' . $targetType;
             $this->redirect('/targets');
-            return null;
         }
         
         $data = [
@@ -99,24 +97,19 @@ class TargetController extends Controller
         try {
             $id = $this->model->createWithChecklist($data);
             
-            // If it's an API request, return array (will be converted to JSON by index.php)
-            if ($this->isApiRequest()) {
-                http_response_code(201);
-                return ['success' => true, 'id' => $id, 'message' => 'Target created successfully'];
+            if ($this->isAjax()) {
+                $this->json(['success' => true, 'id' => $id, 'message' => 'Target created successfully'], 201);
             }
             
             $_SESSION['flash_message'] = 'Target created successfully with full checklist';
             $this->redirect('/targets');
-            return null;
         } catch (\Exception $e) {
-            if ($this->isApiRequest()) {
-                http_response_code(500);
-                return ['error' => $e->getMessage()];
+            if ($this->isAjax()) {
+                $this->json(['error' => $e->getMessage()], 500);
             }
             
             $_SESSION['flash_error'] = $e->getMessage();
             $this->redirect('/targets');
-            return null;
         }
     }
     
