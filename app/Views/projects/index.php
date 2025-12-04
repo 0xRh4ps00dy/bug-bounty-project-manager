@@ -1,4 +1,4 @@
-<?php $active = 'projects'; $title = 'Projects - BBPM'; ?>
+<?php $active = 'projects'; $title = 'Projects - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">

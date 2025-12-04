@@ -62,8 +62,8 @@ docker-compose up -d
 
 - **Aplicació Web**: http://localhost
 - **phpMyAdmin**: http://localhost:8080
-  - Usuari: `bbpm_user`
-  - Contrasenya: `bbpm_password`
+  - Usuari: `Bug Bounty Project Manager_user`
+  - Contrasenya: `Bug Bounty Project Manager_password`
   - O com a root: `root` / `root_password`
 
 ## 📁 Estructura del projecte
@@ -126,9 +126,9 @@ docker-compose up -d
 ## 🔐 Credencials de MySQL
 
 - **Root Password**: `root_password`
-- **Database**: `bbpm_db`
-- **User**: `bbpm_user`
-- **Password**: `bbpm_password`
+- **Database**: `Bug Bounty Project Manager_db`
+- **User**: `Bug Bounty Project Manager_user`
+- **Password**: `Bug Bounty Project Manager_password`
 
 ## 💾 Base de Dades
 

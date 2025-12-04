@@ -1,4 +1,4 @@
-<?php $active = 'checklist'; $title = 'Checklist Items - BBPM'; ?>
+<?php $active = 'checklist'; $title = 'Checklist Items - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">

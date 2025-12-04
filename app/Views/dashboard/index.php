@@ -1,4 +1,4 @@
-<?php $active = 'dashboard'; $title = 'Dashboard - BBPM'; ?>
+<?php $active = 'dashboard'; $title = 'Dashboard - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <h1 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h1>

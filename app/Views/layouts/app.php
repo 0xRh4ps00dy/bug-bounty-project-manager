@@ -13,13 +13,16 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
+    
+    <!-- Meta color scheme -->
+    <meta name="color-scheme" content="light dark">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
-                <i class="bi bi-shield-check"></i> BBPM
+                <i class="bi bi-shield-check"></i> Bug Bounty Project Manager
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -50,6 +53,11 @@
                         <a class="nav-link <?= isset($active) && $active === 'checklist' ? 'active' : '' ?>" href="/checklist">
                             <i class="bi bi-list-check"></i> Checklist
                         </a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <button id="theme-toggle-btn" class="theme-toggle" type="button" aria-label="Switch theme">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -91,6 +99,9 @@
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Theme Management -->
+    <script src="/assets/js/app-theme.js"></script>
     
     <!-- Custom JS -->
     <script src="/assets/js/app.js"></script>

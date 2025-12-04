@@ -1,4 +1,4 @@
-<?php $active = 'targets'; $title = htmlspecialchars($target['url']) . ' - BBPM'; ?>
+<?php $active = 'targets'; $title = htmlspecialchars($target['url']) . ' - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <nav aria-label="breadcrumb">

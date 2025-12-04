@@ -1,4 +1,4 @@
-<?php $active = 'categories'; $title = 'Categories - BBPM'; ?>
+<?php $active = 'categories'; $title = 'Categories - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">

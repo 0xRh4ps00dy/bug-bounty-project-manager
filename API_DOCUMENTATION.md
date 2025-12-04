@@ -2,7 +2,7 @@
 
 ## Overview
 
-The BBPM API provides RESTful endpoints for managing bug bounty projects, targets, categories, and checklist items. All API endpoints return JSON responses and support standard HTTP methods.
+The Bug Bounty Project Manager API provides RESTful endpoints for managing bug bounty projects, targets, categories, and checklist items. All API endpoints return JSON responses and support standard HTTP methods.
 
 ## Base URL
 

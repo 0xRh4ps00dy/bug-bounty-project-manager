@@ -1,4 +1,4 @@
-<?php $active = 'projects'; $title = htmlspecialchars($project['name']) . ' - BBPM'; ?>
+<?php $active = 'projects'; $title = htmlspecialchars($project['name']) . ' - Bug Bounty Project Manager'; ?>
 
 <div class="container">
     <nav aria-label="breadcrumb">

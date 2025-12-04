@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('copy-notes').addEventListener('click', function() {
         const text = document.getElementById('aggregated-notes').textContent;
         navigator.clipboard.writeText(text).then(() => {
-            bbpm.showSuccess('Copied to clipboard!', 2000);
+            Bug Bounty Project Manager.showSuccess('Copied to clipboard!', 2000);
         });
     });
 
