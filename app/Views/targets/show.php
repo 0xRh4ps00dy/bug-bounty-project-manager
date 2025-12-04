@@ -61,10 +61,28 @@ $parsedown = new \Parsedown();
                 <p class="p-4 text-muted">No checklist items found.</p>
             <?php else: ?>
                 <?php foreach ($checklist as $category): ?>
-                    <div class="category-section">
-                        <div class="p-3 border-bottom" style="background-color: var(--primary); color: white; font-weight: 600;">
-                            <h6 class="mb-0"><?= htmlspecialchars($category['category_name']) ?></h6>
+                    <?php
+                        $checkedCount = 0;
+                        foreach ($category['items'] as $item) {
+                            if ($item['is_checked']) $checkedCount++;
+                        }
+                    ?>
+                    <div class="category-section" data-category-id="<?= $category['category_id'] ?>">
+                        <div class="category-header p-3 border-bottom d-flex justify-content-between align-items-center" style="background-color: var(--primary); color: white; font-weight: 600; cursor: pointer;">
+                            <div class="d-flex align-items-center flex-grow-1" data-bs-toggle="collapse" data-bs-target="#category-<?= $category['category_id'] ?>">
+                                <i class="bi bi-chevron-down me-2 collapse-icon"></i>
+                                <h6 class="mb-0"><?= htmlspecialchars($category['category_name']) ?></h6>
+                                <small class="ms-3 opacity-75">(<?= $checkedCount ?>/<?= count($category['items']) ?>)</small>
+                            </div>
+                            <button class="btn btn-sm btn-light check-all-category" 
+                                    data-category-id="<?= $category['category_id'] ?>"
+                                    data-target-id="<?= $target['id'] ?>"
+                                    title="Mark all as checked"
+                                    onclick="event.stopPropagation();">
+                                <i class="bi bi-check-all"></i> Check All
+                            </button>
                         </div>
+                        <div id="category-<?= $category['category_id'] ?>" class="collapse show category-items">
                         <?php foreach ($category['items'] as $item): ?>
                             <div class="checklist-item <?= $item['is_checked'] ? 'checked' : '' ?>">
                                 <div class="row align-items-start">
@@ -79,7 +97,7 @@ $parsedown = new \Parsedown();
                                         <strong><?= htmlspecialchars($item['title']) ?></strong>
                                         <?php if (!empty($item['description'])): ?>
                                             <div class="description-content text-muted mb-2 small markdown-content">
-                                                <?= $parsedown->text(htmlspecialchars($item['description'])) ?>
+                                                <?= $parsedown->text($item['description']) ?>
                                             </div>
                                         <?php endif; ?>
                                         <textarea class="form-control form-control-sm checklist-notes" 
@@ -91,6 +109,7 @@ $parsedown = new \Parsedown();
                                 </div>
                             </div>
                         <?php endforeach; ?>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>

@@ -647,6 +647,34 @@ body {
     background-color: #5a9eff;
 }
 
+.category-header {
+    user-select: none;
+    transition: var(--transition-base);
+}
+
+.category-header:hover {
+    opacity: 0.9;
+}
+
+.category-header .collapse-icon {
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.category-header .check-all-category {
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+.category-header .check-all-category:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.category-items {
+    transition: all 0.3s ease;
+}
+
 .checklist-item {
     border-bottom: 1px solid var(--border-color);
     padding: 1rem;

@@ -51,6 +51,7 @@ class TargetController extends Controller
             $categoryId = $item['category_id'];
             if (!isset($groupedChecklist[$categoryId])) {
                 $groupedChecklist[$categoryId] = [
+                    'category_id' => $categoryId,
                     'category_name' => $item['category_name'],
                     'items' => []
                 ];

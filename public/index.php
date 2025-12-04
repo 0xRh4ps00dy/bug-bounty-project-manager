@@ -22,9 +22,26 @@ require __DIR__ . '/../routes/api.php';
 // Dispatch request
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Handle PUT, DELETE via _method field
+// Handle PUT, DELETE via _method field (for form submissions)
 if ($method === 'POST' && isset($_POST['_method'])) {
     $method = strtoupper($_POST['_method']);
+}
+
+// Handle method override via header (for AJAX requests)
+if ($method === 'POST' && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
+    $method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
+}
+
+// For AJAX requests, check the actual HTTP method being emulated
+// PHP doesn't populate $_POST for DELETE/PUT, so we need to handle it differently
+if (in_array($method, ['PUT', 'DELETE']) && empty($_POST)) {
+    $input = file_get_contents('php://input');
+    if (!empty($input)) {
+        $data = json_decode($input, true);
+        if (json_last_error() === JSON_ERROR_NONE) {
+            $_POST = $data;
+        }
+    }
 }
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

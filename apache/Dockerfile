@@ -15,9 +15,18 @@ RUN apt-get update && apt-get install -y \
 # Habilitar mod_rewrite d'Apache
 RUN a2enmod rewrite
 
+# Habilitar mod_headers para permitir métodos HTTP personalizados
+RUN a2enmod headers
+
 # Configurar Apache DocumentRoot per apuntar a /var/www/html/public
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf
+
+# Permitir todos los métodos HTTP
+RUN echo '<Directory /var/www/html/public>' >> /etc/apache2/apache2.conf && \
+    echo '    AllowOverride All' >> /etc/apache2/apache2.conf && \
+    echo '    Require all granted' >> /etc/apache2/apache2.conf && \
+    echo '</Directory>' >> /etc/apache2/apache2.conf
 
 # Configurar permisos
 RUN chown -R www-data:www-data /var/www/html

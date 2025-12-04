@@ -42,6 +42,31 @@ class BBPM {
                 this.updateNotes(e.target);
             }
         }, true);
+        
+        // Check all category
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.check-all-category')) {
+                const btn = e.target.closest('.check-all-category');
+                this.checkAllCategory(btn);
+            }
+        });
+        
+        // Toggle collapse icon
+        document.addEventListener('shown.bs.collapse', (e) => {
+            if (e.target.classList.contains('category-items')) {
+                const header = e.target.previousElementSibling;
+                const icon = header.querySelector('.collapse-icon');
+                if (icon) icon.classList.replace('bi-chevron-down', 'bi-chevron-up');
+            }
+        });
+        
+        document.addEventListener('hidden.bs.collapse', (e) => {
+            if (e.target.classList.contains('category-items')) {
+                const header = e.target.previousElementSibling;
+                const icon = header.querySelector('.collapse-icon');
+                if (icon) icon.classList.replace('bi-chevron-up', 'bi-chevron-down');
+            }
+        });
     }
     
     async handleFormSubmit(form) {
@@ -142,6 +167,12 @@ class BBPM {
                     }
                 }
                 
+                // Update category counter
+                const categorySection = checkbox.closest('.category-section');
+                if (categorySection) {
+                    this.updateCategoryCounter(categorySection);
+                }
+                
                 // Update progress bar if exists
                 this.updateProgress();
             } else {
@@ -175,6 +206,58 @@ class BBPM {
             }
         } catch (error) {
             this.showError(error.message);
+        }
+    }
+    
+    async checkAllCategory(btn) {
+        const categoryId = btn.dataset.categoryId;
+        const targetId = btn.dataset.targetId;
+        
+        if (!confirm('Mark all items in this category as checked?')) {
+            return;
+        }
+        
+        const categorySection = document.querySelector(`[data-category-id="${categoryId}"]`);
+        const checkboxes = categorySection.querySelectorAll('.checklist-toggle:not(:checked)');
+        
+        try {
+            this.showLoading(btn);
+            
+            // Check all unchecked items
+            for (const checkbox of checkboxes) {
+                const itemId = checkbox.dataset.itemId;
+                
+                await this.fetch(`/targets/${targetId}/checklist/${itemId}/toggle`, {
+                    method: 'POST',
+                    body: JSON.stringify({ is_checked: 1 })
+                });
+                
+                checkbox.checked = true;
+                const checklistItem = checkbox.closest('.checklist-item');
+                if (checklistItem) {
+                    checklistItem.classList.add('checked');
+                }
+            }
+            
+            // Update progress and category counter
+            await this.updateProgress();
+            this.updateCategoryCounter(categorySection);
+            
+            this.showSuccess('All items checked successfully');
+        } catch (error) {
+            this.showError('Failed to check all items: ' + error.message);
+        } finally {
+            this.hideLoading(btn);
+        }
+    }
+    
+    updateCategoryCounter(categorySection) {
+        const items = categorySection.querySelectorAll('.checklist-toggle');
+        const checkedItems = categorySection.querySelectorAll('.checklist-toggle:checked');
+        const counter = categorySection.querySelector('.category-header small');
+        
+        if (counter) {
+            counter.textContent = `(${checkedItems.length}/${items.length})`;
         }
     }
     
