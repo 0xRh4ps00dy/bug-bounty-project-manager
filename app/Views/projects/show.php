@@ -88,8 +88,11 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <div class="progress" style="width: 100px; height: 20px;">
-                                            <div class="progress-bar" style="width: <?= $target['progress'] ?? 0 ?>%">
+                                        <div class="progress" style="width: 100px; height: 24px;">
+                                            <div class="progress-bar" role="progressbar" 
+                                                 style="width: <?= $target['progress'] ?? 0 ?>%"
+                                                 aria-valuenow="<?= $target['progress'] ?? 0 ?>" 
+                                                 aria-valuemin="0" aria-valuemax="100">
                                                 <?= round($target['progress'] ?? 0) ?>%
                                             </div>
                                         </div>

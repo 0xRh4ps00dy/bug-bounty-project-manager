@@ -45,8 +45,11 @@
                                     </td>
                                     <td><?= $project['target_count'] ?? 0 ?></td>
                                     <td>
-                                        <div class="progress" style="min-width: 100px;">
-                                            <div class="progress-bar" style="width: <?= round($project['avg_progress'] ?? 0) ?>%">
+                                        <div class="progress" style="min-width: 100px; height: 24px;">
+                                            <div class="progress-bar" role="progressbar" 
+                                                 style="width: <?= round($project['avg_progress'] ?? 0) ?>%"
+                                                 aria-valuenow="<?= round($project['avg_progress'] ?? 0) ?>" 
+                                                 aria-valuemin="0" aria-valuemax="100">
                                                 <?= round($project['avg_progress'] ?? 0) ?>%
                                             </div>
                                         </div>
