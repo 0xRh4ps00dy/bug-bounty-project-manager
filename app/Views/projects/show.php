@@ -101,6 +101,18 @@
                                                title="View">
                                                 <i class="bi bi-eye"></i>
                                             </a>
+                                            <button class="btn btn-warning" 
+                                                    type="button"
+                                                    onclick="editTarget(<?= htmlspecialchars(json_encode($target)) ?>, <?= $project['id'] ?>)"
+                                                    title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-delete" 
+                                                    data-url="/targets/<?= $target['id'] ?>"
+                                                    data-confirm="Delete this target?"
+                                                    title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -162,13 +174,75 @@
     </div>
 </div>
 
+<!-- Edit Target Modal -->
+<div class="modal fade" id="editTargetModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editTargetForm" method="POST" class="ajax-form" data-method="PUT" data-redirect="/projects/<?= $project['id'] ?>">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Target</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name *</label>
+                        <input type="text" name="name" id="edit_target_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Target Type *</label>
+                        <select name="target_type" class="form-select" id="editProjectTargetType" required>
+                            <option value="url">URL</option>
+                            <option value="ip">IP Address</option>
+                            <option value="domain">Domain</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Target *</label>
+                        <input type="text" name="target" class="form-control" id="editProjectTargetInput" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" id="edit_target_description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select" id="edit_target_status">
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Target</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
+function editTarget(target, projectId) {
+    document.getElementById('editTargetForm').action = '/targets/' + target.id;
+    document.getElementById('edit_target_name').value = target.name;
+    document.getElementById('editProjectTargetType').value = target.target_type;
+    document.getElementById('editProjectTargetInput').value = target.target;
+    document.getElementById('edit_target_description').value = target.description || '';
+    document.getElementById('edit_target_status').value = target.status;
+    
+    const modal = new bootstrap.Modal(document.getElementById('editTargetModal'));
+    modal.show();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const typeSelect = document.getElementById('projectTargetType');
     const targetInput = document.getElementById('projectTargetInput');
+    const editTypeSelect = document.getElementById('editProjectTargetType');
+    const editTargetInput = document.getElementById('editProjectTargetInput');
     
-    function updateTargetPlaceholder() {
-        const type = typeSelect.value;
+    function updateTargetPlaceholder(typeElem, inputElem) {
+        const type = typeElem.value;
         
         const placeholders = {
             'url': 'https://example.com or https://api.example.com/endpoint',
@@ -176,15 +250,19 @@ document.addEventListener('DOMContentLoaded', function() {
             'domain': 'example.com or subdomain.example.co.uk'
         };
         
-        targetInput.placeholder = placeholders[type] || 'Enter target value';
-        targetInput.type = type === 'url' ? 'url' : 'text';
+        inputElem.placeholder = placeholders[type] || 'Enter target value';
+        inputElem.type = type === 'url' ? 'url' : 'text';
     }
     
-    // Add event listener
+    // Create modal
     if (typeSelect) {
-        typeSelect.addEventListener('change', updateTargetPlaceholder);
-        // Initialize on page load
-        updateTargetPlaceholder();
+        typeSelect.addEventListener('change', () => updateTargetPlaceholder(typeSelect, targetInput));
+        updateTargetPlaceholder(typeSelect, targetInput);
+    }
+    
+    // Edit modal
+    if (editTypeSelect) {
+        editTypeSelect.addEventListener('change', () => updateTargetPlaceholder(editTypeSelect, editTargetInput));
     }
 });
 </script>
