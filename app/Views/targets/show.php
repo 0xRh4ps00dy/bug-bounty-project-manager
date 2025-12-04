@@ -1,4 +1,11 @@
-<?php $active = 'targets'; $title = htmlspecialchars($target['target']) . ' - Bug Bounty Project Manager'; ?>
+<?php 
+$active = 'targets'; 
+$title = htmlspecialchars($target['target']) . ' - Bug Bounty Project Manager';
+
+// Initialize Parsedown for markdown support
+require_once __DIR__ . '/../../../vendor/autoload.php';
+$parsedown = new \Parsedown();
+?>
 
 <div class="container">
     <nav aria-label="breadcrumb">
@@ -70,7 +77,11 @@
                                     </div>
                                     <div class="col">
                                         <strong><?= htmlspecialchars($item['title']) ?></strong>
-                                        <p class="text-muted mb-2 small"><?= htmlspecialchars($item['description'] ?? '') ?></p>
+                                        <?php if (!empty($item['description'])): ?>
+                                            <div class="description-content text-muted mb-2 small markdown-content">
+                                                <?= $parsedown->text(htmlspecialchars($item['description'])) ?>
+                                            </div>
+                                        <?php endif; ?>
                                         <textarea class="form-control form-control-sm checklist-notes" 
                                                   data-target-id="<?= $target['id'] ?>"
                                                   data-item-id="<?= $item['checklist_item_id'] ?>"

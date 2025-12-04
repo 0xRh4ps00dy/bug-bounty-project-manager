@@ -275,7 +275,7 @@ body {
 
 /* Tables & Lists */
 .table {
-    color: var(--text-primary);
+    color: var(--bg-secondary);
     border-color: var(--border-color);
     margin-bottom: 0;
 }
@@ -303,6 +303,7 @@ body {
 .table tbody td {
     padding: 0.75rem;
     vertical-align: middle;
+    background-color: #3f4651;
 }
 
 .table-hover tbody tr {
@@ -906,6 +907,114 @@ body {
     border-width: 0.15em;
 }
 
+/* Markdown content styling */
+.markdown-content {
+    line-height: 1.6;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.markdown-content h2 {
+    font-size: 1rem;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 0.3rem;
+}
+
+.markdown-content p {
+    margin-bottom: 0.5rem;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.markdown-content li {
+    margin-bottom: 0.25rem;
+}
+
+.markdown-content code {
+    background-color: var(--bg-secondary);
+    color: var(--primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85em;
+}
+
+.markdown-content pre {
+    background-color: var(--bg-secondary);
+    border-left: 3px solid var(--primary);
+    padding: 0.75rem;
+    border-radius: 3px;
+    overflow-x: auto;
+    margin-bottom: 0.5rem;
+}
+
+.markdown-content pre code {
+    background-color: transparent;
+    color: var(--text-primary);
+    padding: 0;
+}
+
+.markdown-content strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.markdown-content em {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.markdown-content blockquote {
+    border-left: 4px solid var(--primary);
+    padding-left: 1rem;
+    margin-left: 0;
+    color: var(--text-secondary);
+}
+
+.markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.markdown-content th {
+    background-color: var(--primary);
+    color: white;
+    padding: 0.5rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.markdown-content td {
+    border: 1px solid var(--bg-secondary);
+    padding: 0.5rem;
+    color: var(--text-primary);
+}
+
+.markdown-content tr:nth-child(odd) {
+    background-color: var(--bg-secondary);
+}
+
+.markdown-content hr {
+    border: none;
+    border-top: 2px solid var(--primary);
+    margin: 1rem 0;
+}
+
 .spinner-border {
     color: var(--primary);
 }
@@ -923,6 +1032,28 @@ body {
     .navbar-brand {
         font-size: 1rem;
     }
+}
+
+/* Description content styling */
+.description-content {
+    max-height: 300px;
+    overflow-y: auto;
+    border-left: 3px solid var(--primary);
+    padding-left: 0.75rem;
+    margin-left: -0.75rem;
+}
+
+.description-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.description-content::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.description-content::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
 }
 
 /* Custom scrollbar */

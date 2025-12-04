@@ -3,7 +3,8 @@
     "description": "Modern Bug Bounty Project Management System",
     "type": "project",
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.2",
+        "erusev/parsedown": "^1.7"
     },
     "autoload": {
         "psr-4": {
