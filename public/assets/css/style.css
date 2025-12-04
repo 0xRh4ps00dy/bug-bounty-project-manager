@@ -573,6 +573,20 @@ body {
 [data-theme="dark"] .list-group-item-action:hover {
     background-color: rgba(90, 158, 255, 0.05);
 }
+
+/* Category Section */
+.category-section {
+    border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .category-section {
+    border-bottom-color: #4b5563;
+}
+
+.category-section:last-child {
+    border-bottom: none;
+}
+
 .checklist-item {
     border-bottom: 1px solid var(--border-color);
     padding: 1rem;

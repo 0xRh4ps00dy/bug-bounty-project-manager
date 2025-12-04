@@ -49,7 +49,7 @@
             <?php else: ?>
                 <?php foreach ($checklist as $category): ?>
                     <div class="category-section">
-                        <div class="p-3 bg-light border-bottom">
+                        <div class="p-3 border-bottom" style="background-color: var(--primary); color: white; font-weight: 600;">
                             <h6 class="mb-0"><?= htmlspecialchars($category['category_name']) ?></h6>
                         </div>
                         <?php foreach ($category['items'] as $item): ?>
