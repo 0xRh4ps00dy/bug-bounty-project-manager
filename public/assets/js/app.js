@@ -9,6 +9,30 @@ class BBPM {
     init() {
         // Add event listeners
         this.attachEventListeners();
+        // Initialize table scrollbar visibility
+        this.initTableScrollbar();
+    }
+    
+    initTableScrollbar() {
+        const tables = document.querySelectorAll('.table-responsive');
+        tables.forEach(table => {
+            this.updateTableScrollbarVisibility(table);
+        });
+        
+        // Watch for changes
+        window.addEventListener('resize', () => {
+            tables.forEach(table => {
+                this.updateTableScrollbarVisibility(table);
+            });
+        });
+    }
+    
+    updateTableScrollbarVisibility(table) {
+        if (table.scrollWidth > table.clientWidth) {
+            table.style.overflowX = 'auto';
+        } else {
+            table.style.overflowX = 'hidden';
+        }
     }
     
     attachEventListeners() {
