@@ -10,7 +10,7 @@
 
 **A modern, professional web application for managing Bug Bounty projects with comprehensive security testing checklists**
 
-[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [API](#-api-reference) • [Backup System](#-backup-system)
+[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [API](#-api-reference)
 
 </div>
 
@@ -27,7 +27,6 @@ Bug Bounty Project Manager (BBPM) is a full-featured web application designed fo
 - **Automated Note Aggregation** with severity classification
 - **Multi-format Export** (TXT, Markdown, JSON, CSV, HTML)
 - **RESTful API** for programmatic access
-- **Automated Backup System** with compression and retention
 - **Real-time Progress Tracking** and interactive dashboards
 
 ---
@@ -71,11 +70,6 @@ Bug Bounty Project Manager (BBPM) is a full-featured web application designed fo
   - 📊 JSON
   - 📈 CSV
   - 🌐 HTML
-- **Automated Backup System**: 
-  - Database-only backups
-  - Gzip compression
-  - Configurable retention (default 7 days)
-  - Cross-platform scripts (Windows PowerShell & Linux/Mac Bash)
 
 ### 🔌 RESTful API
 
@@ -288,69 +282,6 @@ curl -X POST http://localhost/api/targets \
   -H "Content-Type: application/json" \
   -d '{"project_id":1,"name":"Main Site","type":"url","value":"https://example.com"}'
 ```
-
----
-
-## 💾 Backup System
-
-BBPM includes a comprehensive automated backup system for the MySQL database.
-
-### Quick Backup
-
-**Windows (PowerShell):**
-```powershell
-.\backup\backup-database.ps1
-```
-
-**Linux/Mac (Bash):**
-```bash
-./backup/backup-database.sh
-```
-
-### Restore from Backup
-
-**Windows:**
-```powershell
-.\backup\restore-database.ps1 -BackupFile "backup/backups/bbpm_db_2025-12-04_22-30-00.sql.gz"
-```
-
-**Linux/Mac:**
-```bash
-./backup/restore-database.sh backup/backups/bbpm_db_2025-12-04_22-30-00.sql.gz
-```
-
-### Automated Backups
-
-#### Windows (Task Scheduler)
-
-```powershell
-# Create daily backup at 2 AM
-$action = New-ScheduledTaskAction -Execute "PowerShell.exe" `
-  -Argument "-File C:\path\to\backup\backup-database.ps1"
-$trigger = New-ScheduledTaskTrigger -Daily -At 2am
-Register-ScheduledTask -Action $action -Trigger $trigger `
-  -TaskName "BBPM Database Backup" -Description "Daily database backup"
-```
-
-#### Linux/Mac (Cron)
-
-```bash
-# Edit crontab
-crontab -e
-
-# Add daily backup at 2 AM
-0 2 * * * /path/to/backup/backup-database.sh >> /var/log/bbpm-backup.log 2>&1
-```
-
-### Backup Features
-
-- ✅ **Gzip Compression**: Reduces backup size by ~90%
-- ✅ **Automatic Retention**: Configurable cleanup of old backups (default 7 days)
-- ✅ **Cross-platform**: PowerShell (Windows) and Bash (Linux/Mac) scripts
-- ✅ **Error Handling**: Comprehensive error checking and reporting
-- ✅ **Progress Reports**: Detailed output with file sizes and compression ratios
-
-For complete backup documentation, see [backup/README.md](backup/README.md)
 
 ---
 
