@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,8 +14,13 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     
+    <!-- Force dark theme immediately to prevent flash -->
+    <script>
+        document.documentElement.setAttribute('data-theme', 'dark');
+    </script>
+    
     <!-- Meta color scheme -->
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="dark">
 </head>
 <body>
     <!-- Navigation -->
@@ -53,11 +58,6 @@
                         <a class="nav-link <?= isset($active) && $active === 'checklist' ? 'active' : '' ?>" href="/checklist">
                             <i class="bi bi-list-check"></i> Lista de Verificación
                         </a>
-                    </li>
-                    <li class="nav-item ms-3">
-                        <button id="theme-toggle-btn" class="theme-toggle" type="button" aria-label="Cambiar tema">
-                            <i class="bi bi-moon-stars-fill"></i>
-                        </button>
                     </li>
                 </ul>
             </div>

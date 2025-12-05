@@ -25,7 +25,7 @@ services:
 
   # MySQL
   db:
-    image: mysql:8.0
+    image: mysql:5.7
     container_name: bbpm_mysql
     restart: always
     environment:
