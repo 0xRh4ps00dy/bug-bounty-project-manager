@@ -10,33 +10,33 @@
     
     <div class="card mb-4">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
+            <div class="d-flex justify-content-between align-items-start flex-column flex-md-row gap-2">
+                <div class="flex-grow-1">
                     <h1 class="mb-3"><?= htmlspecialchars($project['name']) ?></h1>
                     <p class="text-muted"><?= htmlspecialchars($project['description'] ?? '') ?></p>
                 </div>
-                <span class="badge bg-<?= $project['status'] === 'active' ? 'success' : 'secondary' ?> fs-6">
+                <span class="badge bg-<?= $project['status'] === 'active' ? 'success' : 'secondary' ?> fs-6 flex-shrink-0">
                     <?= htmlspecialchars($project['status'] ?? 'active') ?>
                 </span>
             </div>
             
-            <div class="row mt-4">
-                <div class="col-md-4">
-                    <div class="text-center p-3 bg-light rounded">
-                        <h3 class="text-primary"><?= $project['target_count'] ?? 0 ?></h3>
-                        <small class="text-muted">Total de Objetivos</small>
+            <div class="row mt-4 g-2">
+                <div class="col-6 col-md-4">
+                    <div class="text-center p-2 p-md-3 bg-light rounded">
+                        <h3 class="text-primary mb-1"><?= $project['target_count'] ?? 0 ?></h3>
+                        <small class="text-muted d-block text-truncate">Total Objetivos</small>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="text-center p-3 bg-light rounded">
-                        <h3 class="text-success"><?= round($project['avg_progress'] ?? 0) ?>%</h3>
-                        <small class="text-muted">Progreso Promedio</small>
+                <div class="col-6 col-md-4">
+                    <div class="text-center p-2 p-md-3 bg-light rounded">
+                        <h3 class="text-success mb-1"><?= round($project['avg_progress'] ?? 0) ?>%</h3>
+                        <small class="text-muted d-block text-truncate">Progreso Promedio</small>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="text-center p-3 bg-light rounded">
-                        <h3 class="text-info"><?= date('Y-m-d', strtotime($project['created_at'])) ?></h3>
-                        <small class="text-muted">Creado</small>
+                <div class="col-12 col-md-4">
+                    <div class="text-center p-2 p-md-3 bg-light rounded">
+                        <h3 class="text-info mb-1"><?= date('Y-m-d', strtotime($project['created_at'])) ?></h3>
+                        <small class="text-muted d-block text-truncate">Creado</small>
                     </div>
                 </div>
             </div>

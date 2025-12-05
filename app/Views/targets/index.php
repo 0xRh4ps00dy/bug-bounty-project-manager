@@ -1,9 +1,9 @@
 <?php $active = 'targets'; $title = 'Objetivos - Bug Bounty Project Manager'; ?>
 
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1><i class="bi bi-bullseye"></i> Objetivos</h1>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-column flex-md-row gap-2">
+        <h1 class="mb-0"><i class="bi bi-bullseye"></i> Objetivos</h1>
+        <button class="btn btn-primary flex-shrink-0" data-bs-toggle="modal" data-bs-target="#createModal">
             <i class="bi bi-plus-circle"></i> Nuevo Objetivo
         </button>
     </div>
@@ -19,44 +19,51 @@
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                    <table class="table table-hover mb-0 table-sm">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>Proyecto</th>
-                                <th>Objetivo</th>
+                                <th style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Nombre</th>
+                                <th class="d-none d-md-table-cell" style="max-width: 100px;">Proyecto</th>
+                                <th class="d-none d-lg-table-cell">Objetivo</th>
                                 <th>Tipo</th>
-                                <th>Estado</th>
-                                <th>Progreso</th>
-                                <th class="actions-cell">Acciones</th>
+                                <th class="d-none d-xl-table-cell">Estado</th>
+                                <th style="width: 80px;">Progreso</th>
+                                <th class="actions-cell" style="width: 90px;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($targets as $target): ?>
                                 <tr class="clickable-row" data-href="/targets/<?= $target['id'] ?>" style="cursor: pointer;">
-                                    <td><strong><?= htmlspecialchars($target['name']) ?></strong></td>
-                                    <td><?= htmlspecialchars($target['project_name'] ?? $target['project_id']) ?></td>
                                     <td>
+                                        <strong class="text-truncate d-block"><?= htmlspecialchars($target['name']) ?></strong>
+                                        <small class="text-muted d-md-none">
+                                            <?= htmlspecialchars($target['project_name'] ?? $target['project_id']) ?>
+                                        </small>
+                                    </td>
+                                    <td class="d-none d-md-table-cell"><?= htmlspecialchars($target['project_name'] ?? $target['project_id']) ?></td>
+                                    <td class="d-none d-lg-table-cell">
                                         <?php if ($target['target_type'] === 'url'): ?>
-                                            <a href="<?= htmlspecialchars($target['target']) ?>" target="_blank" onclick="event.stopPropagation();"><?= htmlspecialchars($target['target']) ?></a>
+                                            <a href="<?= htmlspecialchars($target['target']) ?>" target="_blank" onclick="event.stopPropagation();" class="text-truncate d-block">
+                                                <?= htmlspecialchars($target['target']) ?>
+                                            </a>
                                         <?php else: ?>
-                                            <?= htmlspecialchars($target['target']) ?>
+                                            <span class="text-truncate d-block"><?= htmlspecialchars($target['target']) ?></span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <span class="badge bg-<?= $target['target_type'] === 'url' ? 'primary' : ($target['target_type'] === 'ip' ? 'info' : 'secondary') ?>">
+                                        <span class="badge bg-<?= $target['target_type'] === 'url' ? 'primary' : ($target['target_type'] === 'ip' ? 'info' : 'secondary') ?> text-nowrap">
                                             <?= ucfirst(htmlspecialchars($target['target_type'])) ?>
                                         </span>
                                     </td>
-                                    <td>
-                                        <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?>">
+                                    <td class="d-none d-xl-table-cell">
+                                        <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?> text-nowrap">
                                             <?= htmlspecialchars($target['status'] ?? 'active') ?>
                                         </span>
                                     </td>
                                     <td>
-                                        <div class="progress" style="width: 150px;">
+                                        <div class="progress" style="min-width: 70px; height: 20px;">
                                             <div class="progress-bar" role="progressbar" 
-                                                 style="width: <?= $target['progress'] ?? 0 ?>%"
+                                                 style="width: <?= $target['progress'] ?? 0 ?>%; font-size: 0.7rem;"
                                                  aria-valuenow="<?= $target['progress'] ?? 0 ?>" 
                                                  aria-valuemin="0" aria-valuemax="100">
                                                 <?= round($target['progress'] ?? 0) ?>%

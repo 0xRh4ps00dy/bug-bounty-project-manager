@@ -1,15 +1,15 @@
 <?php $active = 'checklist'; $title = 'Elementos de Lista de Verificación - Bug Bounty Project Manager'; ?>
 
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1><i class="bi bi-list-check"></i> Elementos de Lista de Verificación</h1>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-            <i class="bi bi-plus-circle"></i> Nuevo Elemento
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-column flex-md-row gap-2">
+        <h1 class="mb-0"><i class="bi bi-list-check"></i> Lista de Verificación</h1>
+        <button class="btn btn-primary flex-shrink-0" data-bs-toggle="modal" data-bs-target="#createModal">
+            <i class="bi bi-plus-circle"></i> Nuevo
         </button>
     </div>
     
     <div class="mb-3">
-        <select class="form-select" onchange="window.location.href='/checklist?category_id=' + this.value">
+        <select class="form-select form-select-sm" onchange="window.location.href='/checklist?category_id=' + this.value">
             <option value="">Todas las Categorías</option>
             <?php foreach ($categories as $cat): ?>
                 <option value="<?= $cat['id'] ?>" <?= ($selectedCategory == $cat['id']) ? 'selected' : '' ?>>
@@ -25,61 +25,75 @@
         </div>
     <?php else: ?>
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="bi bi-list-check"></i> Elementos de Lista de Verificación</h5>
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-list-check"></i> Elementos</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                    <table class="table table-hover mb-0 table-sm">
                         <thead>
                             <tr>
-                                <th style="width: 100px;">Orden</th>
-                                <th>Categoría</th>
-                                <th>Título</th>
-                                <th>Descripción</th>
-                                <th style="width: 200px;">Acciones</th>
+                                <th class="d-none d-md-table-cell" style="width: 50px;">Orden</th>
+                                <th class="d-none d-lg-table-cell" style="width: 100px;">Categoría</th>
+                                <th style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Título</th>
+                                <th class="d-none d-xl-table-cell">Descripción</th>
+                                <th style="width: 90px; white-space: nowrap;">Acciones</th>
                             </tr>
                         </thead>
                 <tbody>
                     <?php foreach ($items as $index => $item): ?>
                         <tr>
-                            <td>
+                            <td class="d-none d-md-table-cell text-center">
                                 <span class="badge bg-primary"><?= $item['order_num'] ?? 0 ?></span>
                             </td>
-                            <td><span class="badge bg-secondary"><?= htmlspecialchars($item['category_name'] ?? '') ?></span></td>
-                            <td><strong><?= htmlspecialchars($item['title']) ?></strong></td>
-                            <td>
-                                <?php 
-                                $desc = $item['description'] ?? '';
-                                echo htmlspecialchars(strlen($desc) > 80 ? substr($desc, 0, 80) . '...' : $desc);
-                                ?>
+                            <td class="d-none d-lg-table-cell">
+                                <span class="badge bg-secondary text-truncate d-inline-block" style="max-width: 120px;">
+                                    <?= htmlspecialchars($item['category_name'] ?? '') ?>
+                                </span>
                             </td>
                             <td>
-                                <div class="btn-group btn-group-sm me-2">
-                                    <form method="POST" action="/checklist/<?= $item['id'] ?>/move-up" style="display: inline;">
-                                        <button type="submit" 
-                                                class="btn btn-secondary" 
-                                                title="Subir"
-                                                <?= $index === 0 || ($index > 0 && $items[$index-1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
-                                            <i class="bi bi-arrow-up"></i>
-                                        </button>
-                                    </form>
-                                    <form method="POST" action="/checklist/<?= $item['id'] ?>/move-down" style="display: inline;">
-                                        <button type="submit" 
-                                                class="btn btn-secondary" 
-                                                title="Bajar"
-                                                <?= $index === count($items) - 1 || ($index < count($items) - 1 && $items[$index+1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
-                                            <i class="bi bi-arrow-down"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-warning" 
+                                <strong class="text-truncate d-block"><?= htmlspecialchars($item['title']) ?></strong>
+                                <small class="text-muted d-lg-none text-truncate d-block">
+                                    <?= htmlspecialchars($item['category_name'] ?? '') ?>
+                                </small>
+                            </td>
+                            <td class="d-none d-xl-table-cell">
+                                <small class="text-muted text-truncate d-block">
+                                    <?php 
+                                    $desc = $item['description'] ?? '';
+                                    echo htmlspecialchars(strlen($desc) > 60 ? substr($desc, 0, 60) . '...' : $desc);
+                                    ?>
+                                </small>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm gap-1" role="group">
+                                    <!-- Move buttons -->
+                                    <div class="btn-group btn-group-sm d-none d-md-inline-flex">
+                                        <form method="POST" action="/checklist/<?= $item['id'] ?>/move-up" style="display: inline;">
+                                            <button type="submit" 
+                                                    class="btn btn-outline-secondary py-0 px-1" 
+                                                    title="Subir"
+                                                    <?= $index === 0 || ($index > 0 && $items[$index-1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
+                                                <i class="bi bi-arrow-up"></i>
+                                            </button>
+                                        </form>
+                                        <form method="POST" action="/checklist/<?= $item['id'] ?>/move-down" style="display: inline;">
+                                            <button type="submit" 
+                                                    class="btn btn-outline-secondary py-0 px-1" 
+                                                    title="Bajar"
+                                                    <?= $index === count($items) - 1 || ($index < count($items) - 1 && $items[$index+1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
+                                                <i class="bi bi-arrow-down"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    
+                                    <!-- Edit/Delete buttons -->
+                                    <button class="btn btn-outline-warning py-0 px-1" 
                                             onclick="editItem(<?= htmlspecialchars(json_encode($item)) ?>)"
                                             title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <button class="btn btn-danger btn-delete" 
+                                    <button class="btn btn-outline-danger py-0 px-1 btn-delete" 
                                             data-url="/checklist/<?= $item['id'] ?>"
                                             data-confirm="¿Eliminar este elemento?"
                                             title="Eliminar">

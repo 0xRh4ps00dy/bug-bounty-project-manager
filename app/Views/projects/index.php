@@ -1,9 +1,9 @@
 <?php $active = 'projects'; $title = 'Proyectos - Bug Bounty Project Manager'; ?>
 
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1><i class="bi bi-folder"></i> Proyectos</h1>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-column flex-md-row gap-2">
+        <h1 class="mb-0"><i class="bi bi-folder"></i> Proyectos</h1>
+        <button class="btn btn-primary flex-shrink-0" data-bs-toggle="modal" data-bs-target="#createModal">
             <i class="bi bi-plus-circle"></i> Nuevo Proyecto
         </button>
     </div>
@@ -14,16 +14,16 @@
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover mb-0 table-sm">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
+                            <th style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Nombre</th>
+                            <th class="d-none d-md-table-cell">Descripción</th>
                             <th>Estado</th>
-                            <th>Objetivos</th>
-                            <th>Progreso</th>
-                            <th>Creado</th>
-                            <th class="actions-cell">Acciones</th>
+                            <th class="d-none d-lg-table-cell">Objetivos</th>
+                            <th class="d-none d-lg-table-cell">Progreso</th>
+                            <th class="d-none d-md-table-cell">Creado</th>
+                            <th class="actions-cell" style="width: 90px;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,26 +35,29 @@
                             <?php foreach ($projects as $project): ?>
                                 <tr class="clickable-row" data-href="/projects/<?= $project['id'] ?>" style="cursor: pointer;">
                                     <td>
-                                        <strong><?= htmlspecialchars($project['name']) ?></strong>
+                                        <strong class="text-truncate d-block"><?= htmlspecialchars($project['name']) ?></strong>
+                                        <small class="text-muted d-md-none">
+                                            <?= htmlspecialchars(substr($project['description'] ?? '', 0, 30)) ?><?= strlen($project['description'] ?? '') > 30 ? '...' : '' ?>
+                                        </small>
                                     </td>
-                                    <td><?= htmlspecialchars(substr($project['description'] ?? '', 0, 50)) ?><?= strlen($project['description'] ?? '') > 50 ? '...' : '' ?></td>
+                                    <td class="d-none d-md-table-cell"><?= htmlspecialchars(substr($project['description'] ?? '', 0, 50)) ?><?= strlen($project['description'] ?? '') > 50 ? '...' : '' ?></td>
                                     <td>
-                                        <span class="badge bg-<?= $project['status'] === 'active' ? 'success' : 'secondary' ?>">
+                                        <span class="badge bg-<?= $project['status'] === 'active' ? 'success' : 'secondary' ?> text-nowrap">
                                             <?= htmlspecialchars($project['status']) ?>
                                         </span>
                                     </td>
-                                    <td><?= $project['target_count'] ?? 0 ?></td>
-                                    <td>
-                                        <div class="progress" style="min-width: 100px;">
+                                    <td class="d-none d-lg-table-cell text-center"><?= $project['target_count'] ?? 0 ?></td>
+                                    <td class="d-none d-lg-table-cell">
+                                        <div class="progress" style="min-width: 80px; height: 20px;">
                                             <div class="progress-bar" role="progressbar" 
-                                                 style="width: <?= round($project['avg_progress'] ?? 0) ?>%"
+                                                 style="width: <?= round($project['avg_progress'] ?? 0) ?>%; font-size: 0.7rem;"
                                                  aria-valuenow="<?= round($project['avg_progress'] ?? 0) ?>" 
                                                  aria-valuemin="0" aria-valuemax="100">
                                                 <?= round($project['avg_progress'] ?? 0) ?>%
                                             </div>
                                         </div>
                                     </td>
-                                    <td><?= date('Y-m-d', strtotime($project['created_at'])) ?></td>
+                                    <td class="d-none d-md-table-cell text-nowrap"><?= date('Y-m-d', strtotime($project['created_at'])) ?></td>
                                     <td class="actions-cell">
                                         <div class="btn-group btn-group-sm">
                                             <a href="/projects/<?= $project['id'] ?>" 

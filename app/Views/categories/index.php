@@ -1,10 +1,10 @@
 <?php $active = 'categories'; $title = 'Categorías - Bug Bounty Project Manager'; ?>
 
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1><i class="bi bi-tags"></i> Categorías</h1>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-            <i class="bi bi-plus-circle"></i> Nueva Categoría
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-column flex-md-row gap-2">
+        <h1 class="mb-0"><i class="bi bi-tags"></i> Categorías</h1>
+        <button class="btn btn-primary flex-shrink-0" data-bs-toggle="modal" data-bs-target="#createModal">
+            <i class="bi bi-plus-circle"></i> Nueva
         </button>
     </div>
     
@@ -14,56 +14,70 @@
         </div>
     <?php else: ?>
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-header">
                 <h5 class="mb-0"><i class="bi bi-tags"></i> Categorías</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                    <table class="table table-hover mb-0 table-sm">
                         <thead>
                             <tr>
-                                <th style="width: 100px;">Orden</th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Elementos</th>
-                                <th style="width: 250px;">Acciones</th>
+                                <th class="d-none d-md-table-cell" style="width: 50px;">Orden</th>
+                                <th style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Nombre</th>
+                                <th class="d-none d-lg-table-cell">Descripción</th>
+                                <th class="text-center" style="width: 50px;">Items</th>
+                                <th style="width: 90px; white-space: nowrap;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($categories as $index => $category): ?>
                                 <tr>
-                                    <td>
+                                    <td class="d-none d-md-table-cell text-center">
                                         <span class="badge bg-primary"><?= $category['order_num'] ?? 0 ?></span>
                                     </td>
-                                    <td><strong><?= htmlspecialchars($category['name']) ?></strong></td>
-                                    <td><?= htmlspecialchars($category['description'] ?? '') ?></td>
-                                    <td><span class="badge bg-info"><?= $category['item_count'] ?? 0 ?></span></td>
+                                    <td>
+                                        <strong class="text-truncate d-block"><?= htmlspecialchars($category['name']) ?></strong>
+                                        <small class="text-muted d-lg-none text-truncate d-block">
+                                            <?= htmlspecialchars(strlen($category['description'] ?? '') > 40 ? substr($category['description'] ?? '', 0, 40) . '...' : ($category['description'] ?? '')) ?>
+                                        </small>
+                                    </td>
+                                    <td class="d-none d-lg-table-cell">
+                                        <small class="text-muted text-truncate d-block">
+                                            <?= htmlspecialchars($category['description'] ?? '') ?>
+                                        </small>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-info"><?= $category['item_count'] ?? 0 ?></span>
+                                    </td>
                                     <td class="actions-cell">
-                                        <div class="btn-group btn-group-sm me-2">
-                                            <form method="POST" action="/categories/<?= $category['id'] ?>/move-up" style="display: inline;">
-                                                <button type="submit" 
-                                                        class="btn btn-secondary" 
-                                                        title="Subir"
-                                                        <?= $index === 0 ? 'disabled' : '' ?>>
-                                                    <i class="bi bi-arrow-up"></i>
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="/categories/<?= $category['id'] ?>/move-down" style="display: inline;">
-                                                <button type="submit" 
-                                                        class="btn btn-secondary" 
-                                                        title="Bajar"
-                                                        <?= $index === count($categories) - 1 ? 'disabled' : '' ?>>
-                                                    <i class="bi bi-arrow-down"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                        <div class="btn-group btn-group-sm">
-                                            <button class="btn btn-warning" 
+                                        <div class="btn-group btn-group-sm gap-1" role="group">
+                                            <!-- Move buttons -->
+                                            <div class="btn-group btn-group-sm d-none d-md-inline-flex">
+                                                <form method="POST" action="/categories/<?= $category['id'] ?>/move-up" style="display: inline;">
+                                                    <button type="submit" 
+                                                            class="btn btn-outline-secondary py-0 px-1" 
+                                                            title="Subir"
+                                                            <?= $index === 0 ? 'disabled' : '' ?>>
+                                                        <i class="bi bi-arrow-up"></i>
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="/categories/<?= $category['id'] ?>/move-down" style="display: inline;">
+                                                    <button type="submit" 
+                                                            class="btn btn-outline-secondary py-0 px-1" 
+                                                            title="Bajar"
+                                                            <?= $index === count($categories) - 1 ? 'disabled' : '' ?>>
+                                                        <i class="bi bi-arrow-down"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            
+                                            <!-- Edit/Delete buttons -->
+                                            <button class="btn btn-outline-warning py-0 px-1" 
                                                     onclick="editCategory(<?= htmlspecialchars(json_encode($category)) ?>)"
                                                     title="Editar">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <button class="btn btn-danger btn-delete" 
+                                            <button class="btn btn-outline-danger py-0 px-1 btn-delete" 
                                                     data-url="/categories/<?= $category['id'] ?>"
                                                     data-confirm="¿Eliminar categoría '<?= htmlspecialchars($category['name']) ?>'?"
                                                     title="Eliminar">

@@ -17,38 +17,38 @@ $parsedown = new \Parsedown();
     
     <div class="card mb-4">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-                <div>
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-column flex-md-row gap-2">
+                <div class="flex-grow-1">
                     <h1 class="mb-2"><?= htmlspecialchars($target['target']) ?></h1>
                     <p class="text-muted mb-0"><?= htmlspecialchars($target['description'] ?? '') ?></p>
                 </div>
-                <a href="/targets/<?= $target['id'] ?>/notes" class="btn btn-primary">
-                    <i class="bi bi-journal-text"></i> Ver Todas las Notas
+                <a href="/targets/<?= $target['id'] ?>/notes" class="btn btn-primary btn-sm flex-shrink-0">
+                    <i class="bi bi-journal-text"></i> Ver Notas
                 </a>
             </div>
             
-            <div class="row mt-4">
-                <div class="col-md-2">
-                    <strong>Proyecto:</strong><br>
-                    <a href="/projects/<?= $target['project_id'] ?>"><?= htmlspecialchars($target['project_name']) ?></a>
+            <div class="row mt-4 g-2">
+                <div class="col-6 col-md-2">
+                    <strong class="d-block text-nowrap">Proyecto:</strong><br>
+                    <a href="/projects/<?= $target['project_id'] ?>" class="text-break small"><?= htmlspecialchars($target['project_name']) ?></a>
                 </div>
-                <div class="col-md-2">
-                    <strong>Tipo:</strong><br>
+                <div class="col-6 col-md-2">
+                    <strong class="d-block">Tipo:</strong><br>
                     <span class="badge bg-<?= $target['target_type'] === 'url' ? 'primary' : ($target['target_type'] === 'ip' ? 'info' : 'secondary') ?>">
                         <?= ucfirst(htmlspecialchars($target['target_type'])) ?>
                     </span>
                 </div>
-                <div class="col-md-2">
-                    <strong>Estado:</strong><br>
+                <div class="col-6 col-md-2">
+                    <strong class="d-block">Estado:</strong><br>
                     <span class="badge bg-<?= $target['status'] === 'active' ? 'success' : 'secondary' ?>">
                         <?= $target['status'] === 'active' ? 'Activo' : 'Inactivo' ?>
                     </span>
                 </div>
-                <div class="col-md-2">
-                    <strong>Progreso:</strong><br>
+                <div class="col-6 col-md-2">
+                    <strong class="d-block">Progreso:</strong><br>
                     <span class="completed-count"><?= $target['completed_items'] ?? 0 ?></span> / <?= $target['total_items'] ?? 0 ?>
                 </div>
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
                     <div class="progress" data-target-id="<?= $target['id'] ?>">
                         <div class="progress-bar" role="progressbar" 
                              style="width: <?= $target['progress'] ?? 0 ?>%"
