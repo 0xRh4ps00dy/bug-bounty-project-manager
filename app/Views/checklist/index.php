@@ -64,34 +64,25 @@
                                         </small>
                                     </td>
                                     <td class="text-center">
-                                        <div class="d-flex gap-1 justify-content-center align-items-center">
-                                            <!-- Move buttons -->
-                                            <div class="btn-group btn-group-sm d-none d-md-inline-flex">
-                                                <form method="POST" action="/checklist/<?= $item['id'] ?>/move-up" class="d-inline">
-                                                    <button type="submit" 
-                                                            class="btn btn-outline-secondary btn-sm" 
-                                                            title="Subir"
-                                                            <?= $index === 0 || ($index > 0 && $items[$index-1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
-                                                        <i class="bi bi-arrow-up"></i>
-                                                    </button>
-                                                </form>
-                                                <form method="POST" action="/checklist/<?= $item['id'] ?>/move-down" class="d-inline">
-                                                    <button type="submit" 
-                                                            class="btn btn-outline-secondary btn-sm" 
-                                                            title="Bajar"
-                                                            <?= $index === count($items) - 1 || ($index < count($items) - 1 && $items[$index+1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
-                                                        <i class="bi bi-arrow-down"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                            
-                                            <!-- Edit/Delete buttons -->
-                                            <button class="btn btn-warning btn-sm" 
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button class="btn btn-secondary d-none d-md-inline-block btn-move-up" 
+                                                    data-url="/checklist/<?= $item['id'] ?>/move-up"
+                                                    title="Subir"
+                                                    <?= $index === 0 || ($index > 0 && $items[$index-1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
+                                                <i class="bi bi-arrow-up"></i>
+                                            </button>
+                                            <button class="btn btn-secondary d-none d-md-inline-block btn-move-down" 
+                                                    data-url="/checklist/<?= $item['id'] ?>/move-down"
+                                                    title="Bajar"
+                                                    <?= $index === count($items) - 1 || ($index < count($items) - 1 && $items[$index+1]['category_id'] !== $item['category_id']) ? 'disabled' : '' ?>>
+                                                <i class="bi bi-arrow-down"></i>
+                                            </button>
+                                            <button class="btn btn-warning" 
                                                     onclick="editItem(<?= htmlspecialchars(json_encode($item)) ?>)"
                                                     title="Editar">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <button class="btn btn-danger btn-sm btn-delete" 
+                                            <button class="btn btn-danger btn-delete" 
                                                     data-url="/checklist/<?= $item['id'] ?>"
                                                     data-confirm="¿Eliminar este elemento?"
                                                     title="Eliminar">
@@ -202,14 +193,14 @@ function editItem(item) {
 
 // Handle move buttons with AJAX
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('form[action*="/move-"]').forEach(form => {
-        form.addEventListener('submit', function(e) {
+    document.querySelectorAll('.btn-move-up, .btn-move-down').forEach(button => {
+        button.addEventListener('click', function(e) {
             e.preventDefault();
             
-            const button = this.querySelector('button[type="submit"]');
-            button.disabled = true;
+            const url = this.dataset.url;
+            this.disabled = true;
             
-            fetch(this.action, {
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -220,12 +211,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     window.location.reload();
                 } else {
-                    button.disabled = false;
+                    this.disabled = false;
                     alert('Failed to reorder item');
                 }
             })
             .catch(error => {
-                button.disabled = false;
+                this.disabled = false;
                 console.error('Error:', error);
             });
         });

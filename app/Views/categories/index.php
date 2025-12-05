@@ -19,65 +19,52 @@
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0 table-sm">
-                        <thead>
+                    <table class="table table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
+                        <thead class="table-light">
                             <tr>
-                                <!-- <th class="d-none d-md-table-cell" style="width: 50px;">Orden</th> -->
-                                <th style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Nombre</th>
-                                <th class="d-none d-lg-table-cell">Descripción</th>
-                                <th class="text-center" style="width: 50px;">Items</th>
-                                <th style="width: 90px; white-space: nowrap;">Acciones</th>
+                                <th style="width: 20%;">Nombre</th>
+                                <th class="d-none d-lg-table-cell" style="width: 50%;">Descripción</th>
+                                <th class="text-center" style="width: 15%;">Items</th>
+                                <th style="width: 15%;" class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($categories as $index => $category): ?>
                                 <tr>
-                                    <!-- <td class="d-none d-md-table-cell text-center">
-                                        <span class="badge bg-primary"><?= $category['order_num'] ?? 0 ?></span>
-                                    </td> -->
-                                    <td>
-                                        <strong class="text-truncate d-block"><?= htmlspecialchars($category['name']) ?></strong>
-                                        <small class="text-muted d-lg-none text-truncate d-block">
-                                            <?= htmlspecialchars(strlen($category['description'] ?? '') > 40 ? substr($category['description'] ?? '', 0, 40) . '...' : ($category['description'] ?? '')) ?>
+                                    <td style="overflow: hidden;">
+                                        <strong class="d-block text-truncate"><?= htmlspecialchars($category['name']) ?></strong>
+                                        <small class="text-muted d-lg-none d-block" style="white-space: normal; line-height: 1.4;">
+                                            <?= htmlspecialchars(strlen($category['description'] ?? '') > 60 ? substr($category['description'] ?? '', 0, 60) . '...' : ($category['description'] ?? '')) ?>
                                         </small>
                                     </td>
-                                    <td class="d-none d-lg-table-cell">
-                                        <small class="text-muted text-truncate d-block">
+                                    <td class="d-none d-lg-table-cell" style="overflow: hidden; text-overflow: ellipsis;">
+                                        <small class="text-muted d-block" style="white-space: normal; line-height: 1.4;">
                                             <?= htmlspecialchars($category['description'] ?? '') ?>
                                         </small>
                                     </td>
                                     <td class="text-center">
                                         <span class="badge bg-info"><?= $category['item_count'] ?? 0 ?></span>
                                     </td>
-                                    <td class="actions-cell">
-                                        <div class="btn-group btn-group-sm gap-1" role="group">
-                                            <!-- Move buttons -->
-                                            <div class="btn-group btn-group-sm d-none d-md-inline-flex">
-                                                <form method="POST" action="/categories/<?= $category['id'] ?>/move-up" style="display: inline;">
-                                                    <button type="submit" 
-                                                            class="btn btn-outline-secondary py-0 px-1" 
-                                                            title="Subir"
-                                                            <?= $index === 0 ? 'disabled' : '' ?>>
-                                                        <i class="bi bi-arrow-up"></i>
-                                                    </button>
-                                                </form>
-                                                <form method="POST" action="/categories/<?= $category['id'] ?>/move-down" style="display: inline;">
-                                                    <button type="submit" 
-                                                            class="btn btn-outline-secondary py-0 px-1" 
-                                                            title="Bajar"
-                                                            <?= $index === count($categories) - 1 ? 'disabled' : '' ?>>
-                                                        <i class="bi bi-arrow-down"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                            
-                                            <!-- Edit/Delete buttons -->
-                                            <button class="btn btn-outline-warning py-0 px-1" 
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button class="btn btn-secondary d-none d-md-inline-block btn-move-up" 
+                                                    data-url="/categories/<?= $category['id'] ?>/move-up"
+                                                    title="Subir"
+                                                    <?= $index === 0 ? 'disabled' : '' ?>>
+                                                <i class="bi bi-arrow-up"></i>
+                                            </button>
+                                            <button class="btn btn-secondary d-none d-md-inline-block btn-move-down" 
+                                                    data-url="/categories/<?= $category['id'] ?>/move-down"
+                                                    title="Bajar"
+                                                    <?= $index === count($categories) - 1 ? 'disabled' : '' ?>>
+                                                <i class="bi bi-arrow-down"></i>
+                                            </button>
+                                            <button class="btn btn-warning" 
                                                     onclick="editCategory(<?= htmlspecialchars(json_encode($category)) ?>)"
                                                     title="Editar">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <button class="btn btn-outline-danger py-0 px-1 btn-delete" 
+                                            <button class="btn btn-danger btn-delete" 
                                                     data-url="/categories/<?= $category['id'] ?>"
                                                     data-confirm="¿Eliminar categoría '<?= htmlspecialchars($category['name']) ?>'?"
                                                     title="Eliminar">
@@ -170,14 +157,14 @@ function editCategory(category) {
 
 // Handle move buttons with AJAX
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('form[action*="/move-"]').forEach(form => {
-        form.addEventListener('submit', function(e) {
+    document.querySelectorAll('.btn-move-up, .btn-move-down').forEach(button => {
+        button.addEventListener('click', function(e) {
             e.preventDefault();
             
-            const button = this.querySelector('button[type="submit"]');
-            button.disabled = true;
+            const url = this.dataset.url;
+            this.disabled = true;
             
-            fetch(this.action, {
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -188,12 +175,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     window.location.reload();
                 } else {
-                    button.disabled = false;
+                    this.disabled = false;
                     alert('Failed to reorder category');
                 }
             })
             .catch(error => {
-                button.disabled = false;
+                this.disabled = false;
                 console.error('Error:', error);
             });
         });
