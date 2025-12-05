@@ -1,53 +1,123 @@
-# Sistema de Backup de Base de Datos - Bug Bounty Project Manager
+# Sistema de Copias de Seguridad - Bug Bounty Project Manager
 
-Este directorio contiene scripts para realizar backups y restauraciones de la base de datos MySQL.
+Sistema simplificado para realizar copias de seguridad y restaurar la base de datos MySQL.
 
-## 📋 Contenido
+## 📋 Scripts disponibles
 
-- `backup-database.ps1` - Script de backup para Windows (PowerShell)
-- `backup-database.sh` - Script de backup para Linux/Mac (Bash)
-- `restore-database.ps1` - Script de restauración para Windows (PowerShell)
-- `restore-database.sh` - Script de restauración para Linux/Mac (Bash)
-- `backups/` - Directorio donde se almacenan los archivos de backup
+### 1. **backup.sh** - Backup Manual
+Realiza una copia de seguridad manual de la base de datos.
 
-## 🔄 Características
-
-✅ **Backup automático** de la base de datos MySQL
-✅ **Compresión gzip** automática para ahorrar espacio
-✅ **Limpieza automática** de backups antiguos (configurables días de retención)
-✅ **Restauración rápida** desde cualquier backup
-✅ **Manejo de errores** y validaciones
-✅ **Output colorido** para mejor legibilidad
-✅ **Compatible** con Windows (PowerShell) y Linux/Mac (Bash)
-
-## 📱 Uso
-
-### Windows (PowerShell)
-
-#### Crear un backup:
-```powershell
-# Backup básico (retención de 7 días)
-.\backup\backup-database.ps1
-
-# Backup con configuración personalizada
-.\backup\backup-database.ps1 -BackupDir "./backup/backups" -RetentionDays 14 -CompressionFormat gzip
-```
-
-#### Restaurar desde un backup:
-```powershell
-# Restauración interactiva (pedirá confirmación)
-.\backup\restore-database.ps1 -BackupFile "./backup/backups/bbpm_db_2024-01-15_10-30-45.sql.gz"
-
-# Restauración forzada (sin confirmación)
-.\backup\restore-database.ps1 -BackupFile "./backup/backups/bbpm_db_2024-01-15_10-30-45.sql.gz" -Force
-```
-
-### Linux/Mac (Bash)
-
-#### Crear un backup:
 ```bash
-# Backup básico (retención de 7 días)
-chmod +x ./backup/backup-database.sh
+./backup/backup.sh
+```
+
+**Características:**
+- ✅ Crea un archivo SQL comprimido con timestamp
+- ✅ Mantiene un historial de backups
+- ✅ Elimina automáticamente backups más antiguos de 30 días
+- ✅ Muestra los últimos backups realizados
+
+**Ejemplo:**
+```
+Starting database backup...
+✓ Backup completed successfully!
+File: backup/backups/bbpm_backup_20251205_120000.sql.gz
+Size: 256K
+```
+
+### 2. **restore.sh** - Restaurar Backup
+Restaura la base de datos desde un archivo de backup.
+
+```bash
+./backup/restore.sh backup/backups/bbpm_backup_20251205_120000.sql.gz
+```
+
+**Características:**
+- ✅ Solicita confirmación antes de restaurar
+- ✅ Soporta archivos comprimidos (.gz) y sin comprimir
+- ✅ Verifica que el archivo exista
+
+### 3. **auto-backup.sh** - Backup Automático
+Script para ejecutar backups automáticos desde cron.
+
+**Uso en crontab:**
+```bash
+# Backup diario a las 2:00 AM
+0 2 * * * /path/to/project/backup/auto-backup.sh
+
+# Backup cada 6 horas
+0 */6 * * * /path/to/project/backup/auto-backup.sh
+```
+
+**Características:**
+- ✅ Lee variables del `.env` automáticamente
+- ✅ Comprime el backup automáticamente
+- ✅ Mantiene un log en `backup/backups/backup.log`
+- ✅ Elimina automáticamente backups antiguos (últimos 7 días)
+
+## ⚙️ Configuración
+
+Los scripts usan las variables del `.env`:
+```env
+DB_HOST=db
+DB_PORT=3306
+DB_NAME=bbpm_db
+DB_USER=bbpm_user
+DB_PASS=bbpm_password
+```
+
+## 📁 Estructura
+
+```
+backup/
+├── backups/              # Directorio con los backups
+│   ├── backup.log       # Log de backups automáticos
+│   ├── bbpm_backup_*.sql.gz
+│   └── .gitkeep
+├── backup.sh             # Script de backup manual
+├── restore.sh            # Script de restauración
+├── auto-backup.sh        # Script para cron
+└── README.md
+```
+
+## 🔧 Primeros pasos
+
+1. **Dar permisos de ejecución:**
+```bash
+chmod +x backup/backup.sh
+chmod +x backup/restore.sh
+chmod +x backup/auto-backup.sh
+```
+
+2. **Hacer un backup manual:**
+```bash
+./backup/backup.sh
+```
+
+3. **Configurar backup automático (opcional):**
+```bash
+crontab -e
+# Agregar línea para backup diario
+```
+
+## 🔐 Seguridad
+
+- El archivo `.env` no se versionan
+- Cambiar las contraseñas por defecto
+- Proteger la carpeta `backup/backups/`
+- Considerar backups en servidor externo
+
+## ❓ Troubleshooting
+
+**Error: "command not found"**
+```bash
+chmod +x backup/*.sh
+```
+
+**Error: "Access denied"**
+```bash
+cat .env | grep DB_  # Verificar credenciales
+```
 ./backup/backup-database.sh
 
 # Backup con configuración personalizada

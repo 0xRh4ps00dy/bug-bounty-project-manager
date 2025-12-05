@@ -8,15 +8,15 @@ services:
       dockerfile: Dockerfile
     container_name: bbpm_web
     ports:
-      - "80:80"
+      - "${WEB_PORT:-80}:80"
     volumes:
       - .:/var/www/html
     environment:
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_NAME: bbpm_db
-      DB_USER: bbpm_user
-      DB_PASS: bbpm_password
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-bbpm_db}
+      DB_USER: ${DB_USER:-bbpm_user}
+      DB_PASS: ${DB_PASS:-bbpm_password}
     depends_on:
       db:
         condition: service_healthy
@@ -29,20 +29,20 @@ services:
     container_name: bbpm_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: bbpm_db
-      MYSQL_USER: bbpm_user
-      MYSQL_PASSWORD: bbpm_password
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: ${DB_NAME:-bbpm_db}
+      MYSQL_USER: ${DB_USER:-bbpm_user}
+      MYSQL_PASSWORD: ${DB_PASS:-bbpm_password}
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mysql/migrations/000_init.sql:/docker-entrypoint-initdb.d/000_init.sql
       - ./backup/backups:/backups
     ports:
-      - "3306:3306"
+      - "${DB_PORT:-3306}:3306"
     networks:
       - bbpm_network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root_password}"]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -54,10 +54,10 @@ services:
     container_name: bbpm_phpmyadmin
     restart: always
     ports:
-      - "8080:80"
+      - "${PHPMYADMIN_PORT:-8080}:80"
     environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: root_password
+      PMA_HOST: ${DB_HOST:-db}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
     depends_on:
       - db
     networks:
