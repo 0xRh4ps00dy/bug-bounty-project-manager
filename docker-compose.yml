@@ -35,7 +35,7 @@ services:
       MYSQL_PASSWORD: bbpm_password
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql/migrations/000_init.sql:/docker-entrypoint-initdb.d/000_init.sql
       - ./backup/backups:/backups
     ports:
       - "3306:3306"
