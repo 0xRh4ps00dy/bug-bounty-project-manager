@@ -22,7 +22,7 @@
                     <table class="table table-hover mb-0 table-sm">
                         <thead>
                             <tr>
-                                <th class="d-none d-md-table-cell" style="width: 50px;">Orden</th>
+                                <!-- <th class="d-none d-md-table-cell" style="width: 50px;">Orden</th> -->
                                 <th style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Nombre</th>
                                 <th class="d-none d-lg-table-cell">Descripción</th>
                                 <th class="text-center" style="width: 50px;">Items</th>
@@ -32,9 +32,9 @@
                         <tbody>
                             <?php foreach ($categories as $index => $category): ?>
                                 <tr>
-                                    <td class="d-none d-md-table-cell text-center">
+                                    <!-- <td class="d-none d-md-table-cell text-center">
                                         <span class="badge bg-primary"><?= $category['order_num'] ?? 0 ?></span>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <strong class="text-truncate d-block"><?= htmlspecialchars($category['name']) ?></strong>
                                         <small class="text-muted d-lg-none text-truncate d-block">
