@@ -1,0 +1,196 @@
+# 📋 Comandos MySQL Comunes - Referencia Rápida
+
+## 🔐 CONEXIÓN
+
+# Conectar como root
+./backup/connect.sh root
+
+# Conectar como usuario bbpm_user
+./backup/connect.sh bbpm_user
+
+# Desde Docker
+docker exec -it bbpm_mysql mysql -u root -proot_password
+
+---
+
+## �� BACKUPS
+
+# Crear backup
+./backup/backup.sh
+
+# Backup automático con rotación
+./backup/auto-backup.sh
+
+# Restaurar backup
+./backup/restore.sh ./backup/backups/bbpm_db_*.sql.gz
+
+# Ver backups
+ls -lh ./backup/backups/
+
+---
+
+## 👥 USUARIOS
+
+# Listar usuarios
+./backup/manage-users.sh list
+
+# Crear usuario
+./backup/manage-users.sh create username password
+
+# Cambiar contraseña
+./backup/manage-users.sh password username newpassword
+
+# Ver permisos
+./backup/manage-users.sh grants username
+
+# Eliminar usuario
+./backup/manage-users.sh delete username
+
+---
+
+## 🗄️ BASES DE DATOS (En MySQL)
+
+# Ver bases de datos
+SHOW DATABASES;
+
+# Usar una BD específica
+USE bbpm_db;
+
+# Ver tablas
+SHOW TABLES;
+
+# Ver estructura de tabla
+DESCRIBE projects;
+DESCRIBE targets;
+DESCRIBE categories;
+DESCRIBE checklist_items;
+DESCRIBE users;
+
+# Contar registros
+SELECT COUNT(*) FROM projects;
+SELECT COUNT(*) FROM targets;
+SELECT COUNT(*) FROM categories;
+SELECT COUNT(*) FROM checklist_items;
+
+---
+
+## 📊 CONSULTAS ÚTILES
+
+# Tamaño de bases de datos
+SELECT 
+    table_schema,
+    ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS size_mb
+FROM information_schema.tables
+GROUP BY table_schema;
+
+# Tamaño de tablas
+SELECT 
+    table_name,
+    ROUND(((data_length + index_length) / 1024 / 1024), 2) AS size_mb
+FROM information_schema.tables
+WHERE table_schema = 'bbpm_db'
+ORDER BY (data_length + index_length) DESC;
+
+# Usuarios conectados
+SHOW PROCESSLIST;
+
+# Ver permisos de usuario actual
+SHOW GRANTS FOR CURRENT_USER();
+
+---
+
+## 🔒 SEGURIDAD
+
+# Cambiar contraseña de usuario
+ALTER USER 'username'@'%' IDENTIFIED BY 'new_password';
+FLUSH PRIVILEGES;
+
+# Ver todos los usuarios
+SELECT user, host FROM mysql.user;
+
+# Crear usuario con permisos específicos
+CREATE USER 'newuser'@'%' IDENTIFIED BY 'password';
+GRANT SELECT, INSERT, UPDATE ON bbpm_db.* TO 'newuser'@'%';
+FLUSH PRIVILEGES;
+
+# Revocar permisos
+REVOKE ALL PRIVILEGES ON *.* FROM 'user'@'%';
+FLUSH PRIVILEGES;
+
+---
+
+## 🔍 DEBUG
+
+# Ver procesos
+SHOW PROCESSLIST;
+
+# Matar proceso
+KILL process_id;
+
+# Ver status del servidor
+SHOW STATUS;
+
+# Ver variables
+SHOW VARIABLES;
+
+# Ver error log
+SHOW WARNINGS;
+
+---
+
+## 🧹 MANTENIMIENTO
+
+# Optimizar tablas
+OPTIMIZE TABLE projects;
+OPTIMIZE TABLE targets;
+OPTIMIZE TABLE categories;
+OPTIMIZE TABLE checklist_items;
+
+# Reparar tablas (si hay corrupción)
+REPAIR TABLE projects;
+
+# Ver integridad
+CHECK TABLE projects;
+
+# Vacío de datos (CUIDADO - elimina datos)
+TRUNCATE TABLE projects;
+
+---
+
+## 📤 EXPORTAR/IMPORTAR
+
+# Exportar tabla a CSV
+SELECT * FROM projects 
+INTO OUTFILE '/tmp/projects.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"';
+
+# Exportar todos los datos
+./backup/backup.sh
+
+# Importar desde SQL
+./backup/restore.sh backup_file.sql.gz
+
+---
+
+## 🆘 TROUBLESHOOTING
+
+# Ver logs
+docker-compose logs db
+
+# Reiniciar MySQL
+docker-compose restart db
+
+# Ver variables de conexión
+SELECT @@hostname, @@port;
+
+# Probar conexión
+SELECT CONNECTION_ID();
+
+# Ver charset
+SHOW CHARACTER SET;
+SHOW COLLATION;
+
+---
+
+Última actualización: Diciembre 2025
